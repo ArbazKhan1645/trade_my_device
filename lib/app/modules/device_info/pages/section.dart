@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webuywesell/app/modules/device_info/pages/form.dart';
 
 import '../../../core/utils/thems/theme.dart';
 import 'faqs.dart';
@@ -128,7 +129,8 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
           ),
           height: 100,
           child: Padding(
-            padding: const EdgeInsets.only(left: 150, right: 550),
+            padding: EdgeInsets.only(
+                left: 150, right: MediaQuery.of(context).size.width * 0.30),
             child: Stack(
               clipBehavior: Clip.none,
               children: [
@@ -143,7 +145,7 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                   ),
                 ),
                 Positioned(
-                  left: 300,
+                  left: MediaQuery.of(context).size.width * 0.10,
                   bottom: -300,
                   child: Image.asset('assets/images/mobile.png', height: 500),
                 )
@@ -157,7 +159,7 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
           child: Row(
             children: [
               // Top Image Area
-              Expanded(flex: 6, child: Container()),
+              Expanded(flex: 5, child: Container()),
               Expanded(
                 flex: 4,
                 child: Container(
@@ -216,13 +218,14 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                             },
                           ),
                         ),
+                        if (selectedQuestion == 3) EmailFormWidget(),
                         WeBuyAnyPhoneWidget()
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(width: 150)
+              SizedBox(width: MediaQuery.of(context).size.width * 0.05)
               // Bottom Section
             ],
           ),

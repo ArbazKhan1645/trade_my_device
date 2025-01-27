@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:webuywesell/app/modules/authentication/authentication_view.dart';
 
 import '../../../core/utils/thems/theme.dart';
 import '../controllers/nav.dart';
@@ -235,20 +236,25 @@ buildWidgetOFScrollHeader(BuildContext context) {
               ],
             ),
             const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
-            Container(
-              height: 90,
-              width: 80,
-              decoration: const BoxDecoration(
-                color: Color(0xffFFC000),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [0, 1, 2]
-                    .map((element) => Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [buildDot(), buildDot(), buildDot()],
-                        ))
-                    .toList(),
+            GestureDetector(
+              onTap: () {
+                showAnimatedDialog(context);
+              },
+              child: Container(
+                height: 90,
+                width: 80,
+                decoration: const BoxDecoration(
+                  color: Color(0xffFFC000),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [0, 1, 2]
+                      .map((element) => Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [buildDot(), buildDot(), buildDot()],
+                          ))
+                      .toList(),
+                ),
               ),
             ),
           ],

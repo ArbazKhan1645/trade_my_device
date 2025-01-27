@@ -6,11 +6,15 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const SELL_MY_PHONE = _Paths.SELL_MY_PHONE;
   static const DEVICE_INFO = _Paths.DEVICE_INFO;
+  static const Payment = _Paths.Payment;
+  static const CHECKOUT = _Paths.CHECKOUT;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
+  static const Payment = '/Payment';
   static const SELL_MY_PHONE = '/sell-my-phone';
   static const DEVICE_INFO = '/device-info';
+  static const CHECKOUT = '/checkout';
 }

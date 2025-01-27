@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:webuywesell/app/routes/app_pages.dart';
 
 import '../../../core/utils/thems/theme.dart';
 
@@ -67,8 +69,21 @@ class SellPhoneScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          Text('Sell by category',
-              style: defaultTextStyle.copyWith(fontSize: 20)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Sell by category',
+                  style: defaultTextStyle.copyWith(fontSize: 20)),
+              TextButton(
+                  onPressed: () {
+                    Get.toNamed(Routes.SELL_MY_PHONE);
+                  },
+                  child: Text(
+                    'View ALl',
+                    style: defaultTextStyle.copyWith(color: Colors.amber),
+                  ))
+            ],
+          ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
