@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 
-import 'view.dart';
-
 class EmailFormWidget extends StatefulWidget {
   const EmailFormWidget({super.key});
 
@@ -65,7 +63,7 @@ class _EmailFormWidgetState extends State<EmailFormWidget> {
           GestureDetector(
             onTap: isChecked
                 ? () {
-                    Get.toNamed(Routes.Payment);
+                    Get.offNamed(Routes.Payment);
                   }
                 : null,
             child: Container(

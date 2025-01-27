@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'we buy we sell',
+      title: 'Trade my device',
       builder: (context, widget) {
         return MediaQuery(
             data: MediaQuery.of(context)

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,38 +13,67 @@ class HomeController extends GetxController {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 40),
-        Padding(
-          padding: const EdgeInsets.only(left: 150, right: 150),
+        SizedBox(
           child: SizedBox(
-            height: 80,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const FeatureItem(
-                  icon: Icons.monetization_on_outlined,
-                  text: 'We pay more than networks',
-                ),
-                Container(
-                  width: 1,
-                  height: 40,
-                  color: Colors.black.withOpacity(0.3),
-                ),
-                const FeatureItem(
-                  icon: Icons.account_balance_outlined,
-                  text: 'Fast payment to your bank',
-                ),
-                Container(
-                  width: 1,
-                  height: 40,
-                  color: Colors.black.withOpacity(0.3),
-                ),
-                const FeatureItem(
-                  icon: Icons.phone_iphone_outlined,
-                  text: 'Send your device to us for free',
-                ),
-              ],
-            ),
-          ),
+              height: 80,
+              child: LayoutBuilder(builder: (context, constraints) {
+                if (constraints.maxWidth >= 700) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const FeatureItem(
+                        icon: Icons.monetization_on_outlined,
+                        text: 'We pay more than networks',
+                      ),
+                      Container(
+                        width: 1,
+                        height: 40,
+                        color: Colors.black.withOpacity(0.3),
+                      ),
+                      const FeatureItem(
+                        icon: Icons.account_balance_outlined,
+                        text: 'Fast payment to your bank',
+                      ),
+                      Container(
+                        width: 1,
+                        height: 40,
+                        color: Colors.black.withOpacity(0.3),
+                      ),
+                      const FeatureItem(
+                        icon: Icons.phone_iphone_outlined,
+                        text: 'Send your device to us for free',
+                      ),
+                    ],
+                  );
+                }
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const FeatureItemMobile(
+                      icon: Icons.monetization_on_outlined,
+                      text: 'We pay more than networks',
+                    ),
+                    Container(
+                      width: 1,
+                      height: 40,
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                    const FeatureItemMobile(
+                      icon: Icons.account_balance_outlined,
+                      text: 'Fast payment to your bank',
+                    ),
+                    Container(
+                      width: 1,
+                      height: 40,
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                    const FeatureItemMobile(
+                      icon: Icons.phone_iphone_outlined,
+                      text: 'Send your device to us for free',
+                    ),
+                  ],
+                );
+              })),
         ),
         const DeviceWorthScreen(),
         // PopularBrandsWidget(),
@@ -99,6 +130,44 @@ class HomeController extends GetxController {
       ],
     ),
   ];
+}
+
+class FeatureItemMobile extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const FeatureItemMobile({
+    required this.icon,
+    required this.text,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(width: 12),
+          Icon(icon, color: const Color(0xFF00CCBC), size: 28),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              textAlign: TextAlign.start,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500),
+            ),
+          ),
+          const SizedBox(width: 12),
+        ],
+      ),
+    );
+  }
 }
 
 class FeatureItem extends StatelessWidget {

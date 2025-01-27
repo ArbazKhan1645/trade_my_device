@@ -28,99 +28,103 @@ class StepFlowScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: 40),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          height: 90,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  RichText(
-                    text: TextSpan(
-                        text: '£329 guaranteed for the next',
-                        style: defaultTextStyle.copyWith(
-                            fontSize: 24, fontWeight: FontWeight.w600),
-                        children: [
-                          const TextSpan(
-                            text: '  1m 39s',
-                            style: TextStyle(
-                              color: Colors.amber,
+    return LayoutBuilder(builder: (context, constraints) {
+      return Column(
+        children: [
+          SizedBox(height: 40),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            height: 90,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                          text: '£329 guaranteed for the next',
+                          style: defaultTextStyle.copyWith(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                          children: [
+                            const TextSpan(
+                              text: '  1m 39s',
+                              style: TextStyle(
+                                color: Colors.amber,
+                              ),
                             ),
+                          ]),
+                    ),
+                    Obx(() {
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.20,
+                          child: LinearProgressIndicator(
+                            value: (controller.currentStep.value + 1) /
+                                controller.totalSteps,
+                            backgroundColor: Colors.grey[300],
+                            color: Colors.amber,
                           ),
-                        ]),
-                  ),
-                  Obx(() {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.10,
-                        child: LinearProgressIndicator(
-                          value: (controller.currentStep.value + 1) /
-                              controller.totalSteps,
-                          backgroundColor: Colors.grey[300],
-                          color: Colors.amber,
                         ),
-                      ),
-                    );
-                  }),
-                ],
+                      );
+                    }),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        SizedBox(height: 20),
-        // Progress Bar
+          SizedBox(height: 20),
+          // Progress Bar
 
-        // AnimatedSwitcher for screens
-        Obx(() {
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.0),
-              border: Border.all(color: Colors.grey[300]!),
-            ),
-            width: MediaQuery.of(context).size.width / 3,
-            child: Column(
-              children: [
-                AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 500),
-                    transitionBuilder: (child, animation) {
-                      return FadeTransition(opacity: animation, child: child);
+          // AnimatedSwitcher for screens
+          Obx(() {
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+                border: Border.all(color: Colors.grey[300]!),
+              ),
+              width: constraints.maxWidth <= 600
+                  ? (constraints.maxWidth - 50)
+                  : 560,
+              child: Column(
+                children: [
+                  AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 500),
+                      transitionBuilder: (child, animation) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                      child: _getStepWidget(controller.currentStep.value)),
+                  SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () {
+                      controller.nextStep();
                     },
-                    child: _getStepWidget(controller.currentStep.value)),
-                SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    controller.nextStep();
-                  },
-                  child: Container(
-                    width: 300,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Text(
-                      'Continue',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                      textAlign: TextAlign.center,
+                    child: Container(
+                      width: 300,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Text(
+                        'Continue',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 40)
-              ],
-            ),
-          );
-        }),
-        SizedBox(height: 40)
-      ],
-    );
+                  SizedBox(height: 40)
+                ],
+              ),
+            );
+          }),
+          SizedBox(height: 40)
+        ],
+      );
+    });
   }
 
   // Step widgets based on the index

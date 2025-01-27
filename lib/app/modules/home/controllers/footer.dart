@@ -15,77 +15,150 @@ class MobileFooterPageView extends StatelessWidget {
       decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage('assets/images/footer.png'), fit: BoxFit.fill)),
-      child: Padding(
-        padding: EdgeInsets.only(left: 200, right: 200),
-        child: Column(
-          children: [
-            SizedBox(height: 70),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: InformationWidget(
-                    heading: 'About',
-                    options: [
-                      'About Us',
-                      'Sell an Item',
-                      'Careers',
-                      'Franchising',
-                      'CeX Blog',
-                      'Press',
+      child: LayoutBuilder(builder: (context, constraints) {
+        double getPadding(double width) {
+          if (width >= 1200) {
+            return 150.0; // Large screen
+          } else if (width >= 800) {
+            return 50.0; // Medium screen
+          } else {
+            return 20.0; // Small screen
+          }
+        }
+
+        double padding = getPadding(constraints.maxWidth);
+        return Padding(
+          padding: EdgeInsets.only(left: padding, right: padding),
+          child: Column(
+            children: [
+              SizedBox(height: 70),
+              LayoutBuilder(builder: (context, constraints) {
+                if (constraints.maxWidth <= 700) {
+                  return Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: InformationWidget(
+                              heading: 'About',
+                              options: [
+                                'About Us',
+                                'Sell an Item',
+                                'Careers',
+                                'Franchising',
+                                'CeX Blog',
+                                'Press',
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: InformationWidget(
+                              heading: 'About',
+                              options: [
+                                'About Us',
+                                'Sell an Item',
+                                'Careers',
+                                'Franchising',
+                                'CeX Blog',
+                                'Press',
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: InformationWidget(
+                              heading: 'About',
+                              options: [
+                                'About Us',
+                                'Sell an Item',
+                                'Careers',
+                                'Franchising',
+                                'CeX Blog',
+                                'Press',
+                              ],
+                            ),
+                          ),
+                          Expanded(child: NewsLetterWidget()),
+                        ],
+                      )
                     ],
-                  ),
-                ),
-                SizedBox(width: 20),
-                Expanded(
-                  child: InformationWidget(
-                    heading: 'About',
-                    options: [
-                      'About Us',
-                      'Sell an Item',
-                      'Careers',
-                      'Franchising',
-                      'CeX Blog',
-                      'Press',
-                    ],
-                  ),
-                ),
-                SizedBox(width: 20),
-                Expanded(
-                  child: InformationWidget(
-                    heading: 'About',
-                    options: [
-                      'About Us',
-                      'Sell an Item',
-                      'Careers',
-                      'Franchising',
-                      'CeX Blog',
-                      'Press',
-                    ],
-                  ),
-                ),
-                SizedBox(width: 20),
-                Expanded(child: NewsLetterWidget()),
-              ],
-            ),
-            SizedBox(height: 20),
-            Divider(
-              color: Color.fromARGB(255, 129, 140, 152),
-            ),
-            SizedBox(height: 20),
-            Text(
-              '©2025 TradeMyDevice Limited. All rights reserved | Company No. 8321525 - VAT No. GB153510637',
-              style: GoogleFonts.cabin(
+                  );
+                }
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: InformationWidget(
+                        heading: 'About',
+                        options: [
+                          'About Us',
+                          'Sell an Item',
+                          'Careers',
+                          'Franchising',
+                          'CeX Blog',
+                          'Press',
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: InformationWidget(
+                        heading: 'About',
+                        options: [
+                          'About Us',
+                          'Sell an Item',
+                          'Careers',
+                          'Franchising',
+                          'CeX Blog',
+                          'Press',
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: InformationWidget(
+                        heading: 'About',
+                        options: [
+                          'About Us',
+                          'Sell an Item',
+                          'Careers',
+                          'Franchising',
+                          'CeX Blog',
+                          'Press',
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Expanded(child: NewsLetterWidget()),
+                  ],
+                );
+              }),
+              SizedBox(height: 20),
+              Divider(
                 color: Color.fromARGB(255, 129, 140, 152),
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-                decoration: TextDecoration.underline,
               ),
-            ),
-            SizedBox(height: 20),
-          ],
-        ),
-      ),
+              SizedBox(height: 20),
+              Text(
+                '©2025 TradeMyDevice Limited. All rights reserved | Company No. 8321525 - VAT No. GB153510637',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.cabin(
+                  color: Color.fromARGB(255, 129, 140, 152),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+              SizedBox(height: 20),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

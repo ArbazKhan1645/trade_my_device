@@ -1,122 +1,182 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 
 import '../../../core/utils/thems/theme.dart';
 
-class SellPhoneScreen extends StatelessWidget {
+class SellPhoneScreen extends StatefulWidget {
   const SellPhoneScreen({super.key});
 
   @override
+  State<SellPhoneScreen> createState() => _SellPhoneScreenState();
+}
+
+class _SellPhoneScreenState extends State<SellPhoneScreen> {
+  final ScrollController _controller = ScrollController();
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 150, right: 150),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 20),
-          Text('Sell your phone online',
-              style: defaultTextStyle.copyWith(fontSize: 20)),
-          const SizedBox(height: 16),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.grey.withOpacity(0.05)),
-              borderRadius: BorderRadius.circular(8),
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: Colors.grey.withOpacity(0.25),
-              //     spreadRadius: 1,
-              //     blurRadius: 2,
-              //     offset: const Offset(0, 1),
-              //   ),
-              // ],
-            ),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InfoStep(
-                      icon: Icons.search,
-                      title: 'Search',
-                      description: 'Select the device you want to sell',
-                    ),
-                    Container(
-                      width: 1,
-                      height: 40,
-                      color: Colors.black.withOpacity(0.3),
-                    ),
-                    InfoStep(
-                      icon: Icons.local_shipping,
-                      title: 'Send',
-                      description: 'Send it to us for free',
-                    ),
-                    Container(
-                      width: 1,
-                      height: 40,
-                      color: Colors.black.withOpacity(0.3),
-                    ),
-                    InfoStep(
-                      icon: Icons.attach_money,
-                      title: 'Get paid',
-                      description: 'Fast payments',
-                    ),
-                  ],
-                ),
+    return LayoutBuilder(builder: (context, constraints) {
+      double getPadding(double width) {
+        if (width >= 1200) {
+          return 150.0; // Large screen
+        } else if (width >= 800) {
+          return 50.0; // Medium screen
+        } else {
+          return 10.0; // Small screen
+        }
+      }
+
+      double padding = getPadding(constraints.maxWidth);
+      return Padding(
+        padding: EdgeInsets.only(left: padding, right: padding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            Text('Sell your phone online',
+                style: defaultTextStyle.copyWith(fontSize: 20)),
+            const SizedBox(height: 12),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey.withOpacity(0.05)),
+                borderRadius: BorderRadius.circular(8),
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey.withOpacity(0.25),
+                //     spreadRadius: 1,
+                //     blurRadius: 2,
+                //     offset: const Offset(0, 1),
+                //   ),
+                // ],
               ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Sell by category',
-                  style: defaultTextStyle.copyWith(fontSize: 20)),
-              TextButton(
-                  onPressed: () {
-                    Get.toNamed(Routes.SELL_MY_PHONE);
-                  },
-                  child: Text(
-                    'View ALl',
-                    style: defaultTextStyle.copyWith(color: Colors.amber),
-                  ))
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {},
-                  child: const CategoryCard(
-                    title: 'Sell my Apple iPhone',
-                    imageUrl:
-                        'assets/images/mobile2.png', // Replace with a valid asset path
-                    logo: Icons.apple,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InfoStep(
+                        icon: Icons.search,
+                        title: 'Search',
+                        description: 'Select the device you want to sell',
+                      ),
+                      SizedBox(width: 4),
+                      Container(
+                        width: 1,
+                        height: 40,
+                        color: Colors.black.withOpacity(0.3),
+                      ),
+                      SizedBox(width: 4),
+                      InfoStep(
+                        icon: Icons.local_shipping,
+                        title: 'Send',
+                        description: 'Send it to us for free',
+                      ),
+                      SizedBox(width: 4),
+                      Container(
+                        width: 1,
+                        height: 40,
+                        color: Colors.black.withOpacity(0.3),
+                      ),
+                      SizedBox(width: 4),
+                      InfoStep(
+                        icon: Icons.attach_money,
+                        title: 'Get paid',
+                        description: 'Fast payments',
+                      ),
+                    ],
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {},
-                  child: const CategoryCard(
-                    title: 'Sell my Samsung Galaxy',
-                    imageUrl:
-                        'assets/images/mobile2.png', // Replace with a valid asset path
-                    logo: Icons.android,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Sell by category',
+                    style: defaultTextStyle.copyWith(fontSize: 20)),
+                TextButton(
+                    onPressed: () {
+                      Get.offNamed(Routes.SELL_MY_PHONE);
+                    },
+                    child: Text(
+                      'View ALl',
+                      style: defaultTextStyle.copyWith(color: Colors.amber),
+                    ))
+              ],
+            ),
+            const SizedBox(height: 16),
+            constraints.maxWidth >= 600
+                ? Row(children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                Get.offNamed(Routes.SELL_MY_PHONE);
+                        },
+                        child: const CategoryCard(
+                          title: 'Sell my Apple iPhone',
+                          imageUrl: 'assets/images/mobile2.png',
+                          logo: Icons.apple,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+               Get.offNamed(Routes.SELL_MY_PHONE);
+                        },
+                        child: const CategoryCard(
+                          title: 'Sell my Samsung Galaxy',
+                          imageUrl: 'assets/images/mobile2.png',
+                          logo: Icons.android,
+                        ),
+                      ),
+                    ),
+                  ])
+                : Scrollbar(
+                    thumbVisibility: true,
+                    trackVisibility: true,
+                    controller: _controller,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      controller: _controller,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                    Get.offNamed(Routes.SELL_MY_PHONE);
+                              },
+                              child: const CategoryCard(
+                                title: 'Sell my Apple iPhone',
+                                imageUrl: 'assets/images/mobile2.png',
+                                logo: Icons.apple,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            GestureDetector(
+                              onTap: () {
+                           Get.offNamed(Routes.SELL_MY_PHONE);
+                              },
+                              child: const CategoryCard(
+                                title: 'Sell my Samsung Galaxy',
+                                imageUrl: 'assets/images/mobile2.png',
+                                logo: Icons.android,
+                              ),
+                            ),
+                          ]),
+                    ),
                   ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 50),
-        ],
-      ),
-    );
+            const SizedBox(height: 50),
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -136,6 +196,7 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 280,
+      width: 350,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.grey.withOpacity(0.05)),
@@ -198,6 +259,8 @@ class InfoStep extends StatelessWidget {
           Text(title, style: defaultTextStyle.copyWith(fontSize: 18)),
           const SizedBox(height: 4),
           Text(description,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: defaultTextStyle.copyWith(
                   color: Color.fromARGB(255, 129, 140, 152))),

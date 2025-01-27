@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
 
+import '../../../core/widgets/optimized_animated_container.dart';
 import '../controllers/home.controller.dart';
 import '../widgets/homepage_header.dart';
 
@@ -13,13 +15,24 @@ class HomePageViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        backgroundColor: Color(0xfff9f9f9), body: DashBoardViewBodyScreen());
+    final bool enableAnimations = !kIsWeb || !kReleaseMode;
+    return Scaffold(
+      backgroundColor: Color(0xfff9f9f9),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return OptimizedAnimatedContainer(
+            shouldAnimate: enableAnimations,
+            child: DashBoardViewBodyScreen(constraints: constraints),
+          );
+        },
+      ),
+    );
   }
 }
 
 class DashBoardViewBodyScreen extends StatefulWidget {
-  const DashBoardViewBodyScreen({super.key});
+  const DashBoardViewBodyScreen({super.key, required this.constraints});
+  final BoxConstraints constraints;
 
   @override
   State<DashBoardViewBodyScreen> createState() =>
@@ -67,8 +80,10 @@ class _DashBoardViewBodyScreenState extends State<DashBoardViewBodyScreen> {
           return Stack(
             clipBehavior: Clip.none,
             children: [
-              if (!isCollapsed) const HomePageHeaderWidget(),
-              if (isCollapsed) _buildCollapsedTitle(),
+              if (!isCollapsed)
+                HomePageHeaderWidget(constraints: widget.constraints),
+              if (isCollapsed)
+                _buildCollapsedTitle(constraints: widget.constraints),
             ],
           );
         },
@@ -76,14 +91,14 @@ class _DashBoardViewBodyScreenState extends State<DashBoardViewBodyScreen> {
     );
   }
 
-  Widget _buildCollapsedTitle() {
+  Widget _buildCollapsedTitle({BoxConstraints? constraints}) {
     return Padding(
       padding: const EdgeInsets.only(top: 0),
       child: Container(
         color: Colors.white,
         width: double.infinity,
         height: 85,
-        child: buildWidgetOFScrollHeader(context),
+        child: buildWidgetOFScrollHeader(context, constraints: constraints),
       ),
     );
   }

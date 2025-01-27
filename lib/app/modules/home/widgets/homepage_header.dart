@@ -1,15 +1,17 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, deprecated_member_use, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:webuywesell/app/modules/authentication/authentication_view.dart';
 
 import '../../../core/utils/thems/theme.dart';
+import '../controllers/drawer.dart';
 import '../controllers/nav.dart';
 
 class HomePageHeaderWidget extends StatelessWidget {
-  const HomePageHeaderWidget({super.key});
+  const HomePageHeaderWidget({super.key, this.constraints});
+  final BoxConstraints? constraints;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,6 @@ class HomePageHeaderWidget extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // Background SVG image
           Positioned.fill(
             child: SvgPicture.asset(
               'assets/images/b.svg',
@@ -28,13 +29,25 @@ class HomePageHeaderWidget extends StatelessWidget {
             ),
           ),
           buildMiniHeader(context),
-          buildSubHeader(context),
+          buildSubHeader(context, constraints: constraints),
         ],
       ),
     );
   }
 
   buildMiniHeader(BuildContext context) {
+    double getPadding(double width) {
+      if (width >= 1200) {
+        return 100.0; // Large screen
+      } else if (width >= 800) {
+        return 50.0; // Medium screen
+      } else {
+        return 20.0; // Small screen
+      }
+    }
+
+    double padding = getPadding(constraints!.maxWidth);
+
     return Positioned(
         top: 15,
         left: 0,
@@ -44,29 +57,42 @@ class HomePageHeaderWidget extends StatelessWidget {
           child: Stack(
             children: [
               // Foreground content (the Row with widgets)
-              Padding(
-                padding: const EdgeInsets.only(left: 150, right: 150),
-                child: Row(
-                  children: [
-                    SizedBox(width: 15),
-                    buildheadertext(),
-                    SizedBox(width: 15),
-                    buildwidget(
-                        Icons.email_outlined, 'info@trademydevice.co.uk'),
-                    SizedBox(width: 15),
-                    buildVerticalDivider(),
-                    SizedBox(width: 15),
-                    buildwidget(
-                        Icons.location_on_outlined, 'London England, G53'),
-                    const Spacer(),
-                    buildCountryWidget(),
-                    SizedBox(width: 15),
-                    buildVerticalDivider(),
-                    SizedBox(width: 15),
-                    buildThemeWidget(),
-                    SizedBox(width: 15),
-                  ],
-                ),
+              Row(
+                children: [
+                  SizedBox(width: 15),
+                  buildheadertext(),
+                  SizedBox(width: 15),
+                  Expanded(
+                    child: Builder(builder: (context) {
+                      Widget widget = Row(
+                        children: [
+                          buildwidget(
+                              Icons.email_outlined, 'info@trademydevice.co.uk'),
+                          SizedBox(width: 15),
+                          buildVerticalDivider(),
+                          SizedBox(width: 15),
+                          buildwidget(Icons.location_on_outlined,
+                              'London England, G53'),
+                          const Spacer(),
+                          buildCountryWidget(),
+                          SizedBox(width: 15),
+                          buildVerticalDivider(),
+                          SizedBox(width: 15),
+                          buildThemeWidget(),
+                          SizedBox(width: 15),
+                        ],
+                      );
+                      if (constraints != null) {
+                        if (constraints!.maxWidth >= 800) {
+                          return widget;
+                        } else {
+                          return RowWidget();
+                        }
+                      }
+                      return widget;
+                    }),
+                  )
+                ],
               ),
             ],
           ),
@@ -175,70 +201,124 @@ class _HomeTitlesWidgetState extends State<HomeTitlesWidget> {
   }
 }
 
-Widget buildSubHeader(BuildContext context) {
+Widget buildSubHeader(BuildContext context, {BoxConstraints? constraints}) {
   return Positioned(
       left: 0,
       right: 0,
       bottom: -80,
-      child: buildWidgetOFScrollHeader(context));
+      child: buildWidgetOFScrollHeader(context, constraints: constraints));
 }
 
-buildWidgetOFScrollHeader(BuildContext context) {
+buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
   return Container(
     width: double.infinity,
     color: Colors.white,
-    child: Padding(
-      padding: const EdgeInsets.only(left: 150, right: 150),
-      child: Container(
-        width: double.infinity,
-        color: Colors.white,
-        // decoration: BoxDecoration(
-        //   boxShadow: [
-        //     BoxShadow(
-        //       color: Colors.black.withOpacity(0.1),
-        //       offset: const Offset(0, 4),
-        //       blurRadius: 0,
-        //       spreadRadius: 0,
-        //     ),
-        //   ],
-        //   color: Colors.white,
-        //   borderRadius: BorderRadius.circular(12),
-        // ),
-        height: 80,
-        child: Row(
-          children: [
-            const SizedBox(width: 20), // Updated horizontalSpace with SizedBox
-            Image.asset('assets/images/trade.jpeg'),
-            const Spacer(),
-            const AddressInfoToggle(address: 'GlassGow PK'),
+    child: Container(
+      width: double.infinity,
+      color: Colors.white,
+      // decoration: BoxDecoration(
+      //   boxShadow: [
+      //     BoxShadow(
+      //       color: Colors.black.withOpacity(0.1),
+      //       offset: const Offset(0, 4),
+      //       blurRadius: 0,
+      //       spreadRadius: 0,
+      //     ),
+      //   ],
+      //   color: Colors.white,
+      //   borderRadius: BorderRadius.circular(12),
+      // ),
+      height: 80,
+      child: Row(
+        children: [
+          const SizedBox(width: 20), // Updated horizontalSpace with SizedBox
+          Image.asset('assets/images/trade.jpeg'),
+          const Spacer(),
+          Builder(builder: (context) {
+            if (constraints != null) {
+              if (constraints.maxWidth >= 1200) {
+                return const AddressInfoToggle(address: 'GlassGow PK');
+              } else {
+                return Container();
+              }
+            }
+            return const AddressInfoToggle(address: 'GlassGow PK');
+          }),
 
-            const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
-            Container(
-              height: 80,
-              width: 1,
-              color: Colors.grey.shade200,
-            ),
-            const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
-            const CircleAvatar(
-              radius: 30,
-              backgroundColor: Color(0xffFFF2E6),
-              child: Center(
-                child: Icon(Icons.call_outlined),
-              ),
-            ),
-            const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
-            Column(
+          const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
+          Container(
+            height: 80,
+            width: 1,
+            color: Colors.grey.shade200,
+          ),
+          const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
+          Builder(builder: (context) {
+            Widget widget = Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Phone & Telephone', style: defaultTextStyle),
                 Text('+92 310 2426 676', style: defaultTextStyle),
               ],
-            ),
-            const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
-            GestureDetector(
+            );
+            if (constraints != null) {
+              if (constraints.maxWidth >= 600) {
+                return widget;
+              } else {
+                return Container();
+              }
+            }
+            return widget;
+          }),
+          const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircleAvatar(
+                radius: 20,
+                backgroundColor: Color(0xffFFF2E6),
+                child: Center(
+                  child: Icon(Icons.shopping_basket_outlined),
+                ),
+              ),
+              Text('Basket', style: defaultTextStyle),
+            ],
+          ),
+          const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
+
+          Builder(builder: (context) {
+            Widget widget = GestureDetector(
               onTap: () {
-                showAnimatedDialog(context);
+                showGeneralDialog(
+                  context: context,
+                  pageBuilder: (context, animation, secondaryAnimation) {
+                    return FullScreenDialog();
+                  },
+                  barrierLabel: 'Dialog',
+                  transitionDuration: Duration(milliseconds: 300),
+                  transitionBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    final slideAnimation = Tween<Offset>(
+                      begin: Offset(1.0, 0.0),
+                      end: Offset(0.0, 0.0),
+                    ).animate(animation);
+
+                    final reverseSlideAnimation = Tween<Offset>(
+                      begin: Offset(0.0, 0.0),
+                      end: Offset(1.0, 0.0),
+                    ).animate(secondaryAnimation);
+
+                    return SlideTransition(
+                      position: animation.status == AnimationStatus.reverse
+                          ? reverseSlideAnimation
+                          : slideAnimation,
+                      child: child,
+                    );
+                  },
+                  barrierDismissible: true,
+                  barrierColor: Colors.black.withOpacity(0.5),
+                );
+                // showAnimatedDialog(context);
               },
               child: Container(
                 height: 90,
@@ -248,17 +328,29 @@ buildWidgetOFScrollHeader(BuildContext context) {
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [0, 1, 2]
-                      .map((element) => Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [buildDot(), buildDot(), buildDot()],
-                          ))
-                      .toList(),
+                  children: [
+                    const CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Color(0xffFFF2E6),
+                      child: Center(
+                        child: Icon(Icons.menu),
+                      ),
+                    ),
+                    Text('menu', style: defaultTextStyle),
+                  ],
                 ),
               ),
-            ),
-          ],
-        ),
+            );
+            if (constraints != null) {
+              if (constraints.maxWidth >= 1200) {
+                return Container();
+              } else {
+                return widget;
+              }
+            }
+            return widget;
+          }),
+        ],
       ),
     ),
   );
@@ -270,7 +362,7 @@ Widget buildDot() {
     width: 5,
     height: 5,
     decoration: const BoxDecoration(
-      color: Colors.white,
+      color: Colors.black,
       shape: BoxShape.circle,
     ),
   );
@@ -418,6 +510,46 @@ class _AddressInfoToggleState extends State<AddressInfoToggle> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class RowWidget extends StatelessWidget {
+  const RowWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Text(
+          "Great",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Row(
+          children: List.generate(5, (index) {
+            return Container(
+              margin: const EdgeInsets.only(right: 4),
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: index == 4 ? Colors.white : Colors.green,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Icon(
+                Icons.star,
+                size: 16,
+                color: index == 4 ? Colors.grey : Colors.white, // Star color
+              ),
+            );
+          }),
+        ),
+      ],
     );
   }
 }
