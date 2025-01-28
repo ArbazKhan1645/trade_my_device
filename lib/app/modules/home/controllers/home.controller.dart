@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:webuywesell/app/core/utils/thems/theme.dart';
 
+import '../../../core/utils/constants/appcolors.dart';
 import 'cate.dart';
 import 'footer.dart';
 import 'widget.dart';
@@ -12,7 +14,7 @@ class HomeController extends GetxController {
     Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 40),
+        const SizedBox(height: 20),
         SizedBox(
           child: SizedBox(
               height: 80,
@@ -149,19 +151,17 @@ class FeatureItemMobile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(width: 12),
-          Icon(icon, color: const Color(0xFF00CCBC), size: 28),
+          Icon(icon, color: AppColors.primarycolor, size: 28),
           const SizedBox(width: 12),
           Expanded(
-            child: Text(
-              text,
-              textAlign: TextAlign.start,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500),
-            ),
+            child: Text(text,
+                textAlign: TextAlign.start,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: defaultTextStyle.copyWith(
+                    color: Colors.black,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400)),
           ),
           const SizedBox(width: 12),
         ],
@@ -186,7 +186,7 @@ class FeatureItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: const Color(0xFF00CCBC), size: 28),
+          Icon(icon, color: AppColors.primarycolor, size: 28),
           const SizedBox(width: 12),
           Text(
             text,

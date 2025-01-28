@@ -60,7 +60,7 @@ class _AuthenticatedAnimatedDialogState
         child: Center(
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 500),
-            width: 700,
+            width: 400,
             height: 600,
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(20)),

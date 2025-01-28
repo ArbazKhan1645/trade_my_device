@@ -40,7 +40,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     : Icons.visibility_off)),
             observe: isobserve),
         Padding(
-          padding: const EdgeInsets.only(left: 100, right: 100, top: 20),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
           child: Row(
             children: [
               Expanded(
@@ -53,7 +53,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 100, right: 100, top: 20),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
           child: Row(
             children: [
               Checkbox(value: false, onChanged: (val) {}),
@@ -64,7 +64,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         ),
         Padding(
           padding:
-              const EdgeInsets.only(left: 100, right: 100, top: 20, bottom: 10),
+              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
           child: MaterialButton(
             padding: const EdgeInsets.all(0),
             onPressed: () async {},
@@ -101,7 +101,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             )),
         const SizedBox(height: 20),
         const Padding(
-          padding: EdgeInsets.only(left: 100, right: 100, top: 20, bottom: 20),
+          padding: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -116,7 +116,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 100, right: 100, bottom: 20),
+          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
           child: Row(
             children: [
               Expanded(
@@ -131,13 +131,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                       child: Row(
                         children: [
                           Image.asset('assets/images/google.png'),
-                          const SizedBox(width: 20),
+                          const SizedBox(width: 10),
                           const Text(
                             'Sign in',
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 18),
+                                fontSize: 14),
                           ),
                         ],
                       )),
@@ -156,13 +156,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                       child: Row(
                         children: [
                           Image.asset('assets/images/google.png'),
-                          const SizedBox(width: 20),
+                          const SizedBox(width: 10),
                           const Text(
                             'Facebook',
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 18),
+                                fontSize: 14),
                           ),
                         ],
                       )),

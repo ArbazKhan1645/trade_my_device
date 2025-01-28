@@ -21,13 +21,10 @@ class DeviceWorthScreen extends StatelessWidget {
       return AnimatedContainer(
         height: constraints.maxWidth <= 700 ? 400 : 300,
         duration: Duration(milliseconds: 500),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color.fromARGB(255, 139, 137, 10), Colors.amber],
-          ),
-        ),
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/footer.png'),
+                fit: BoxFit.fill)),
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.only(left: padding, right: padding),
@@ -70,7 +67,7 @@ class DeviceWorthScreen extends StatelessWidget {
                           Container(
                             height: 48,
                             decoration: const BoxDecoration(
-                              color: Color(0xFFFF00AA),
+                              color: Color(0xffFFC000),
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(8),
                                 bottomRight: Radius.circular(8),
@@ -83,7 +80,7 @@ class DeviceWorthScreen extends StatelessWidget {
                                 child: Text(
                                   'Search',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -151,7 +148,7 @@ class DeviceWorthScreen extends StatelessWidget {
                               Container(
                                 height: 48,
                                 decoration: const BoxDecoration(
-                                  color: Color(0xFFFF00AA),
+                                  color: Color(0xffFFC000),
                                   borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(8),
                                     bottomRight: Radius.circular(8),
@@ -165,7 +162,7 @@ class DeviceWorthScreen extends StatelessWidget {
                                     child: Text(
                                       'Search',
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),

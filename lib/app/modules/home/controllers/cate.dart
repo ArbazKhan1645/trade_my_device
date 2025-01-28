@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:webuywesell/app/core/utils/constants/appcolors.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 
 import '../../../core/utils/thems/theme.dart';
@@ -21,11 +22,11 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
     return LayoutBuilder(builder: (context, constraints) {
       double getPadding(double width) {
         if (width >= 1200) {
-          return 150.0; // Large screen
+          return 150.0;
         } else if (width >= 800) {
-          return 50.0; // Medium screen
+          return 50.0;
         } else {
-          return 10.0; // Small screen
+          return 10.0;
         }
       }
 
@@ -58,6 +59,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       InfoStep(
                         icon: Icons.search,
@@ -105,7 +107,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                     },
                     child: Text(
                       'View ALl',
-                      style: defaultTextStyle.copyWith(color: Colors.amber),
+                      style: defaultTextStyle.copyWith(color: Colors.black),
                     ))
               ],
             ),
@@ -115,7 +117,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                Get.offNamed(Routes.SELL_MY_PHONE);
+                          Get.offNamed(Routes.SELL_MY_PHONE);
                         },
                         child: const CategoryCard(
                           title: 'Sell my Apple iPhone',
@@ -128,7 +130,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-               Get.offNamed(Routes.SELL_MY_PHONE);
+                          Get.offNamed(Routes.SELL_MY_PHONE);
                         },
                         child: const CategoryCard(
                           title: 'Sell my Samsung Galaxy',
@@ -150,7 +152,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                    Get.offNamed(Routes.SELL_MY_PHONE);
+                                Get.offNamed(Routes.SELL_MY_PHONE);
                               },
                               child: const CategoryCard(
                                 title: 'Sell my Apple iPhone',
@@ -161,7 +163,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                             const SizedBox(width: 16),
                             GestureDetector(
                               onTap: () {
-                           Get.offNamed(Routes.SELL_MY_PHONE);
+                                Get.offNamed(Routes.SELL_MY_PHONE);
                               },
                               child: const CategoryCard(
                                 title: 'Sell my Samsung Galaxy',
@@ -253,17 +255,19 @@ class InfoStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Icon(icon, size: 40, color: Colors.teal),
+          Icon(icon, size: 40, color: AppColors.primarycolor),
           const SizedBox(height: 8),
           Text(title, style: defaultTextStyle.copyWith(fontSize: 18)),
           const SizedBox(height: 4),
           Text(description,
-              maxLines: 1,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: defaultTextStyle.copyWith(
-                  color: Color.fromARGB(255, 129, 140, 152))),
+                  fontSize: 12, color: Color.fromARGB(255, 129, 140, 152))),
         ],
       ),
     );

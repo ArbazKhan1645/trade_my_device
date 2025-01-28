@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import 'package:webuywesell/app/modules/authentication/authentication_view.dart';
+import 'package:webuywesell/app/routes/app_pages.dart';
 
 import '../../../core/utils/thems/theme.dart';
 import '../controllers/drawer.dart';
@@ -16,7 +18,7 @@ class HomePageHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
+      height: 110,
       width: double.infinity,
       child: Stack(
         clipBehavior: Clip.none,
@@ -46,10 +48,11 @@ class HomePageHeaderWidget extends StatelessWidget {
       }
     }
 
-    double padding = getPadding(constraints!.maxWidth);
+    double padding =
+        getPadding(constraints == null ? 1200 : constraints!.maxWidth);
 
     return Positioned(
-        top: 15,
+        top: 5,
         left: 0,
         right: 0,
         child: SizedBox(
@@ -205,11 +208,23 @@ Widget buildSubHeader(BuildContext context, {BoxConstraints? constraints}) {
   return Positioned(
       left: 0,
       right: 0,
-      bottom: -80,
+      bottom: -25,
       child: buildWidgetOFScrollHeader(context, constraints: constraints));
 }
 
 buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
+  double getPadding(double width) {
+    if (width >= 1200) {
+      return 150.0; // Large screen
+    } else if (width >= 800) {
+      return 50.0; // Medium screen
+    } else {
+      return 0.0; // Small screen
+    }
+  }
+
+  double padding =
+      getPadding(constraints == null ? 1200 : constraints!.maxWidth);
   return Container(
     width: double.infinity,
     color: Colors.white,
@@ -231,12 +246,16 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
       height: 80,
       child: Row(
         children: [
-          const SizedBox(width: 20), // Updated horizontalSpace with SizedBox
-          Image.asset('assets/images/trade.jpeg'),
+          SizedBox(width: padding), // Updated horizontalSpace with SizedBox
+          GestureDetector(
+              onTap: () {
+                Get.offNamed(Routes.HOME);
+              },
+              child: Image.asset('assets/images/trade.jpeg')),
           const Spacer(),
           Builder(builder: (context) {
             if (constraints != null) {
-              if (constraints.maxWidth >= 1200) {
+              if (constraints.maxWidth >= 1350) {
                 return const AddressInfoToggle(address: 'GlassGow PK');
               } else {
                 return Container();
@@ -271,6 +290,25 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
             return widget;
           }),
           const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
+          GestureDetector(
+            onTap: () {
+              showAnimatedDialog(context);
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Color(0xffFFF2E6),
+                  child: Center(
+                    child: Icon(Icons.person),
+                  ),
+                ),
+                Text('Login', style: defaultTextStyle),
+              ],
+            ),
+          ),
+          const SizedBox(width: 20), // Updated horizontalSpace with SizedBox
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -284,7 +322,7 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
               Text('Basket', style: defaultTextStyle),
             ],
           ),
-          const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
+          const SizedBox(width: 20), // Updated horizontalSpace with SizedBox
 
           Builder(builder: (context) {
             Widget widget = GestureDetector(
@@ -342,7 +380,7 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
               ),
             );
             if (constraints != null) {
-              if (constraints.maxWidth >= 1200) {
+              if (constraints.maxWidth >= 1350) {
                 return Container();
               } else {
                 return widget;
@@ -350,6 +388,7 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
             }
             return widget;
           }),
+          SizedBox(width: padding)
         ],
       ),
     ),
