@@ -8,6 +8,7 @@ import 'package:webuywesell/app/modules/authentication/authentication_view.dart'
 import 'package:webuywesell/app/routes/app_pages.dart';
 
 import '../../../core/utils/thems/theme.dart';
+import '../../../repo/network_repository.dart';
 import '../controllers/drawer.dart';
 import '../controllers/nav.dart';
 
@@ -326,7 +327,8 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
 
           Builder(builder: (context) {
             Widget widget = GestureDetector(
-              onTap: () {
+              onTap: () async {
+                callApiKing();
                 showGeneralDialog(
                   context: context,
                   pageBuilder: (context, animation, secondaryAnimation) {

@@ -9,6 +9,7 @@ import 'package:retry/retry.dart';
 import '../core/utils/helpers/api_exceptions.dart';
 import '../data/configs/api_configs.dart';
 import '../core/locators/cache_images.dart';
+import '../models/imei_model.dart';
 import '../models/users_model.dart/customer_models.dart';
 import '../services/app/app_service.dart';
 import 'package:dio/dio.dart';
@@ -56,9 +57,9 @@ class NetworkRepository {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    if (_appService.currentConnectivity == ConnectivityResult.none) {
-      throw ApiException('No internet connection');
-    }
+    // if (_appService.currentConnectivity == ConnectivityResult.none) {
+    //   throw ApiException('No internet connection');
+    // }
     try {
       final response = await _dio.get(
         url,
@@ -87,16 +88,18 @@ class NetworkRepository {
   }
 }
 
-call() async {
+callApiKing() async {
   final repository = NetworkRepository();
 
   try {
-    final customer = await repository.fetchData<CustomerModel>(
-      url: 'https://api.example.com/customer',
-      fromJson: (json) => CustomerModel.fromJson(json),
+    final customer = await repository.fetchData<ImeiCheckResponse>(
+      url:
+          'https://dash.imei.info/api/check/0/?API_KEY=0611ecea-3a98-490d-a4ad-522fe86c29a7&imei=359761979807157',
+      fromJson: (json) => ImeiCheckResponse.fromJson(json),
     );
 
-    print("Customer: ${customer.name}, Age: ${customer.address}");
+    print(
+        "Customer: ${customer.result.brandName}, Age: ${customer.result.model}");
   } catch (e) {
     print("Error: $e");
   }
