@@ -37,7 +37,14 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter an $label';
+            }
+
+            return null;
+          },
           controller: controller,
           decoration: InputDecoration(
             hintText: 'Enter $label',

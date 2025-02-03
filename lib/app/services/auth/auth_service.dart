@@ -6,6 +6,7 @@ import 'package:webuywesell/app/models/users_model.dart/customer_models.dart';
 import '../app/app_service.dart';
 
 class AuthService extends GetxService {
+  static AuthService get instance => Get.find<AuthService>();
   late final AppService _appService;
   late final BehaviorSubject<CustomerModel?> _authCustomerBehaviorSubject;
 
@@ -15,12 +16,6 @@ class AuthService extends GetxService {
   Future<AuthService> init() async {
     await _init();
     return this;
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-    _watchAuthState();
   }
 
   Future<void> _init() async {
@@ -34,16 +29,18 @@ class AuthService extends GetxService {
     }
   }
 
-  void _watchAuthState() {
-    // CustomerModel customer =
-    //     _authCustomerBehaviorSubject.value ?? CustomerModel();
-    // _appService.sharedPreferences
-    //     .setString('current_user', jsonEncode(customer.toJson()));
-    // _authCustomerBehaviorSubject.add(customer);
+  void saveAuthState(CustomerModel customer) {
+    _appService.sharedPreferences
+        .setString('current_user', jsonEncode(customer.toJson()));
+    _authCustomerBehaviorSubject.add(customer);
   }
 
-  CustomerModel? get authMerchant {
+  CustomerModel? get authCustomer {
     return _authCustomerBehaviorSubject.value;
+  }
+
+  bool get islogin {
+    return authCustomer != null;
   }
 
   Future<void> cleanStorage() async {

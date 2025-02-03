@@ -6,9 +6,11 @@ import 'package:get/get.dart';
 
 import 'package:webuywesell/app/modules/authentication/authentication_view.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
+import 'package:webuywesell/main.dart';
 
 import '../../../core/utils/thems/theme.dart';
 import '../../../repo/network_repository.dart';
+import '../../../services/auth/auth_service.dart';
 import '../controllers/drawer.dart';
 import '../controllers/nav.dart';
 
@@ -291,24 +293,26 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
             return widget;
           }),
           const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
-          GestureDetector(
-            onTap: () {
-              showAnimatedDialog(context);
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Color(0xffFFF2E6),
-                  child: Center(
-                    child: Icon(Icons.person),
+          !AuthService.instance.islogin
+              ? GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.AUTHENTICATION);
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Color(0xffFFF2E6),
+                        child: Center(
+                          child: Icon(Icons.person),
+                        ),
+                      ),
+                      Text('Login', style: defaultTextStyle),
+                    ],
                   ),
-                ),
-                Text('Login', style: defaultTextStyle),
-              ],
-            ),
-          ),
+                )
+              : showPopupWidget(),
           const SizedBox(width: 20), // Updated horizontalSpace with SizedBox
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -328,7 +332,6 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
           Builder(builder: (context) {
             Widget widget = GestureDetector(
               onTap: () async {
-                callApiKing();
                 showGeneralDialog(
                   context: context,
                   pageBuilder: (context, animation, secondaryAnimation) {

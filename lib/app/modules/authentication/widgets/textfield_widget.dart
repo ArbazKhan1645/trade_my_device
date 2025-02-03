@@ -14,22 +14,21 @@ class TextFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-      child: Container(
-        height: 55,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(12)),
-        child: TextField(
-          obscureText: observe,
-          controller: controller,
-          decoration: InputDecoration(
-              suffixIcon: iconbutton,
-              contentPadding: const EdgeInsets.all(12),
-              border: InputBorder.none,
-              hintText: hintText),
-        ),
+    return Container(
+      height: 55,
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade300),
+          color: Colors.grey.shade50,
+          borderRadius: BorderRadius.circular(12)),
+      child: TextField(
+        obscureText: observe,
+        controller: controller,
+        decoration: InputDecoration(
+            hintStyle: TextStyle(color: Colors.grey),
+            suffixIcon: iconbutton,
+            contentPadding: const EdgeInsets.all(12),
+            border: InputBorder.none,
+            hintText: hintText),
       ),
     );
   }

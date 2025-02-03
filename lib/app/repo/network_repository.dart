@@ -6,10 +6,12 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 import 'package:retry/retry.dart';
+import 'package:webuywesell/app/modules/device_info/controllers/device_info_controller.dart';
+import 'package:webuywesell/app/routes/app_pages.dart';
 import '../core/utils/helpers/api_exceptions.dart';
 import '../data/configs/api_configs.dart';
 import '../core/locators/cache_images.dart';
-import '../models/imei_model.dart';
+import '../models/phones_model/imei_model.dart';
 import '../models/users_model.dart/customer_models.dart';
 import '../services/app/app_service.dart';
 import 'package:dio/dio.dart';
@@ -88,19 +90,27 @@ class NetworkRepository {
   }
 }
 
-callApiKing() async {
+callApiKing(String imei) async {
   final repository = NetworkRepository();
 
   try {
-    final customer = await repository.fetchData<ImeiCheckResponse>(
+    final basicImeiCheck = await repository.fetchData<ImeiCheckResponse>(
       url:
-          'https://dash.imei.info/api/check/0/?API_KEY=0611ecea-3a98-490d-a4ad-522fe86c29a7&imei=359761979807157',
+          'https://dash.imei.info/api/check/0/?API_KEY=${ApiConfig.api_key}&imei=$imei',
       fromJson: (json) => ImeiCheckResponse.fromJson(json),
     );
 
+    var con = Get.put(DeviceInfoController());
+    con.currentdevice = basicImeiCheck;
+    Get.toNamed(Routes.DEVICE_INFO);
+
     print(
-        "Customer: ${customer.result.brandName}, Age: ${customer.result.model}");
+        "Customer: ${basicImeiCheck.result.brandName}, Age: ${basicImeiCheck.result.model}");
   } catch (e) {
+    Get.showSnackbar(GetSnackBar(
+      title: 'Error',
+      message: e.toString(),
+    ));
     print("Error: $e");
   }
 }

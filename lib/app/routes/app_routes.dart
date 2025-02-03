@@ -8,6 +8,7 @@ abstract class Routes {
   static const DEVICE_INFO = _Paths.DEVICE_INFO;
   static const Payment = _Paths.Payment;
   static const CHECKOUT = _Paths.CHECKOUT;
+  static const AUTHENTICATION = _Paths.AUTHENTICATION;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const SELL_MY_PHONE = '/sell-my-phone';
   static const DEVICE_INFO = '/device-info';
   static const CHECKOUT = '/checkout';
+  static const AUTHENTICATION = '/authentication';
 }

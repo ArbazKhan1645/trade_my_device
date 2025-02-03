@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../modules/authentication/authentication_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
 import '../modules/checkout/views/checkout_view.dart';
 import '../modules/device_info/bindings/device_info_binding.dart';
@@ -42,6 +43,11 @@ class AppPages {
       name: _Paths.CHECKOUT,
       page: () => const CheckoutView(),
       binding: CheckoutBinding(),
+    ),
+    GetPage(
+      name: _Paths.AUTHENTICATION,
+      page: () => const AuthenticatedAnimatedDialog(),
+  
     ),
   ];
 }

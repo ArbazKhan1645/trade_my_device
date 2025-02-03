@@ -2,184 +2,96 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
+import 'package:get/get.dart';
+import 'package:webuywesell/app/core/utils/thems/theme.dart';
+import 'package:webuywesell/app/routes/app_pages.dart';
+import '../controller/authentication_controller.dart';
 import 'textfield_widget.dart';
 
-class LoginWidget extends StatefulWidget {
-  const LoginWidget({super.key});
+class LoginWidget extends StatelessWidget {
+  LoginWidget({super.key});
 
-  @override
-  State<LoginWidget> createState() => _LoginWidgetState();
-}
-
-class _LoginWidgetState extends State<LoginWidget> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  bool isobserve = false;
+  final AuthenticationController controller =
+      Get.put(AuthenticationController());
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/images/trade.jpeg', height: 180),
+          Text('Login to your account',
+              style: defaultTextStyle.copyWith(
+                  fontSize: 18, fontWeight: FontWeight.w400)),
+          SizedBox(height: 20),
+          TextFieldWidget(
+              hintText: 'Enter your Email',
+              controller: controller.emailController),
+          SizedBox(height: 10),
+          Obx(() => controller.errorMessage.value.isNotEmpty
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(controller.errorMessage.value,
+                      style: const TextStyle(color: Colors.red)),
+                )
+              : const SizedBox()),
+          SizedBox(height: 10),
+          _loginButton(),
+          SizedBox(height: 10),
+          _signUpText(),
+        ],
+      ),
+    );
+  }
+
+  Widget _loginButton() {
+    return Obx(
+      () => MaterialButton(
+        padding: EdgeInsets.zero,
+        onPressed: controller.isLoading.value
+            ? null
+            : () async => await controller.callLoginFunction(),
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: Colors.amber,
+          ),
+          child: Center(
+            child: controller.isLoading.value
+                ? const SpinKitThreeBounce(color: Colors.black, size: 20)
+                : const Text(
+                    'Sign in',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 22),
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Signup text button
+  Widget _signUpText() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(
-          'assets/images/trade.jpeg',
-          height: 70,
-        ),
-        TextFieldWidget(hintText: 'Email', controller: emailController),
-        TextFieldWidget(
-            hintText: 'Password',
-            controller: passwordController,
-            iconbutton: IconButton(
-                onPressed: () {
-                  setState(() {
-                    isobserve = !isobserve;
-                  });
-                },
-                icon: Icon(isobserve == true
-                    ? Icons.visibility
-                    : Icons.visibility_off)),
-            observe: isobserve),
-        Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'Error encoutered while login the user',
-                  style: TextStyle(color: Colors.amber),
-                ),
-              )
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-          child: Row(
-            children: [
-              Checkbox(value: false, onChanged: (val) {}),
-              const SizedBox(width: 10),
-              const Text('I trust this browser')
-            ],
-          ),
-        ),
-        Padding(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-          child: MaterialButton(
-            padding: const EdgeInsets.all(0),
-            onPressed: () async {},
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6), color: Colors.amber),
-              child: Center(
-                  child: false == false
-                      ? const Text(
-                          'Sign in',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 22),
-                        )
-                      : Center(
-                          child: SpinKitThreeBounce(
-                            color: Colors.black,
-                            size: 20,
-                          ),
-                        )),
-            ),
-          ),
-        ),
+        Text('Don’t have an account?',
+            style: defaultTextStyle.copyWith(
+                color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w400)),
         TextButton(
-            onPressed: () {},
-            child: Text(
-              'I forgot my password',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17),
-            )),
-        const SizedBox(height: 20),
-        const Padding(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'CONNECT WITH',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 14),
-              ),
-            ],
-          ),
+          onPressed: () {
+            Get.back();
+            Get.offNamed(Routes.SELL_MY_PHONE);
+          },
+          child: Text('Trade your phone Now',
+              style:
+                  defaultTextStyle.copyWith(color: Colors.black, fontSize: 16)),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
-          child: Row(
-            children: [
-              Expanded(
-                child: MaterialButton(
-                  padding: const EdgeInsets.all(0),
-                  onPressed: () {},
-                  child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: Colors.grey.shade300)),
-                      child: Row(
-                        children: [
-                          Image.asset('assets/images/google.png'),
-                          const SizedBox(width: 10),
-                          const Text(
-                            'Sign in',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14),
-                          ),
-                        ],
-                      )),
-                ),
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: MaterialButton(
-                  padding: const EdgeInsets.all(0),
-                  onPressed: () {},
-                  child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: Colors.grey.shade300)),
-                      child: Row(
-                        children: [
-                          Image.asset('assets/images/google.png'),
-                          const SizedBox(width: 10),
-                          const Text(
-                            'Facebook',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14),
-                          ),
-                        ],
-                      )),
-                ),
-              ),
-            ],
-          ),
-        ),
-        TextButton(
-            onPressed: () {},
-            child: Text(
-              'Dont have an account?',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17),
-            )),
       ],
     );
   }

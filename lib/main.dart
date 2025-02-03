@@ -4,14 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
+import 'package:quds_popup_menu/quds_popup_menu.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter/foundation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
+import 'package:webuywesell/app/services/auth/auth_service.dart';
 import 'app/core/utils/helpers/logger.dart';
 import 'app/core/widgets/global_errorwidget.dart';
 import 'app/core/locators/service_locator.dart';
+import 'app/data/supabase/credientials.dart';
 
+SupabaseConfigModel get currentEnv => EnvConfig.getCurrentENV(Env.dev);
+final supbaseClient = Supabase.instance.client;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   usePathUrlStrategy();
@@ -78,4 +84,117 @@ class MyApp extends StatelessWidget {
       getPages: AppPages.routes,
     );
   }
+}
+
+showPopupWidget() {
+  return QudsPopupButton(
+    // backgroundColor: Colors.red,
+    tooltip: 'T',
+    items: getMenuItems(),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const CircleAvatar(
+          radius: 20,
+          backgroundColor: Color(0xffFFF2E6),
+          child: Center(
+            child: Icon(Icons.person),
+          ),
+        ),
+        Text(AuthService.instance.authCustomer?.email ?? '',
+            style: defaultTextStyle),
+      ],
+    ),
+  );
+}
+
+List<QudsPopupMenuBase> getMenuItems() {
+  return [
+    QudsPopupMenuSection(
+        backgroundColor: Colors.yellow.shade200,
+        titleText: 'أبو أسعد الأمير',
+        subTitle: Text('See your profile'),
+        leading: Icon(
+          Icons.redeem,
+          size: 40,
+        ),
+        subItems: [
+          QudsPopupMenuSection(
+              titleText: 'Settings',
+              leading: Icon(Icons.settings),
+              subItems: [
+                QudsPopupMenuItem(
+                    leading: Icon(Icons.logout),
+                    title: Text('Logout'),
+                    onPressed: () {})
+              ]),
+        ]),
+    QudsPopupMenuDivider(),
+    QudsPopupMenuItem(
+        leading: Icon(Icons.info_outline),
+        title: Text('Give Feedback'),
+        subTitle: Text('Help us improve our new app'),
+        onPressed: () {}),
+    QudsPopupMenuDivider(),
+    QudsPopupMenuSection(
+        leading: Icon(Icons.place),
+        titleText: 'Settings & Privacy',
+        subItems: [
+          QudsPopupMenuItem(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onPressed: () {}),
+          QudsPopupMenuItem(
+              leading: Icon(Icons.lock),
+              title: Text('Privacy Checkup'),
+              onPressed: () {}),
+          QudsPopupMenuItem(
+              leading: Icon(Icons.lock_clock),
+              title: Text('Privacy Shortcuts'),
+              onPressed: () {}),
+          QudsPopupMenuItem(
+              leading: Icon(Icons.list),
+              title: Text('Activity Log'),
+              onPressed: () {}),
+          QudsPopupMenuItem(
+              leading: Icon(Icons.card_membership),
+              title: Text('News Feed Preferences'),
+              onPressed: () {}),
+          QudsPopupMenuItem(
+              leading: Icon(Icons.language),
+              title: Text('Language'),
+              onPressed: () {}),
+        ]),
+    QudsPopupMenuDivider(),
+    QudsPopupMenuWidget(
+        builder: (c) => Container(
+            padding: EdgeInsets.all(10),
+            child: IntrinsicHeight(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      )),
+                  VerticalDivider(),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.music_note,
+                        color: Colors.blue,
+                      )),
+                  VerticalDivider(),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.umbrella,
+                        color: Colors.green,
+                      ))
+                ],
+              ),
+            )))
+  ];
 }

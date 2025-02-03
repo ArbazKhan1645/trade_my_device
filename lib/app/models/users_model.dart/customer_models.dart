@@ -1,62 +1,118 @@
 class CustomerModel {
-  final String id; // Unique ID for the customer
-  final String name; // Full name of the customer
-  final String email; // Email address
-  final String phoneNumber; // Contact number
-  final String address; // Customer's address
-  final String city; // City of residence
-  final String postalCode; // Postal/ZIP code
-  final String profileImageUrl; // URL for the profile image
-  final String dateOfBirth; // Date of birth (optional)
-  final DateTime createdAt; // When the customer was created
-  final DateTime updatedAt; // Last updated details
+  final int? id;
+  final String? createdAt;
+  final String? updatedAt;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final String? phone;
+  final String? buildingNumber;
+  final String? street;
+  final String? city;
+  final String? country;
+  final String? zipCode;
+  final String? roles;
+  final String? accountName;
+  final String? accountNumber;
+  final int? sortCode;
 
-  // Constructor
   CustomerModel({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.phoneNumber,
-    required this.address,
-    required this.city,
-    required this.postalCode,
-    this.profileImageUrl = '', // Default empty
-    this.dateOfBirth = '', // Default empty
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.phone,
+    this.buildingNumber,
+    this.street,
+    this.city,
+    this.country,
+    this.zipCode,
+    this.roles,
+    this.accountName,
+    this.accountNumber,
+    this.sortCode,
   });
 
-  // Factory method for creating a Customer object from a JSON map
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
     return CustomerModel(
       id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      phoneNumber: json['phoneNumber'],
-      address: json['address'],
-      city: json['city'],
-      postalCode: json['postalCode'],
-      profileImageUrl: json['profileImageUrl'] ?? '',
-      dateOfBirth: json['dateOfBirth'] ?? '',
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+      firstName: json['first_name'] ?? 'N/A',
+      lastName: json['last_name'] ?? 'N/A',
+      email: json['email'] ?? 'N/A',
+      phone: json['phone'] ?? 'N/A',
+      buildingNumber: json['building_number'] ?? 'N/A',
+      street: json['street'] ?? 'N/A',
+      city: json['city'] ?? 'N/A',
+      country: json['country'] ?? 'N/A',
+      zipCode: json['zip_code'] ?? 'N/A',
+      roles: json['roles'] ?? 'user',
+      accountName: json['account_name'] ?? 'N/A',
+      accountNumber: json['account_number'] ?? 'N/A',
+      sortCode: json['sort_code'],
     );
   }
 
-  // Method to convert a Customer object to a JSON map
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'name': name,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+      'first_name': firstName,
+      'last_name': lastName,
       'email': email,
-      'phoneNumber': phoneNumber,
-      'address': address,
+      'phone': phone,
+      'building_number': buildingNumber,
+      'street': street,
       'city': city,
-      'postalCode': postalCode,
-      'profileImageUrl': profileImageUrl,
-      'dateOfBirth': dateOfBirth,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'country': country,
+      'zip_code': zipCode,
+      'roles': roles,
+      'account_name': accountName,
+      'account_number': accountNumber,
+      'sort_code': sortCode,
     };
+  }
+
+  // CopyWith function
+  CustomerModel copyWith({
+    int? id,
+    String? createdAt,
+    String? updatedAt,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+    String? buildingNumber,
+    String? street,
+    String? city,
+    String? country,
+    String? zipCode,
+    String? roles,
+    String? accountName,
+    String? accountNumber,
+    int? sortCode,
+  }) {
+    return CustomerModel(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      buildingNumber: buildingNumber ?? this.buildingNumber,
+      street: street ?? this.street,
+      city: city ?? this.city,
+      country: country ?? this.country,
+      zipCode: zipCode ?? this.zipCode,
+      roles: roles ?? this.roles,
+      accountName: accountName ?? this.accountName,
+      accountNumber: accountNumber ?? this.accountNumber,
+      sortCode: sortCode ?? this.sortCode,
+    );
   }
 }

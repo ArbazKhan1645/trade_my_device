@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
+import 'package:webuywesell/app/repo/network_repository.dart';
+
+import '../widgets/iemei_field.dart';
 
 class DeviceWorthScreen extends StatelessWidget {
   const DeviceWorthScreen({super.key});
@@ -49,19 +52,10 @@ class DeviceWorthScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText:
-                                    'Search for your device or IMEI number',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 14,
-                                ),
-                              ),
+                            child: IMEITextField(
+                              onIMEIComplete: (imei) {
+                                callApiKing(imei);
+                              }, // Pass the callback
                             ),
                           ),
                           Container(
@@ -130,19 +124,10 @@ class DeviceWorthScreen extends StatelessWidget {
                           child: Row(
                             children: [
                               Expanded(
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    hintText:
-                                        'Search for your device or IMEI number',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      borderSide: BorderSide.none,
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 14,
-                                    ),
-                                  ),
+                                child: IMEITextField(
+                                  onIMEIComplete: (imei) {
+                                    callApiKing(imei);
+                                  }, // Pass the callback
                                 ),
                               ),
                               Container(

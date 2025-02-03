@@ -1,9 +1,11 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:webuywesell/app/modules/device_info/pages/form.dart';
 
 import '../../../core/utils/thems/theme.dart';
+import '../controllers/device_info_controller.dart';
 import 'faqs.dart';
 
 class DeviceInfoScreen extends StatefulWidget {
@@ -152,9 +154,16 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                       children: [
                         if (constraints.maxWidth <= 1600)
                           Image.asset('assets/images/mobile.png', height: 50),
-                        Text('Sell my iPhone 13 Pro Max',
-                            style: defaultTextStyle.copyWith(
-                                fontSize: 24, fontWeight: FontWeight.w600))
+                        Builder(builder: (context) {
+                          var con = Get.find<DeviceInfoController>();
+                          String iphonename = 'N/A';
+                          if (con.currentdevice != null) {
+                            iphonename = con.currentdevice!.result.model;
+                          }
+                          return Text(iphonename,
+                              style: defaultTextStyle.copyWith(
+                                  fontSize: 24, fontWeight: FontWeight.w600));
+                        })
                       ],
                     ),
                   ),

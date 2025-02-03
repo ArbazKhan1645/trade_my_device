@@ -4,9 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../main.dart';
 import '../../core/utils/helpers/logger.dart';
 
 class AppService extends GetxService {
+  late final SupabaseClient _supabaseClient;
   static AppService get instance => Get.find<AppService>();
   late final Stream<List<ConnectivityResult>> _connectivityResultStream;
   late final SharedPreferences _sharedPreferences;
@@ -18,6 +21,12 @@ class AppService extends GetxService {
   }
 
   Future<void> _init() async {
+    await Supabase.initialize(
+        realtimeClientOptions:
+            const RealtimeClientOptions(logLevel: RealtimeLogLevel.info),
+        url: currentEnv.supabaseUrl,
+        anonKey: currentEnv.supabaseAnon);
+    _supabaseClient = Supabase.instance.client;
     _connectivityResultStream =
         Connectivity().onConnectivityChanged.asBroadcastStream();
     _sharedPreferences = await SharedPreferences.getInstance();
@@ -60,6 +69,10 @@ class AppService extends GetxService {
       AppLogger.error("Error picking file: $e");
       return null;
     }
+  }
+
+  SupabaseClient get supabaseClient {
+    return _supabaseClient;
   }
 
   Stream<List<ConnectivityResult>> get connectivityResultStream =>

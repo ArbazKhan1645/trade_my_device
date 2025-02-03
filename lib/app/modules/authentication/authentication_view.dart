@@ -1,9 +1,8 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages, deprecated_member_use
 
 import 'package:flutter/material.dart';
 
 import 'widgets/login_screen.dart';
-import 'widgets/signup.dart';
 
 class AuthenticatedAnimatedDialog extends StatefulWidget {
   const AuthenticatedAnimatedDialog({super.key});
@@ -44,52 +43,33 @@ class _AuthenticatedAnimatedDialogState
 
   @override
   Widget build(BuildContext context) {
-    getheight(String val) {
-      switch (val) {
-        case 'Login':
-          return 690.0;
-        case 'ForgetPassword':
-          return 480.0;
-        case 'signup':
-          return 850.0;
-      }
-    }
-
     return ScaleTransition(
         scale: _scaleAnimation,
-        child: Center(
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 500),
-            width: 400,
-            height: 600,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(20)),
-            child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Builder(builder: (context) {
-                  getscreens(String val) {
-                    switch (val) {
-                      case 'Login':
-                        return const LoginWidget();
-                      case 'ForgetPassword':
-                        return Container();
-                      case 'signup':
-                        return const SignUpWidget();
-                    }
-                  }
-
-                  return Scaffold(body: LoginWidget());
-                })),
-          ),
-        ));
+        child: LayoutBuilder(builder: (context, constraints) {
+          return Scaffold(
+            backgroundColor: Colors.grey.shade50,
+            body: Center(
+              child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  width: constraints.maxWidth <= 600
+                      ? (constraints.maxWidth - 50)
+                      : 500,
+                  height: 500,
+                  decoration: BoxDecoration(
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //     color: Colors.grey.withOpacity(0.25),
+                      //     spreadRadius: 1,
+                      //     blurRadius: 20,
+                      //     offset: const Offset(0, 1),
+                      //   ),
+                      // ],
+                      color: Colors.white,
+                      border: Border.all(color: const Color(0xFFe5e7eb)),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: LoginWidget()),
+            ),
+          );
+        }));
   }
-}
-
-void showAnimatedDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return const AuthenticatedAnimatedDialog();
-    },
-  ).then((value) {});
 }
