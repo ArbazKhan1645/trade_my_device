@@ -117,7 +117,9 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          Get.offNamed(Routes.SELL_MY_PHONE);
+                          Get.offNamed(Routes.SELL_MY_PHONE, arguments: {
+                            'brand': 'Apple',
+                          });
                         },
                         child: const CategoryCard(
                           title: 'Sell my Apple iPhone',
@@ -130,7 +132,9 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          Get.offNamed(Routes.SELL_MY_PHONE);
+                          Get.offNamed(Routes.SELL_MY_PHONE, arguments: {
+                            'brand': 'Samsung',
+                          });
                         },
                         child: const CategoryCard(
                           title: 'Sell my Samsung Galaxy',

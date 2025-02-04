@@ -1,5 +1,11 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'package:google_fonts/google_fonts.dart';
+import 'package:webuywesell/app/modules/home/controllers/home.controller.dart';
+import 'package:webuywesell/app/modules/sell_my_phone/models/mobile_phones_model.dart';
 
 class NavigationBarWithDropdown extends StatelessWidget {
   const NavigationBarWithDropdown({super.key});
@@ -12,7 +18,6 @@ class NavigationBarWithDropdown extends StatelessWidget {
           title: 'Sell my Phone',
           dropdownContent: PhoneDropdownContent(),
         ),
-        NavItem(title: 'Sell my iPad'),
         NavItem(title: 'How it works'),
         NavItem(title: 'Business Recycling'),
         NavItem(title: 'Students'),
@@ -38,43 +43,74 @@ class NavItem extends StatefulWidget {
 
 class _NavItemState extends State<NavItem> {
   bool isHovered = false;
+  bool isDropdownHovered = false;
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => isHovered = true),
-      onExit: (_) => setState(() => isHovered = false),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Padding(
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        MouseRegion(
+          onEnter: (_) => setState(() => isHovered = true),
+          onExit: (_) {
+            if (!isDropdownHovered) {
+              setState(() => isHovered = false);
+            }
+          },
+          child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   widget.title,
                   style: GoogleFonts.cabin(
-                    color: isHovered ? Colors.pink : Colors.black,
+                    color: isHovered || isDropdownHovered
+                        ? Colors.pink
+                        : Colors.black,
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                   ),
                 ),
                 if (widget.dropdownContent != null)
                   Icon(
-                    isHovered ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                    color: isHovered ? Colors.pink : Colors.black,
+                    isHovered || isDropdownHovered
+                        ? Icons.arrow_drop_up
+                        : Icons.arrow_drop_down,
+                    color: isHovered || isDropdownHovered
+                        ? Colors.pink
+                        : Colors.black,
                   )
               ],
             ),
           ),
-          if (isHovered && widget.dropdownContent != null)
-            Positioned(
-              top: 70,
-              left: 0,
-              child: widget.dropdownContent!,
+        ),
+        if ((isHovered || isDropdownHovered) && widget.dropdownContent != null)
+          Positioned(
+            top: 60,
+            left: 0,
+            child: MouseRegion(
+              onEnter: (_) => setState(() => isDropdownHovered = true),
+              onExit: (_) => setState(() {
+                isDropdownHovered = false;
+                isHovered = false;
+              }),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: widget.dropdownContent!,
+              ),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }
@@ -84,6 +120,10 @@ class PhoneDropdownContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(HomeController());
+    if (controller.isloading.value) {
+      return Container();
+    }
     return Container(
       width: 1000,
       height: 500,
@@ -98,48 +138,16 @@ class PhoneDropdownContent extends StatelessWidget {
           ),
         ],
       ),
-      child: const Row(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PhoneSection(
-            title: 'Apple iPhone',
-            phones: [
-              'iPhone 15 Pro Max',
-              'iPhone 15 Pro',
-              'iPhone 15',
-              'iPhone 14 Pro Max',
-              'iPhone 14 Pro',
-              'iPhone 14',
-              'iPhone 13 Pro Max',
-              'iPhone 13 Pro',
-            ],
-          ),
-          SizedBox(width: 40),
-          PhoneSection(
-            title: 'Samsung Phone',
-            phones: [
-              'Galaxy S22 Ultra 5G',
-              'Galaxy S22 Plus 5G',
-              'Galaxy S22 5G',
-              'Galaxy S21 Ultra 5G',
-              'Galaxy S21 Plus 5G',
-              'Galaxy S21 5G',
-              'Galaxy S20 Ultra 5G',
-              'Galaxy S20 Plus 5G',
-              'Galaxy S20 5G',
-            ],
-          ),
-          SizedBox(width: 40),
-          PhoneSection(
-            title: 'Sell my Phone',
-            phones: [
-              'Sell my Apple iPhone',
-              'Sell my Samsung Phone',
-              'Sell my Google Phone',
-              'Sell my Huawei Phone',
-              'Sell my Broken Phone',
-            ],
-          ),
+          ...controller.brandsList.take(4).map(
+                (e) => PhoneSection(
+                    title: e.name.toString(),
+                    phones: controller.phoneModels
+                        .where((p) => p.brands == e.id)
+                        .toList()),
+              ),
         ],
       ),
     );
@@ -148,7 +156,7 @@ class PhoneDropdownContent extends StatelessWidget {
 
 class PhoneSection extends StatelessWidget {
   final String title;
-  final List<String> phones;
+  final List<MobilePhonesModel> phones;
 
   const PhoneSection({
     required this.title,
@@ -162,8 +170,8 @@ class PhoneSection extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(
-            'assets/images/mobile.png',
+          Image.network(
+            phones.first.image.toString(),
             height: 60,
             width: 80,
           ),
@@ -181,7 +189,7 @@ class PhoneSection extends StatelessWidget {
               ...phones.map((phone) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
-                      phone,
+                      phone.name.toString(),
                       style: const TextStyle(color: Colors.blue),
                     ),
                   )),
@@ -192,10 +200,10 @@ class PhoneSection extends StatelessWidget {
                     children: [
                       Text(
                         'See all ${title}s',
-                        style: const TextStyle(color: Colors.blue),
+                        style: const TextStyle(color: Colors.black),
                       ),
                       const Icon(Icons.chevron_right,
-                          size: 16, color: Colors.blue),
+                          size: 16, color: Colors.black),
                     ],
                   ),
                 ),

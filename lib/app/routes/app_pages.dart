@@ -5,7 +5,7 @@ import '../modules/authentication/authentication_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
 import '../modules/checkout/views/checkout_view.dart';
 import '../modules/device_info/bindings/device_info_binding.dart';
-import '../modules/device_info/pages/view.dart';
+import '../modules/device_info/pages/further_view.dart';
 import '../modules/device_info/views/device_info_view.dart';
 import '../modules/home/home.screen.dart';
 import '../modules/sell_my_phone/bindings/sell_my_phone_binding.dart';

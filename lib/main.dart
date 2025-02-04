@@ -112,12 +112,13 @@ List<QudsPopupMenuBase> getMenuItems() {
   return [
     QudsPopupMenuSection(
         backgroundColor: Colors.yellow.shade200,
-        titleText: 'أبو أسعد الأمير',
+        titleText: 'Visit',
         subTitle: Text('See your profile'),
         leading: Icon(
           Icons.redeem,
           size: 40,
         ),
+        
         subItems: [
           QudsPopupMenuSection(
               titleText: 'Settings',

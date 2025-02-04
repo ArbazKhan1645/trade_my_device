@@ -1,8 +1,11 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:webuywesell/app/models/users_model.dart/customer_models.dart';
+import 'package:webuywesell/app/services/app/app_service.dart';
 import 'package:webuywesell/app/services/auth/auth_service.dart';
 import '../../../../main.dart';
 import '../../../models/phones_model/imei_model.dart';
@@ -38,30 +41,36 @@ class DeviceInfoController extends GetxController {
 
   Future<void> handleAccountCreation() async {
     try {
+      AppService.instance.sharedPreferences
+          .setString('currentPhone', jsonEncode(phonecurrent!.toJson()));
+
       if (isloginAuthService) {
         Get.offNamed(Routes.Payment);
         return;
       }
-      setisLoading(true);
-      final value = await supbaseClient.auth.signUp(
-        email: email,
-        password: 'password',
-      );
-      if (value.user == null) {
-        setErrorMessage('Something went wrong, please try again');
-        return;
+      if (formKey.currentState?.validate() ?? false) {
+        setisLoading(true);
+        final value = await supbaseClient.auth.signUp(
+          email: email,
+          password: 'password',
+        );
+        if (value.user == null) {
+          setErrorMessage('Something went wrong, please try again');
+          return;
+        }
+        final insertResponse = await supbaseClient.from('users').insert({
+          'email': email,
+        }).select();
+        if (insertResponse.isEmpty) {
+          setErrorMessage('Failed to create user, please try again');
+          return;
+        }
+        final customerJson = insertResponse[0];
+        CustomerModel customer = CustomerModel.fromJson(customerJson);
+        AuthService.instance.saveAuthState(customer);
+
+        Get.offNamed(Routes.Payment);
       }
-      final insertResponse = await supbaseClient.from('users').insert({
-        'email': email,
-      }).select();
-      if (insertResponse.isEmpty) {
-        setErrorMessage('Failed to create user, please try again');
-        return;
-      }
-      final customerJson = insertResponse[0];
-      CustomerModel customer = CustomerModel.fromJson(customerJson);
-      AuthService.instance.saveAuthState(customer);
-      Get.offNamed(Routes.Payment);
     } catch (e) {
       setErrorMessage('Error: ${e.toString()}');
     } finally {
@@ -79,7 +88,16 @@ class DeviceInfoController extends GetxController {
 
   @override
   void onInit() {
-    phonecurrent = Get.arguments;
+    fetchPhone();
     super.onInit();
+  }
+
+  fetchPhone() {
+    var phone = AppService.instance.sharedPreferences.getString('currentPhone');
+    if (phone == null) {
+      return;
+    }
+    phonecurrent = MobilePhonesModel.fromJson(jsonDecode(phone));
+    update();
   }
 }

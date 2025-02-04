@@ -3,13 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
-import 'package:webuywesell/app/modules/authentication/authentication_view.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 import 'package:webuywesell/main.dart';
-
 import '../../../core/utils/thems/theme.dart';
-import '../../../repo/network_repository.dart';
 import '../../../services/auth/auth_service.dart';
 import '../controllers/drawer.dart';
 import '../controllers/nav.dart';

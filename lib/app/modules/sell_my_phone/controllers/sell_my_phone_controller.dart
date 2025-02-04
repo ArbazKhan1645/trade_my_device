@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:webuywesell/app/modules/sell_my_phone/controllers/supabase_fetch.dart';
@@ -23,13 +25,27 @@ class SellMyPhoneController extends GetxController {
   List<BrandsModel> brandsList = [];
   List<TypesModel> typesList = [];
 
+  void fetchArgyements() {
+    if (Get.arguments == null) return; // Safely return if arguments are null
+
+    String? brand = Get.arguments?['brand'] as String?;
+    if (brand == null) return;
+
+    toggleSelection('Brand', brand);
+  }
+
   fetchTypesData() async {
-    setIsloading(true);
-    await fetchAllBrands(Get.context!);
-    await fetchAllTypes(Get.context!);
-    await fetchModels();
-    filterphoneModels = List.from(phoneModels);
-    setIsloading(false);
+    try {
+      setIsloading(true);
+      await fetchAllBrands(Get.context!);
+      await fetchAllTypes(Get.context!);
+      await fetchModels();
+      filterphoneModels = List.from(phoneModels);
+      fetchArgyements();
+      setIsloading(false);
+    } on Exception catch (e) {
+      setIsloading(false);
+    }
   }
 
   String brandName(int id) {

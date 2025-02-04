@@ -259,12 +259,21 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                     }),
                   ),
                   if (constraints.maxWidth >= 1600)
-                    Positioned(
-                      left: constraints.maxWidth * 0.15,
-                      bottom: -300,
-                      child:
-                          Image.asset('assets/images/mobile.png', height: 500),
-                    )
+                    Builder(builder: (context) {
+                      String iphonename = 'N/A';
+                      String image = 'assets/images/mobile.png';
+                      final args = con.phonecurrent;
+                      if (args != null) {
+                        MobilePhonesModel phone = args;
+                        iphonename = phone.name.toString();
+                        image = phone.image.toString();
+                      }
+                      return Positioned(
+                        left: constraints.maxWidth * 0.15,
+                        bottom: -350,
+                        child: Image.network(image, height: 400),
+                      );
+                    })
                 ],
               ),
             ),

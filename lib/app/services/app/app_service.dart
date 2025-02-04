@@ -30,6 +30,7 @@ class AppService extends GetxService {
     _connectivityResultStream =
         Connectivity().onConnectivityChanged.asBroadcastStream();
     _sharedPreferences = await SharedPreferences.getInstance();
+    // _sharedPreferences.remove('currentPhone');
     _secureStorage = const FlutterSecureStorage();
     // await dotenv.load(fileName: ".env");
     _connectivityResultStream.listen((results) {

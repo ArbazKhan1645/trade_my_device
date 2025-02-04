@@ -36,6 +36,10 @@ class MobilePhonesModel {
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'])
           : null,
+      isTurnOn: json['isTurnOn'] as bool?,
+      networkIsUnlocked: json['networkIsUnlocked'] as bool?,
+      storage: json['storage'] as String?,
+      isCracked: json['isCracked'] as bool?,
     );
   }
 
@@ -46,6 +50,10 @@ class MobilePhonesModel {
       'image': image,
       'brands': brands,
       'type': type,
+      'storage': storage,
+      'isCracked': isCracked,
+      'isTurnOn': isTurnOn,
+      'networkIsUnlocked': networkIsUnlocked,
     };
   }
 

@@ -1,6 +1,8 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:webuywesell/app/routes/app_pages.dart';
 
 class FullScreenDialog extends StatelessWidget {
   const FullScreenDialog({super.key});
@@ -48,11 +50,10 @@ class FullScreenDialog extends StatelessWidget {
                 padding: EdgeInsets.all(16),
                 children: [
                   ListTile(
+                      onTap: () {
+                        Get.offNamed(Routes.SELL_MY_PHONE);
+                      },
                       title: Text('Sell my Phone'),
-                      trailing: Icon(Icons.arrow_forward)),
-                  Divider(thickness: 0.5, color: Colors.grey),
-                  ListTile(
-                      title: Text('Sell my iPad'),
                       trailing: Icon(Icons.arrow_forward)),
                   Divider(thickness: 0.5, color: Colors.grey),
                   ListTile(title: Text('How it works')),

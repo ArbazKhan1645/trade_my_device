@@ -107,7 +107,9 @@ callApiKing(String imei) async {
         image:
             'https://hnyyuaeeasyhuytscoxk.supabase.co/storage/v1/object/public/mobiles/phones_images/1608026706.huawei-p30-prowebp.webp',
         id: basicImeiCheck.id);
-    Get.toNamed(Routes.DEVICE_INFO, arguments: phone);
+    AppService.instance.sharedPreferences
+        .setString('currentPhone', jsonEncode(phone.toJson()));
+    Get.offNamed(Routes.DEVICE_INFO);
 
     print(
         "Customer: ${basicImeiCheck.result.brandName}, Age: ${basicImeiCheck.result.model}");

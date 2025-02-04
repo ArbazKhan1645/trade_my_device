@@ -1,11 +1,14 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
+
 import 'package:auto_height_grid_view/auto_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
 import 'package:webuywesell/app/modules/sell_my_phone/controllers/sell_my_phone_controller.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
+import 'package:webuywesell/app/services/app/app_service.dart';
 
 import '../models/mobile_phones_model.dart';
 import 'filter_widget.dart';
@@ -114,8 +117,12 @@ class SellMyIPhoneScreen extends StatelessWidget {
                                     controller.filterphoneModels[index];
                                 return GestureDetector(
                                   onTap: () {
-                                    Get.toNamed(Routes.DEVICE_INFO,
-                                        arguments: phone);
+                                    AppService.instance.sharedPreferences
+                                        .setString('currentPhone',
+                                            jsonEncode(phone.toJson()));
+                                    Get.offNamed(
+                                      Routes.DEVICE_INFO,
+                                    );
                                   },
                                   child: Container(
                                     height: 100,
@@ -200,8 +207,12 @@ class SellMyIPhoneScreen extends StatelessWidget {
                                 controller.filterphoneModels[index];
                             return GestureDetector(
                               onTap: () {
-                                Get.toNamed(Routes.DEVICE_INFO,
-                                    arguments: phone);
+                                AppService.instance.sharedPreferences
+                                        .setString('currentPhone',
+                                            jsonEncode(phone.toJson()));
+                                    Get.offNamed(
+                                      Routes.DEVICE_INFO,
+                                    );
                               },
                               child: Container(
                                 height: 200,

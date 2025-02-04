@@ -1,13 +1,38 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
+import 'package:webuywesell/app/services/app/app_service.dart';
 
 import '../../../core/utils/thems/theme.dart';
 import '../../../core/widgets/base.dart';
 import '../../sell_my_phone/dialog.dart';
+import '../../sell_my_phone/models/mobile_phones_model.dart';
 
-class WebScreen extends StatelessWidget {
+class WebScreen extends StatefulWidget {
   const WebScreen({super.key});
+
+  @override
+  State<WebScreen> createState() => _WebScreenState();
+}
+
+class _WebScreenState extends State<WebScreen> {
+  @override
+  void initState() {
+    fetchPhone();
+    super.initState();
+  }
+
+  MobilePhonesModel? phonecurrent;
+  fetchPhone() {
+    var phone = AppService.instance.sharedPreferences.getString('currentPhone');
+    if (phone == null) {
+      return;
+    }
+    phonecurrent = MobilePhonesModel.fromJson(jsonDecode(phone));
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,115 +110,126 @@ class WebScreen extends StatelessWidget {
       ],
     );
   }
-}
 
-Widget buildFirstSection(BuildContext context) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset(
-            'assets/images/mobile.png', // Replace with actual image
-            width: 100,
-            height: 100,
-          ),
-          const SizedBox(width: 16),
-          Column(
+  Widget buildFirstSection(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (phonecurrent != null)
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'iPhone 13 Pro',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Image.network(
+                phonecurrent!.image.toString(),
+                width: 100,
+                height: 100,
               ),
-              const SizedBox(height: 8),
-              GestureDetector(
-                onTap: () {
-                  showAddIMEIDialog(context);
-                },
-                child: const Text(
-                  'Add an IMEI',
-                  style: TextStyle(color: Colors.amber, fontSize: 14),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text('Power: Yes'),
-              const Text('Cracked: No'),
-              const Text('Network: Unlocked'),
-              const Text('Storage: 128GB'),
-              const Text('Condition: Good'),
-              const SizedBox(height: 8),
-              GestureDetector(
-                onTap: () {},
-                child: const Text(
-                  'Remove',
-                  style: TextStyle(color: Colors.amber, fontSize: 14),
-                ),
+              const SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    phonecurrent!.name.toString(),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: () {
+                      showAddIMEIDialog(context);
+                    },
+                    child: const Text(
+                      'Add an IMEI',
+                      style: TextStyle(color: Colors.amber, fontSize: 14),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                      'Power: ${phonecurrent!.isTurnOn == true ? 'On' : 'Off'}'),
+                  Text(
+                      'Cracked:   ${phonecurrent!.isCracked == true ? 'Yes' : 'No'}'),
+                  Text(
+                      'Network:   ${phonecurrent!.networkIsUnlocked == true ? 'unlocked' : 'Locked'}'),
+                  Text('Storage:   ${phonecurrent!.storage ?? 'N/A'}'),
+                  Text('Condition: Good'),
+                  const SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: () {
+                      AppService.instance.sharedPreferences
+                          .remove('currentPhone');
+                      phonecurrent = null;
+                      setState(() {});
+                    },
+                    child: const Text(
+                      'Remove',
+                      style: TextStyle(color: Colors.amber, fontSize: 14),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-      Divider(height: 32, thickness: 1, color: Colors.grey.shade300),
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              width: 22,
-              height: 22,
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 20,
+        Divider(height: 32, thickness: 1, color: Colors.grey.shade300),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: 22,
+                height: 22,
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 20,
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Get £5 extra',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Add another device over £50 and we\'ll give you £5 extra!',
-                  style: TextStyle(fontSize: 14),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: const Text(
-                    'Terms & Conditions apply.',
-                    style: TextStyle(color: Colors.blue, fontSize: 14),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Get £5 extra',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                ),
-                const SizedBox(height: 16),
-                GestureDetector(
-                  onTap: () {},
-                  child: const Text(
-                    'Add another device',
-                    style: TextStyle(color: Colors.amber, fontSize: 14),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Add another device over £50 and we\'ll give you £5 extra!',
+                    style: TextStyle(fontSize: 14),
                   ),
-                ),
-              ],
+                  GestureDetector(
+                    onTap: () {},
+                    child: const Text(
+                      'Terms & Conditions apply.',
+                      style: TextStyle(color: Colors.blue, fontSize: 14),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  GestureDetector(
+                    onTap: () {
+                      Get.offNamed(Routes.SELL_MY_PHONE);
+                    },
+                    child: const Text(
+                      'Add another device',
+                      style: TextStyle(color: Colors.black, fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-      const SizedBox(height: 10),
-      Divider(height: 32, thickness: 1, color: Colors.grey.shade300),
-    ],
-  );
+          ],
+        ),
+        const SizedBox(height: 10),
+        Divider(height: 32, thickness: 1, color: Colors.grey.shade300),
+      ],
+    );
+  }
 }
 
 Widget buildSecondSection() {
