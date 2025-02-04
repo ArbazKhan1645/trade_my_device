@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:webuywesell/app/modules/device_info/pages/form.dart';
 
 import '../../../core/utils/thems/theme.dart';
+import '../../sell_my_phone/models/mobile_phones_model.dart';
 import '../controllers/device_info_controller.dart';
 import 'faqs.dart';
 
@@ -17,6 +18,7 @@ class DeviceInfoScreen extends StatefulWidget {
 
 class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
   int? selectedQuestion = 0;
+  var con = Get.find<DeviceInfoController>();
 
   final List<String> questions = [
     'Does your device turn on?',
@@ -24,35 +26,71 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
     'Is the front or back cracked?',
     'What condition best describes your device?',
   ];
-
-  final List<Widget> answers = [
+  late List<String> questions2 = [
+    con.phonecurrent?.isTurnOn.toString() ?? '',
+    con.phonecurrent?.storage.toString() ?? '',
+    con.phonecurrent?.isCracked.toString() ?? '',
+    con.phonecurrent?.networkIsUnlocked.toString() ?? '',
+  ];
+  late List<Widget> answers = [
     Padding(
       padding: const EdgeInsets.only(top: 12),
       child: Row(
         children: [
           Expanded(
-              child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Color(0xFFe5e7eb))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Icon(Icons.confirmation_number_outlined), Text('Yes')],
+              child: GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedQuestion = 1;
+                con.phonecurrent = con.phonecurrent!.copyWith(isTurnOn: true);
+                questions2 = [
+                  con.phonecurrent?.isTurnOn.toString() ?? '',
+                  con.phonecurrent?.storage.toString() ?? '',
+                  con.phonecurrent?.isCracked.toString() ?? '',
+                  con.phonecurrent?.networkIsUnlocked.toString() ?? '',
+                ];
+              });
+            },
+            child: Container(
+              height: 100,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Color(0xFFe5e7eb))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.confirmation_number_outlined),
+                  Text('Yes')
+                ],
+              ),
             ),
           )),
           SizedBox(width: 20),
           Expanded(
-              child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Color(0xFFe5e7eb))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Icon(Icons.close_outlined), Text('No')],
+              child: GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedQuestion = 1;
+                con.phonecurrent = con.phonecurrent!.copyWith(isTurnOn: false);
+                questions2 = [
+                  con.phonecurrent?.isTurnOn.toString() ?? '',
+                  con.phonecurrent?.storage.toString() ?? '',
+                  con.phonecurrent?.isCracked.toString() ?? '',
+                  con.phonecurrent?.networkIsUnlocked.toString() ?? '',
+                ];
+              });
+            },
+            child: Container(
+              height: 100,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Color(0xFFe5e7eb))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Icon(Icons.close_outlined), Text('No')],
+              ),
             ),
           )),
         ],
@@ -62,16 +100,34 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
       children: ['64GB', '128GB', '256GB', '512GB']
           .map((storage) => Padding(
                 padding: const EdgeInsets.only(right: 16, bottom: 6, top: 12),
-                child: Container(
-                    height: 50,
-                    width: 140,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Color(0xFFe5e7eb))),
-                    child: Center(
-                      child: Text(storage),
-                    )),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedQuestion = 2;
+
+                      con.phonecurrent =
+                          con.phonecurrent!.copyWith(storage: storage);
+                      con.update();
+                      questions2 = [
+                        con.phonecurrent?.isTurnOn.toString() ?? '',
+                        con.phonecurrent?.storage.toString() ?? '',
+                        con.phonecurrent?.isCracked.toString() ?? '',
+                        con.phonecurrent?.networkIsUnlocked.toString() ?? '',
+                      ];
+                      print(questions2);
+                    });
+                  },
+                  child: Container(
+                      height: 50,
+                      width: 140,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Color(0xFFe5e7eb))),
+                      child: Center(
+                        child: Text(storage),
+                      )),
+                ),
               ))
           .toList(),
     ),
@@ -80,28 +136,59 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
       child: Row(
         children: [
           Expanded(
-              child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Color(0xFFe5e7eb))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Icon(Icons.confirmation_number_outlined), Text('Yes')],
+              child: GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedQuestion = 3;
+                con.phonecurrent = con.phonecurrent!.copyWith(isCracked: true);
+                questions2 = [
+                  con.phonecurrent?.isTurnOn.toString() ?? '',
+                  con.phonecurrent?.storage.toString() ?? '',
+                  con.phonecurrent?.isCracked.toString() ?? '',
+                  con.phonecurrent?.networkIsUnlocked.toString() ?? '',
+                ];
+              });
+            },
+            child: Container(
+              height: 100,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Color(0xFFe5e7eb))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.confirmation_number_outlined),
+                  Text('Yes')
+                ],
+              ),
             ),
           )),
           SizedBox(width: 20),
           Expanded(
-              child: Container(
-            height: 100,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Color(0xFFe5e7eb))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Icon(Icons.close_outlined), Text('No')],
+              child: GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedQuestion = 3;
+                con.phonecurrent = con.phonecurrent!.copyWith(isCracked: false);
+                questions2 = [
+                  con.phonecurrent?.isTurnOn.toString() ?? '',
+                  con.phonecurrent?.storage.toString() ?? '',
+                  con.phonecurrent?.isCracked.toString() ?? '',
+                  con.phonecurrent?.networkIsUnlocked.toString() ?? '',
+                ];
+              });
+            },
+            child: Container(
+              height: 100,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Color(0xFFe5e7eb))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Icon(Icons.close_outlined), Text('No')],
+              ),
             ),
           )),
         ],
@@ -149,23 +236,27 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                 clipBehavior: Clip.none,
                 children: [
                   Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        if (constraints.maxWidth <= 1600)
-                          Image.asset('assets/images/mobile.png', height: 50),
-                        Builder(builder: (context) {
-                          var con = Get.find<DeviceInfoController>();
-                          String iphonename = 'N/A';
-                          if (con.currentdevice != null) {
-                            iphonename = con.currentdevice!.result.model;
-                          }
-                          return Text(iphonename,
+                    child: Builder(builder: (context) {
+                      String iphonename = 'N/A';
+                      String image = 'assets/images/mobile.png';
+                      final args = con.phonecurrent;
+                      if (args != null) {
+                        MobilePhonesModel phone = args;
+                        iphonename = phone.name.toString();
+                        image = phone.image.toString();
+                      }
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          if (constraints.maxWidth <= 1600)
+                            Image.network(image, height: 50),
+                          SizedBox(width: 20),
+                          Text(iphonename,
                               style: defaultTextStyle.copyWith(
-                                  fontSize: 24, fontWeight: FontWeight.w600));
-                        })
-                      ],
-                    ),
+                                  fontSize: 24, fontWeight: FontWeight.w600)),
+                        ],
+                      );
+                    }),
                   ),
                   if (constraints.maxWidth >= 1600)
                     Positioned(
@@ -220,6 +311,10 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                                         });
                                       },
                                       child: ListTile(
+                                        trailing: Text(
+                                            questions2[index] == 'null'
+                                                ? ''
+                                                : questions2[index]),
                                         leading: CircleAvatar(
                                             backgroundColor: Color(0xffFFC000),
                                             child: Center(

@@ -30,7 +30,7 @@ class FetchSupabaseRepository {
         }
       }
       final response = await builder.select();
-      List finalresponse;
+      List? finalresponse;
 
       if (fromJson == null) {
         finalresponse = response;

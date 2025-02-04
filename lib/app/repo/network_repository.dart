@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:retry/retry.dart';
 import 'package:webuywesell/app/modules/device_info/controllers/device_info_controller.dart';
+import 'package:webuywesell/app/modules/sell_my_phone/models/mobile_phones_model.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 import '../core/utils/helpers/api_exceptions.dart';
 import '../data/configs/api_configs.dart';
@@ -100,9 +101,13 @@ callApiKing(String imei) async {
       fromJson: (json) => ImeiCheckResponse.fromJson(json),
     );
 
-    var con = Get.put(DeviceInfoController());
-    con.currentdevice = basicImeiCheck;
-    Get.toNamed(Routes.DEVICE_INFO);
+    MobilePhonesModel phone = MobilePhonesModel(
+        brandName: basicImeiCheck.result.brandName,
+        name: basicImeiCheck.result.model.toString(),
+        image:
+            'https://hnyyuaeeasyhuytscoxk.supabase.co/storage/v1/object/public/mobiles/phones_images/1608026706.huawei-p30-prowebp.webp',
+        id: basicImeiCheck.id);
+    Get.toNamed(Routes.DEVICE_INFO, arguments: phone);
 
     print(
         "Customer: ${basicImeiCheck.result.brandName}, Age: ${basicImeiCheck.result.model}");

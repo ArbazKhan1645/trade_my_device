@@ -4,8 +4,10 @@ import 'package:auto_height_grid_view/auto_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
+import 'package:webuywesell/app/modules/sell_my_phone/controllers/sell_my_phone_controller.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 
+import '../models/mobile_phones_model.dart';
 import 'filter_widget.dart';
 
 class SellMyIPhoneScreen extends StatelessWidget {
@@ -81,151 +83,181 @@ class SellMyIPhoneScreen extends StatelessWidget {
                     child: FilterWidget(),
                   );
                 }),
-                Expanded(child: Builder(builder: (context) {
-                  if (constraints.maxWidth <= 600) {
-                    return ListView.separated(
-                        separatorBuilder: (context, index) =>
-                            Container(height: 10),
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: iPhones.length,
-                        padding: const EdgeInsets.all(12),
-                        itemBuilder: (context, index) {
-                          final iPhone = iPhones[index];
-                          return GestureDetector(
-                            onTap: () {
-                              Get.offNamed(Routes.DEVICE_INFO);
-                            },
-                            child: Container(
-                              height: 100,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(6),
-                                border:
-                                    Border.all(color: const Color(0xFFe5e7eb)),
+                Expanded(child:
+                    GetBuilder<SellMyPhoneController>(builder: (controller) {
+                  return Stack(
+                    children: [
+                      if (controller.isloading.value)
+                        Opacity(
+                          opacity: 0.2,
+                          child: Container(
+                            decoration: BoxDecoration(color: Colors.grey),
+                            child: SizedBox(
+                              height: 400,
+                              child: Center(
+                                child: CircularProgressIndicator(),
                               ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Image.asset(
-                                        iPhone['image']!,
-                                        width: 100,
-                                        height: 80,
-                                        fit: BoxFit.fill,
-                                      ),
+                            ),
+                          ),
+                        ),
+                      Builder(builder: (context) {
+                        if (constraints.maxWidth <= 600) {
+                          return ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  Container(height: 10),
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: controller.filterphoneModels.length,
+                              padding: const EdgeInsets.all(12),
+                              itemBuilder: (context, index) {
+                                MobilePhonesModel phone =
+                                    controller.filterphoneModels[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Routes.DEVICE_INFO,
+                                        arguments: phone);
+                                  },
+                                  child: Container(
+                                    height: 100,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(
+                                          color: const Color(0xFFe5e7eb)),
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
+                                    child: Row(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          CrossAxisAlignment.center,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 12),
-                                          child: Text(
-                                            'Apple',
-                                            textAlign: TextAlign.center,
-                                            style: defaultTextStyle.copyWith(
-                                              fontSize: 14,
-                                              color: const Color.fromARGB(
-                                                  255, 129, 140, 152),
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Image.network(
+                                              phone.image.toString(),
+                                              width: 100,
+                                              height: 80,
+                                              fit: BoxFit.fill,
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 12, bottom: 0),
-                                          child: Text(
-                                            iPhone['name']!,
-                                            style: defaultTextStyle.copyWith(
-                                                fontSize: 16),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 12),
+                                                child: Text(
+                                                  controller.brandName(
+                                                      phone.brands ?? -1),
+                                                  textAlign: TextAlign.center,
+                                                  style:
+                                                      defaultTextStyle.copyWith(
+                                                    fontSize: 14,
+                                                    color: const Color.fromARGB(
+                                                        255, 129, 140, 152),
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 12, bottom: 0),
+                                                child: Text(
+                                                  phone.name.toString(),
+                                                  style: defaultTextStyle
+                                                      .copyWith(fontSize: 16),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
+                                        IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(Icons.arrow_forward_ios))
                                       ],
                                     ),
                                   ),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.arrow_forward_ios))
-                                ],
-                              ),
-                            ),
-                          );
-                        });
-                  }
-                  return AutoHeightGridView(
-                    itemCount: iPhones.length,
-                    crossAxisCount: constraints.maxWidth <= 1200 ? 4 : 4,
-                    mainAxisSpacing: 16.0,
-                    crossAxisSpacing: 16.0,
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(12),
-                    shrinkWrap: true,
-                    builder: (context, index) {
-                      final iPhone = iPhones[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Get.offNamed(Routes.DEVICE_INFO);
-                        },
-                        child: Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: const Color(0xFFe5e7eb)),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Image.asset(
-                                    iPhone['image']!,
-                                    height: 110,
-                                    fit: BoxFit.cover,
-                                  ),
+                                );
+                              });
+                        }
+                        return AutoHeightGridView(
+                          itemCount: controller.filterphoneModels.length,
+                          crossAxisCount: constraints.maxWidth <= 1200 ? 4 : 4,
+                          mainAxisSpacing: 16.0,
+                          crossAxisSpacing: 16.0,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(12),
+                          shrinkWrap: true,
+                          builder: (context, index) {
+                            MobilePhonesModel phone =
+                                controller.filterphoneModels[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Get.toNamed(Routes.DEVICE_INFO,
+                                    arguments: phone);
+                              },
+                              child: Container(
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(
+                                      color: const Color(0xFFe5e7eb)),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Image.network(
+                                          phone.image.toString(),
+                                          height: 110,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 12),
+                                      child: Text(
+                                        controller
+                                            .brandName(phone.brands ?? -1),
+                                        textAlign: TextAlign.center,
+                                        style: defaultTextStyle.copyWith(
+                                          fontSize: 12,
+                                          color: const Color.fromARGB(
+                                              255, 129, 140, 152),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 12, bottom: 10),
+                                      child: Text(
+                                        phone.name.toString(),
+                                        style: defaultTextStyle.copyWith(
+                                            fontSize: 14),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 12),
-                                child: Text(
-                                  'Apple',
-                                  textAlign: TextAlign.center,
-                                  style: defaultTextStyle.copyWith(
-                                    fontSize: 12,
-                                    color: const Color.fromARGB(
-                                        255, 129, 140, 152),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 12, bottom: 10),
-                                child: Text(
-                                  iPhone['name']!,
-                                  style:
-                                      defaultTextStyle.copyWith(fontSize: 14),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+                            );
+                          },
+                        );
+                      }),
+                    ],
                   );
-                })),
+                }))
               ],
             ),
           ),

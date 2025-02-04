@@ -8,11 +8,13 @@ import '../../../../main.dart';
 import '../../../models/phones_model/imei_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../home/controllers/footer.dart';
+import '../../sell_my_phone/models/mobile_phones_model.dart';
 import '../pages/section.dart';
 
 class DeviceInfoController extends GetxController {
   final RxString errorMessage = ''.obs;
   final RxBool isLoading = false.obs;
+  MobilePhonesModel? phonecurrent = MobilePhonesModel();
   final TextEditingController emailController = TextEditingController();
 
   ImeiCheckResponse? currentdevice;
@@ -74,4 +76,10 @@ class DeviceInfoController extends GetxController {
     const SizedBox(height: 40),
     MobileFooterPageView(),
   ];
+
+  @override
+  void onInit() {
+    phonecurrent = Get.arguments;
+    super.onInit();
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:webuywesell/app/modules/sell_my_phone/models/mobile_phones_model.dart';
 
 import '../modules/authentication/authentication_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
@@ -34,6 +35,7 @@ class AppPages {
       name: _Paths.DEVICE_INFO,
       page: () => const DeviceInfoView(),
       binding: DeviceInfoBinding(),
+      arguments: MobilePhonesModel(),
     ),
     GetPage(
       name: _Paths.Payment,
@@ -47,7 +49,6 @@ class AppPages {
     GetPage(
       name: _Paths.AUTHENTICATION,
       page: () => const AuthenticatedAnimatedDialog(),
-  
     ),
   ];
 }
