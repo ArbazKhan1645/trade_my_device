@@ -40,6 +40,7 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
           Expanded(
               child: GestureDetector(
             onTap: () {
+              con.updateURL(newStorage: '3234');
               setState(() {
                 selectedQuestion = 1;
                 con.phonecurrent = con.phonecurrent!.copyWith(isTurnOn: true);

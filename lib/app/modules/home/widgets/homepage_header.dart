@@ -251,17 +251,19 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
                 Get.offNamed(Routes.HOME);
               },
               child: Image.asset('assets/images/trade.jpeg')),
-          const Spacer(),
-          Builder(builder: (context) {
-            if (constraints != null) {
-              if (constraints.maxWidth >= 1350) {
-                return const AddressInfoToggle(address: 'GlassGow PK');
-              } else {
-                return Container();
+
+          Expanded(
+            child: Builder(builder: (context) {
+              if (constraints != null) {
+                if (constraints.maxWidth >= 1350) {
+                  return const NavigationBarWithDropdown();
+                } else {
+                  return Container();
+                }
               }
-            }
-            return const AddressInfoToggle(address: 'GlassGow PK');
-          }),
+              return const NavigationBarWithDropdown();
+            }),
+          ),
 
           const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
           Container(
@@ -474,84 +476,6 @@ Widget _buildIconWithLabel(
       ),
     ],
   );
-}
-
-class AddressInfoToggle extends StatefulWidget {
-  final String address;
-
-  const AddressInfoToggle({super.key, required this.address});
-
-  @override
-  _AddressInfoToggleState createState() => _AddressInfoToggleState();
-}
-
-class _AddressInfoToggleState extends State<AddressInfoToggle> {
-  final bool _isDelivery = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: NavigationBarWithDropdown(),
-      ),
-    );
-  }
-
-  Widget _buildToggleButton({
-    required String text,
-    required IconData icon,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-            decoration: BoxDecoration(
-              color: isSelected ? Colors.white : Colors.transparent,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: isSelected
-                  ? [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ]
-                  : null,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icon,
-                      color:
-                          isSelected ? const Color(0xFF00CCBC) : Colors.grey),
-                  const SizedBox(width: 10),
-                  Text(
-                    text,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: isSelected ? Colors.black : Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class RowWidget extends StatelessWidget {

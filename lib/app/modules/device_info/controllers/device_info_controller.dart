@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:convert';
+import 'dart:html' as html;
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +90,23 @@ class DeviceInfoController extends GetxController {
   @override
   void onInit() {
     fetchPhone();
+    parseDeepLink();
+
     super.onInit();
+  }
+
+  final power = ''.obs;
+  final storage = ''.obs;
+  final brand = ''.obs;
+  final model = ''.obs;
+
+  void parseDeepLink() {
+    final currentRoute = Get.currentRoute;
+    final uri = Uri.parse(currentRoute);
+    power.value = uri.queryParameters['power'] ?? '';
+    storage.value = uri.queryParameters['storage'] ?? '';
+    print(storage.value);
+    print(power.value);
   }
 
   fetchPhone() {
@@ -98,6 +115,26 @@ class DeviceInfoController extends GetxController {
       return;
     }
     phonecurrent = MobilePhonesModel.fromJson(jsonDecode(phone));
+    String formattedName = phonecurrent!.name.toString().replaceAll(' ', '-');
+
+    String newUrl = Uri(
+      path: '/device-info/$formattedName',
+    ).toString();
+
+    html.window.history.pushState(null, '', newUrl);
     update();
+  }
+
+  void updateURL({String? newPower, String? newStorage}) {
+    if (newPower != null) power.value = newPower;
+    if (newStorage != null) storage.value = newStorage;
+    final queryParams = <String, String>{};
+    if (power.value.isNotEmpty) queryParams['power'] = power.value;
+    if (storage.value.isNotEmpty) queryParams['storage'] = storage.value;
+    String formattedName = phonecurrent!.name.toString().replaceAll(' ', '-');
+    String newUrl =
+        Uri(path: '/device-info/$formattedName', queryParameters: queryParams)
+            .toString();
+    html.window.history.pushState(null, '', newUrl);
   }
 }
