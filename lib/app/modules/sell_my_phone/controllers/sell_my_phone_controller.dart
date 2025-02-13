@@ -34,6 +34,15 @@ class SellMyPhoneController extends GetxController {
     toggleSelection('Brand', brand);
   }
 
+  void fetchListArgyements() {
+    if (Get.arguments == null) return; // Safely return if arguments are null
+
+    String? brand = Get.arguments?['brand'] as String?;
+    if (brand == null) return;
+
+    toggleSelection('Brand', brand);
+  }
+
   fetchTypesData() async {
     try {
       setIsloading(true);
@@ -42,8 +51,9 @@ class SellMyPhoneController extends GetxController {
       await fetchModels();
       filterphoneModels = List.from(phoneModels);
       fetchArgyements();
+      fetchListArguements();
       setIsloading(false);
-    } on Exception catch (e) {
+    } on Exception {
       setIsloading(false);
     }
   }
@@ -93,6 +103,19 @@ class SellMyPhoneController extends GetxController {
     filterPhoneModelsFunctio();
 
     update();
+  }
+
+  fetchListArguements() {
+    if (Get.arguments == null) return;
+    List<MobilePhonesModel>? phones =
+        Get.arguments?['brandlist'] as List<MobilePhonesModel>?;
+
+    if (phones == null) return;
+    for (var phone in phones) {
+      var newbrand = brandsList.where((e) => e.id == phone.brands).firstOrNull;
+      brandOptions[newbrand!.name.toString()] = true;
+    }
+    filterPhoneModelsFunctio();
   }
 
   List<String> getSelectedOptions(String category) {

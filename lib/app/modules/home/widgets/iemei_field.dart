@@ -31,10 +31,7 @@ class _IMEITextFieldState extends State<IMEITextField> {
 
   // Called when IMEI field changes
   void onIMEIChanged(String imei) {
-    if (imei.length == 15) {
-      widget.onIMEIComplete(
-          imei); // Call the callback when IMEI length reaches 15
-    }
+    widget.onIMEIComplete(imei);
   }
 
   @override
@@ -52,10 +49,7 @@ class _IMEITextFieldState extends State<IMEITextField> {
         ),
       ),
       keyboardType: TextInputType.number,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-        LengthLimitingTextInputFormatter(15),
-      ],
+      inputFormatters: [],
       onChanged: (value) {
         onIMEIChanged(value);
       },

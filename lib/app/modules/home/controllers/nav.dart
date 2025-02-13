@@ -1,10 +1,15 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:webuywesell/app/modules/home/controllers/home.controller.dart';
 import 'package:webuywesell/app/modules/sell_my_phone/models/mobile_phones_model.dart';
+
+import '../../../routes/app_pages.dart';
+import '../../../services/app/app_service.dart';
 
 class NavigationBarWithDropdown extends StatefulWidget {
   const NavigationBarWithDropdown({super.key});
@@ -269,7 +274,13 @@ class PhoneSection extends StatelessWidget {
               ...phones.take(5).map((phone) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      AppService.instance.sharedPreferences.setString(
+                          'currentPhone', jsonEncode(phone.toJson()));
+                      Get.offNamed(
+                        Routes.DEVICE_INFO,
+                      );
+                    },
                     child: Text(phone.name.toString(),
                         style: const TextStyle(color: Colors.blue)),
                   ))),
@@ -278,7 +289,11 @@ class PhoneSection extends StatelessWidget {
                 child: Row(
                   children: [
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.offNamed(Routes.SELL_MY_PHONE, arguments: {
+                            'brand': title,
+                          });
+                        },
                         child: Text(
                           'See all ${title}s',
                           style: const TextStyle(color: Colors.black),

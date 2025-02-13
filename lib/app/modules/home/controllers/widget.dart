@@ -1,11 +1,105 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
+import 'package:webuywesell/app/modules/sell_my_phone/models/mobile_phones_model.dart';
 import 'package:webuywesell/app/repo/network_repository.dart';
 
+import '../../../routes/app_pages.dart';
+import '../../../services/app/app_service.dart';
+import '../../sell_my_phone/controllers/supabase_fetch.dart';
 import '../widgets/iemei_field.dart';
 
-class DeviceWorthScreen extends StatelessWidget {
+class DeviceWorthScreen extends StatefulWidget {
   const DeviceWorthScreen({super.key});
+
+  @override
+  State<DeviceWorthScreen> createState() => _DeviceWorthScreenState();
+}
+
+class _DeviceWorthScreenState extends State<DeviceWorthScreen> {
+  TextEditingController controller = TextEditingController();
+
+  var isLoading = false;
+
+  void _search() async {
+    String input = controller.text.trim();
+
+    if (input.isEmpty) {
+      Get.showSnackbar(
+          GetSnackBar(title: 'Error', message: 'Input cannot be empty'));
+      return;
+    }
+
+    isLoading = true;
+    setState(() {});
+    try {
+      if (_isImei(input)) {
+        await _searchByImei(input);
+      } else {
+        await _searchByText(input);
+      }
+    } catch (e) {
+      Get.showSnackbar(
+          GetSnackBar(title: 'Error', message: 'Something went wrong: $e'));
+    } finally {
+      isLoading = false;
+      setState(() {});
+    }
+  }
+
+  bool _isImei(String input) {
+    return RegExp(r'^\d{15}$')
+        .hasMatch(input); // Validates exactly 15-digit number
+  }
+
+  Future<void> _searchByImei(String imei) async {
+    try {
+      await callApiKing(imei);
+    } catch (e) {
+      Get.showSnackbar(GetSnackBar(
+          title: 'Error', message: 'Failed to fetch IMEI data: $e'));
+    }
+  }
+
+  Future<void> _searchByText(String text) async {
+    try {
+      var fetchData = await SupabaseQueryBuilder.get<MobilePhonesModel>(
+        fromJson: MobilePhonesModel.fromJson,
+        tablename: 'phones_models',
+        context: Get.context!,
+      );
+
+      if (fetchData is! List<MobilePhonesModel>) {
+        throw Exception('Invalid data format received');
+      }
+
+      List<MobilePhonesModel> filteredData = fetchData
+          .where((model) =>
+              model.name.toString().toLowerCase().contains(text.toLowerCase()))
+          .toList();
+
+      if (filteredData.isEmpty) {
+        Get.showSnackbar(GetSnackBar(
+            title: 'Error', message: 'No results found for "$text"'));
+        return;
+      }
+
+      if (filteredData.length == 1) {
+        await AppService.instance.sharedPreferences
+            .setString('currentPhone', jsonEncode(filteredData.first.toJson()));
+        Get.offNamed(Routes.DEVICE_INFO);
+      } else {
+        print(filteredData.length);
+        Get.offNamed(Routes.SELL_MY_PHONE,
+            arguments: {'brandlist': filteredData});
+      }
+    } catch (e) {
+      Get.showSnackbar(
+          GetSnackBar(title: 'Error', message: 'Search failed: $e'));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +148,7 @@ class DeviceWorthScreen extends StatelessWidget {
                           Expanded(
                             child: IMEITextField(
                               onIMEIComplete: (imei) {
-                                callApiKing(imei);
+                                controller.text = imei;
                               }, // Pass the callback
                             ),
                           ),
@@ -68,16 +162,30 @@ class DeviceWorthScreen extends StatelessWidget {
                               ),
                             ),
                             child: TextButton(
-                              onPressed: () {},
-                              child: const Padding(
+                              onPressed: () {
+                                if (isLoading) return;
+                                _search();
+                                print(controller.text);
+                                //    callApiKing(imei);
+                                // AppService.instance.sharedPreferences.setString(
+                                //     'currentPhone', jsonEncode(phone.toJson()));
+                                // Get.offNamed(
+                                //   Routes.DEVICE_INFO,
+                                // );
+                              },
+                              child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16),
-                                child: Text(
-                                  'Search',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                child: isLoading
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : Text(
+                                        'Search',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
@@ -126,7 +234,7 @@ class DeviceWorthScreen extends StatelessWidget {
                               Expanded(
                                 child: IMEITextField(
                                   onIMEIComplete: (imei) {
-                                    callApiKing(imei);
+                                    controller.text = imei;
                                   }, // Pass the callback
                                 ),
                               ),
@@ -140,17 +248,24 @@ class DeviceWorthScreen extends StatelessWidget {
                                   ),
                                 ),
                                 child: TextButton(
-                                  onPressed: () {},
-                                  child: const Padding(
+                                  onPressed: () {
+                                    if (isLoading) return;
+                                    _search();
+                                  },
+                                  child: Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 16),
-                                    child: Text(
-                                      'Search',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                                    child: isLoading
+                                        ? Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : Text(
+                                            'Search',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                   ),
                                 ),
                               ),
