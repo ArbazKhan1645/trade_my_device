@@ -87,10 +87,10 @@ class MyApp extends StatelessWidget {
 }
 
 showPopupWidget() {
-  return QudsPopupButton(
-    // backgroundColor: Colors.red,
-    tooltip: 'T',
-    items: getMenuItems(),
+  return InkWell(
+    onTap: () {
+      Get.toNamed(Routes.PROFILE_SCREEN);
+    },
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -101,8 +101,7 @@ showPopupWidget() {
             child: Icon(Icons.person),
           ),
         ),
-        Text(AuthService.instance.authCustomer?.email ?? '',
-            style: defaultTextStyle),
+        Text('Profile'),
       ],
     ),
   );
@@ -118,7 +117,6 @@ List<QudsPopupMenuBase> getMenuItems() {
           Icons.redeem,
           size: 40,
         ),
-        
         subItems: [
           QudsPopupMenuSection(
               titleText: 'Settings',

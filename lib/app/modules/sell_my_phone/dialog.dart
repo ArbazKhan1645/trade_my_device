@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import '../../core/widgets/textfield.dart';
 
@@ -12,6 +13,7 @@ class _AddIMEIDialogState extends State<AddIMEIDialog>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
+  TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
@@ -79,6 +81,7 @@ class _AddIMEIDialogState extends State<AddIMEIDialog>
               SizedBox(height: 20),
               CustomTextField(
                 label: 'Imei',
+                controller: controller,
                 hintText: 'Enter your first name',
                 isRequired: true,
               ),
@@ -88,7 +91,7 @@ class _AddIMEIDialogState extends State<AddIMEIDialog>
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // Save functionality here
+                      Navigator.of(context).pop(controller.text);
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -116,8 +119,8 @@ class _AddIMEIDialogState extends State<AddIMEIDialog>
   }
 }
 
-void showAddIMEIDialog(BuildContext context) {
-  showDialog(
+Future showAddIMEIDialog(BuildContext context) {
+  return showDialog(
     context: context,
     barrierDismissible: true,
     builder: (BuildContext context) {

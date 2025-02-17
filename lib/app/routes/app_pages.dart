@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:webuywesell/app/modules/sell_my_phone/models/mobile_phones_model.dart';
 
 import '../modules/authentication/authentication_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
@@ -8,7 +7,10 @@ import '../modules/device_info/bindings/device_info_binding.dart';
 import '../modules/device_info/pages/further_view.dart';
 import '../modules/device_info/views/device_info_view.dart';
 import '../modules/home/home.screen.dart';
+import '../modules/profile_screen/bindings/profile_screen_binding.dart';
+import '../modules/profile_screen/views/profile_screen_view.dart';
 import '../modules/sell_my_phone/bindings/sell_my_phone_binding.dart';
+import '../modules/sell_my_phone/models/mobile_phones_model.dart';
 import '../modules/sell_my_phone/views/sell_my_phone_view.dart';
 
 // ignore_for_file: constant_identifier_names
@@ -49,6 +51,11 @@ class AppPages {
     GetPage(
       name: _Paths.AUTHENTICATION,
       page: () => const AuthenticatedAnimatedDialog(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE_SCREEN,
+      page: () => const ProfileScreenView(),
+      binding: ProfileScreenBinding(),
     ),
   ];
 }

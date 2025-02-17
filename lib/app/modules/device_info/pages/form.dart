@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
-import 'package:webuywesell/app/routes/app_pages.dart';
 
 import '../controllers/device_info_controller.dart';
 
@@ -30,6 +29,7 @@ class _EmailFormWidgetState extends State<EmailFormWidget> {
                 children: [
                   if (!controller.isloginAuthService)
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Email address*', style: defaultTextStyle),
                         SizedBox(height: 8.0),

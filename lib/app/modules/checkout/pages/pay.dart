@@ -1,8 +1,13 @@
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:webuywesell/app/modules/checkout/controllers/checkout_controller.dart';
 
 import '../../../core/utils/thems/theme.dart';
 
 class DeliveryOptionWidget extends StatefulWidget {
+  const DeliveryOptionWidget({super.key});
+
   @override
   _DeliveryOptionWidgetState createState() => _DeliveryOptionWidgetState();
 }
@@ -11,6 +16,7 @@ class _DeliveryOptionWidgetState extends State<DeliveryOptionWidget> {
   String _selectedOption = 'Royal Mail Digital Label';
 
   void _onOptionSelected(String option) {
+    Get.find<CheckoutController>().setdeliveryOptions(option);
     setState(() {
       _selectedOption = option;
     });

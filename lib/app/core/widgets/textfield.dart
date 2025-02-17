@@ -6,11 +6,13 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final bool isRequired;
   final TextEditingController? controller;
+  final bool readonly;
 
   const CustomTextField({
     super.key,
     required this.label,
     this.hintText = '',
+    this.readonly = false,
     this.isRequired = false,
     this.controller,
   });
@@ -38,6 +40,7 @@ class CustomTextField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          readOnly: readonly,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter an $label';

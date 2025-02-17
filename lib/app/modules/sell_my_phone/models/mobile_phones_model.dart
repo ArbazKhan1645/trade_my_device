@@ -10,6 +10,8 @@ class MobilePhonesModel {
   final bool? networkIsUnlocked;
   String? storage;
   final bool? isCracked;
+  final String? condition;
+  final String? imei;
 
   MobilePhonesModel({
     this.id,
@@ -18,10 +20,12 @@ class MobilePhonesModel {
     this.brands,
     this.brandName,
     this.type,
+    this.imei,
     this.createdAt,
     this.isTurnOn,
     this.networkIsUnlocked,
     this.storage,
+    this.condition,
     this.isCracked,
   });
 
@@ -40,6 +44,8 @@ class MobilePhonesModel {
       networkIsUnlocked: json['networkIsUnlocked'] as bool?,
       storage: json['storage'] as String?,
       isCracked: json['isCracked'] as bool?,
+      condition: json['condition'] as String?,
+      imei: json['imei'] as String?,
     );
   }
 
@@ -54,34 +60,38 @@ class MobilePhonesModel {
       'isCracked': isCracked,
       'isTurnOn': isTurnOn,
       'networkIsUnlocked': networkIsUnlocked,
+      'condition': condition,
+      'imei': imei
     };
   }
 
   // CopyWith method for immutability and modifications
-  MobilePhonesModel copyWith({
-    int? id,
-    String? name,
-    String? image,
-    int? brands,
-    int? type,
-    DateTime? createdAt,
-    bool? isTurnOn,
-    bool? networkIsUnlocked,
-    String? storage,
-    bool? isCracked,
-  }) {
+  MobilePhonesModel copyWith(
+      {int? id,
+      String? name,
+      String? image,
+      int? brands,
+      String? imei,
+      int? type,
+      DateTime? createdAt,
+      bool? isTurnOn,
+      bool? networkIsUnlocked,
+      String? storage,
+      bool? isCracked,
+      String? condition}) {
     return MobilePhonesModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      image: image ?? this.image,
-      brands: brands ?? this.brands,
-      type: type ?? this.type,
-      createdAt: createdAt ?? this.createdAt,
-      isTurnOn: isTurnOn ?? this.isTurnOn,
-      networkIsUnlocked: networkIsUnlocked ?? this.networkIsUnlocked,
-      storage: storage ?? this.storage,
-      isCracked: isCracked ?? this.isCracked,
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        image: image ?? this.image,
+        imei: imei ?? this.imei,
+        brands: brands ?? this.brands,
+        type: type ?? this.type,
+        createdAt: createdAt ?? this.createdAt,
+        isTurnOn: isTurnOn ?? this.isTurnOn,
+        networkIsUnlocked: networkIsUnlocked ?? this.networkIsUnlocked,
+        storage: storage ?? this.storage,
+        isCracked: isCracked ?? this.isCracked,
+        condition: condition ?? this.condition);
   }
 
   @override
@@ -93,7 +103,9 @@ class MobilePhonesModel {
     if (identical(this, other)) return true;
     return other is MobilePhonesModel &&
         other.id == id &&
+        other.condition == condition &&
         other.name == name &&
+        other.imei == imei &&
         other.image == image &&
         other.brands == brands &&
         other.type == type &&
@@ -108,6 +120,8 @@ class MobilePhonesModel {
   int get hashCode =>
       id.hashCode ^
       name.hashCode ^
+      condition.hashCode ^
+      imei.hashCode ^
       image.hashCode ^
       brands.hashCode ^
       type.hashCode ^

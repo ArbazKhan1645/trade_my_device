@@ -24,13 +24,21 @@ class _WebScreenState extends State<WebScreen> {
     super.initState();
   }
 
+  List<MobilePhonesModel> getPhoneList() {
+    final List<String> storedList = AppService.instance.sharedPreferences
+            .getStringList('currentPhoneList') ??
+        [];
+    return (storedList
+            .map((item) => jsonDecode(item) as Map<String, dynamic>)
+            .toList())
+        .map((w) => MobilePhonesModel.fromJson(w))
+        .toList();
+  }
+
   MobilePhonesModel? phonecurrent;
+  List<MobilePhonesModel?> phonesList = [];
   fetchPhone() {
-    var phone = AppService.instance.sharedPreferences.getString('currentPhone');
-    if (phone == null) {
-      return;
-    }
-    phonecurrent = MobilePhonesModel.fromJson(jsonDecode(phone));
+    phonesList = getPhoneList();
     setState(() {});
   }
 
@@ -111,64 +119,149 @@ class _WebScreenState extends State<WebScreen> {
     );
   }
 
+  Widget buildSecondSection() {
+    return Container(
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.grey[300]!),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            'We\'ll pay you',
+            style: TextStyle(fontSize: 16),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '£${329 * phonesList.length}.00',
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          GestureDetector(
+            onTap: () {
+              if (phonesList.isEmpty) return;
+              Get.offNamed(Routes.CHECKOUT);
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              decoration: BoxDecoration(
+                color: phonesList.isEmpty ? Colors.grey.shade300 : Colors.amber,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                'Continue',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'By clicking Continue, you confirm you have read and agree to our Terms & Conditions and our Privacy policy.',
+            style: TextStyle(fontSize: 12),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget buildFirstSection(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (phonecurrent != null)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.network(
-                phonecurrent!.image.toString(),
-                width: 100,
-                height: 100,
-              ),
-              const SizedBox(width: 16),
-              Column(
+        ListView.separated(
+            separatorBuilder: (context, index) {
+              return Container(height: 10);
+            },
+            itemCount: phonesList.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              MobilePhonesModel? model = phonesList[index];
+              return Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    phonecurrent!.name.toString(),
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Image.network(
+                    model!.image.toString(),
+                    width: 100,
+                    height: 100,
                   ),
-                  const SizedBox(height: 8),
-                  GestureDetector(
-                    onTap: () {
-                      showAddIMEIDialog(context);
-                    },
-                    child: const Text(
-                      'Add an IMEI',
-                      style: TextStyle(color: Colors.amber, fontSize: 14),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                      'Power: ${phonecurrent!.isTurnOn == true ? 'On' : 'Off'}'),
-                  Text(
-                      'Cracked:   ${phonecurrent!.isCracked == true ? 'Yes' : 'No'}'),
-                  Text(
-                      'Network:   ${phonecurrent!.networkIsUnlocked == true ? 'unlocked' : 'Locked'}'),
-                  Text('Storage:   ${phonecurrent!.storage ?? 'N/A'}'),
-                  Text('Condition: Good'),
-                  const SizedBox(height: 8),
-                  GestureDetector(
-                    onTap: () {
-                      AppService.instance.sharedPreferences
-                          .remove('currentPhone');
-                      phonecurrent = null;
-                      setState(() {});
-                    },
-                    child: const Text(
-                      'Remove',
-                      style: TextStyle(color: Colors.amber, fontSize: 14),
-                    ),
+                  const SizedBox(width: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        model.name.toString(),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      model.imei == null
+                          ? TextButton(
+                              onPressed: () async {
+                                await showAddIMEIDialog(context)
+                                    .then((value) async {
+                                  if (value == null) return;
+                                  var models = model.copyWith(imei: value);
+                                  phonesList.removeAt(index);
+                                  phonesList.add(models);
+
+                                  final List<String> existingList = [];
+                                  for (var w in phonesList) {
+                                    existingList.add(jsonEncode(w));
+                                  }
+                                  await AppService.instance.sharedPreferences
+                                      .setStringList(
+                                          'currentPhoneList', existingList);
+                                  setState(() {});
+                                });
+                              },
+                              child: const Text(
+                                'Add an IMEI',
+                                style: TextStyle(
+                                    color: Colors.amber, fontSize: 14),
+                              ),
+                            )
+                          : Text('Imei: ${model.imei.toString()}'),
+                      const SizedBox(height: 16),
+                      Text('Power: ${model.isTurnOn == true ? 'On' : 'Off'}'),
+                      Text(
+                          'Cracked:   ${model.isCracked == true ? 'Yes' : 'No'}'),
+                      Text(
+                          'Network:   ${model.networkIsUnlocked == true ? 'unlocked' : 'Locked'}'),
+                      Text('Storage:   ${model.storage ?? 'N/A'}'),
+                      Text('Condition: Good'),
+                      const SizedBox(height: 8),
+                      TextButton(
+                        onPressed: () async {
+                          phonesList.removeAt(index);
+
+                          final List<String> existingList = [];
+                          for (var w in phonesList) {
+                            existingList.add(jsonEncode(w));
+                          }
+                          await AppService.instance.sharedPreferences
+                              .setStringList('currentPhoneList', existingList);
+                          setState(() {});
+                        },
+                        child: const Text(
+                          'Remove',
+                          style: TextStyle(color: Colors.amber, fontSize: 14),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
-              ),
-            ],
-          ),
+              );
+            }),
         Divider(height: 32, thickness: 1, color: Colors.grey.shade300),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,8 +304,8 @@ class _WebScreenState extends State<WebScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton(
+                    onPressed: () {
                       Get.offNamed(Routes.SELL_MY_PHONE);
                     },
                     child: const Text(
@@ -230,57 +323,4 @@ class _WebScreenState extends State<WebScreen> {
       ],
     );
   }
-}
-
-Widget buildSecondSection() {
-  return Container(
-    padding: const EdgeInsets.all(24.0),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(8.0),
-      border: Border.all(color: Colors.grey[300]!),
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Text(
-          'We\'ll pay you',
-          style: TextStyle(fontSize: 16),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 8),
-        const Text(
-          '£329.00',
-          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 16),
-        GestureDetector(
-          onTap: () {
-            Get.offNamed(Routes.CHECKOUT);
-          },
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Text(
-              'Continue',
-              style: TextStyle(color: Colors.white, fontSize: 18),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          'By clicking Continue, you confirm you have read and agree to our Terms & Conditions and our Privacy policy.',
-          style: TextStyle(fontSize: 12),
-          textAlign: TextAlign.center,
-        ),
-      ],
-    ),
-  );
 }

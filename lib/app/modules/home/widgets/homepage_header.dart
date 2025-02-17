@@ -223,7 +223,7 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
   }
 
   double padding =
-      getPadding(constraints == null ? 1200 : constraints!.maxWidth);
+      getPadding(constraints == null ? 1200 : constraints.maxWidth);
   return Container(
     width: double.infinity,
     color: Colors.white,
@@ -278,7 +278,7 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Phone & Telephone', style: defaultTextStyle),
-                Text('+92 310 2426 676', style: defaultTextStyle),
+                Text('Trade Phone693693', style: defaultTextStyle),
               ],
             );
             if (constraints != null) {
@@ -312,18 +312,23 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
                 )
               : showPopupWidget(),
           const SizedBox(width: 20), // Updated horizontalSpace with SizedBox
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const CircleAvatar(
-                radius: 20,
-                backgroundColor: Color(0xffFFF2E6),
-                child: Center(
-                  child: Icon(Icons.shopping_basket_outlined),
+          InkWell(
+            onTap: () {
+              Get.toNamed(Routes.Payment);
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Color(0xffFFF2E6),
+                  child: Center(
+                    child: Icon(Icons.shopping_basket_outlined),
+                  ),
                 ),
-              ),
-              Text('Basket', style: defaultTextStyle),
-            ],
+                Text('Basket', style: defaultTextStyle),
+              ],
+            ),
           ),
           const SizedBox(width: 20), // Updated horizontalSpace with SizedBox
 

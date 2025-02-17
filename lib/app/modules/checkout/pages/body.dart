@@ -2,100 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:webuywesell/app/models/users_model.dart/customer_models.dart';
-import 'package:webuywesell/app/services/auth/auth_service.dart';
-
-import '../../../../main.dart';
 import '../../../core/utils/thems/theme.dart';
 import '../../../core/widgets/textfield.dart';
+import '../controllers/checkout_controller.dart';
 import 'bank.dart';
 import 'pay.dart';
 
-class StepController extends GetxController {
-  var currentStep = 0.obs;
-  final totalSteps = 4;
-  CustomerModel? get isloginAuthService {
-    return AuthService.instance.authCustomer;
-  }
-
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController postCodeController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
-  final GlobalKey<FormState> step0Key = GlobalKey<FormState>();
-  final GlobalKey<FormState> step1Key = GlobalKey<FormState>();
-  final GlobalKey<FormState> step2Key = GlobalKey<FormState>();
-  final GlobalKey<FormState> step3Key = GlobalKey<FormState>();
-
-  void nextStep() {
-    if (currentStep.value < totalSteps - 1) {
-      currentStep.value++;
-    }
-  }
-
-  void previousStep() {
-    if (currentStep.value > 0) {
-      currentStep.value--;
-    }
-  }
-
-  Future<void> submitDetails() async {
-    if (step0Key.currentState?.validate() ?? false) {
-      if (isloginAuthService == null) return;
-      final response = await supbaseClient
-          .from('users')
-          .update({
-            'first_name': firstNameController.text,
-            'last_name': lastNameController.text,
-            // 'email': emailController.text,
-            'phone': phoneController.text,
-          })
-          .eq('id', isloginAuthService!.id!)
-          .select();
-
-      if (response.isEmpty) {
-        print("Error inserting details:");
-        return;
-      }
-
-      nextStep();
-    }
-  }
-
-  Future<void> submitAddress() async {
-    if (step1Key.currentState?.validate() ?? false) {
-      if (isloginAuthService == null) return;
-      final response = await supbaseClient
-          .from('users')
-          .update({
-            'zip_code': postCodeController.text,
-            'street': addressController.text,
-          })
-          .eq('id', isloginAuthService!.id!)
-          .select();
-
-      if (response.isEmpty) {
-        print("Error inserting address");
-        return;
-      }
-
-      nextStep();
-    }
-  }
-
-  Future<void> submitDelivery() async {
-    nextStep();
-  }
-
-  Future<void> submitPayment() async {
-    nextStep();
-  }
-}
-
 class StepFlowScreen extends StatelessWidget {
-  final StepController controller = Get.put(StepController());
+  final CheckoutController controller = Get.put(CheckoutController());
 
   StepFlowScreen({super.key});
 
@@ -106,9 +20,7 @@ class StepFlowScreen extends StatelessWidget {
         children: [
           SizedBox(height: 40),
           Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
+            decoration: BoxDecoration(color: Colors.white),
             height: 90,
             child: Center(
               child: Padding(
@@ -242,13 +154,6 @@ class StepFlowScreen extends StatelessWidget {
                   controller: controller.lastNameController,
                   label: 'Last name',
                   hintText: 'Enter your last name',
-                  isRequired: true,
-                ),
-                SizedBox(height: 10),
-                CustomTextField(
-                  controller: controller.emailController,
-                  label: 'Email',
-                  hintText: 'Enter your email',
                   isRequired: true,
                 ),
                 SizedBox(height: 10),

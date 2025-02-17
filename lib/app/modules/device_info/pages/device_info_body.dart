@@ -112,10 +112,9 @@ class _DeviceInfoBodySubScreenState extends State<DeviceInfoBodySubScreen> {
             scale = 1 + ((index * 100 - offset).abs() / 200).clamp(0.8, 1.0);
           }
           return Transform.scale(
-              scale: scale,
-              child: controller.getDashboardViewBodyScreen[index]);
+              scale: scale, child: controller.dashboardViewBodyScreen[index]);
         },
-        childCount: controller.getDashboardViewBodyScreen.length,
+        childCount: controller.dashboardViewBodyScreen.length,
       ),
     );
   }

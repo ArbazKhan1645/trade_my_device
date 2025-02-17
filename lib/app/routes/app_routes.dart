@@ -9,6 +9,7 @@ abstract class Routes {
   static const Payment = _Paths.Payment;
   static const CHECKOUT = _Paths.CHECKOUT;
   static const AUTHENTICATION = _Paths.AUTHENTICATION;
+  static const PROFILE_SCREEN = _Paths.PROFILE_SCREEN;
 }
 
 abstract class _Paths {
@@ -19,4 +20,5 @@ abstract class _Paths {
   static const DEVICE_INFO = '/device-info';
   static const CHECKOUT = '/checkout';
   static const AUTHENTICATION = '/authentication';
+  static const PROFILE_SCREEN = '/profile-screen';
 }
