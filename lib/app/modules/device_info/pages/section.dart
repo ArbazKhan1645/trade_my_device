@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -519,7 +519,8 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                                                   ? Color(0xffFFC000)
                                                   : Colors.grey.shade300,
                                               child: Center(
-                                                child: Text(index.toString(),
+                                                child: Text(
+                                                    (index + 1).toString(),
                                                     style: defaultTextStyle
                                                         .copyWith(
                                                             color:

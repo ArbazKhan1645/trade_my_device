@@ -68,19 +68,19 @@ class HomePageHeaderWidget extends StatelessWidget {
                     child: Builder(builder: (context) {
                       Widget widget = Row(
                         children: [
-                          buildwidget(
-                              Icons.email_outlined, 'info@trademydevice.co.uk'),
+                          // buildwidget(
+                          //     Icons.email_outlined, 'info@trademydevice.co.uk'),
                           SizedBox(width: 15),
-                          buildVerticalDivider(),
+                          // buildVerticalDivider(),
                           SizedBox(width: 15),
-                          buildwidget(Icons.location_on_outlined,
-                              'London England, G53'),
+                          // buildwidget(Icons.location_on_outlined,
+                          //     'London England, G53'),
                           const Spacer(),
                           buildCountryWidget(),
-                          SizedBox(width: 15),
-                          buildVerticalDivider(),
-                          SizedBox(width: 15),
-                          buildThemeWidget(),
+                          // SizedBox(width: 15),
+                          // buildVerticalDivider(),
+                          // SizedBox(width: 15),
+                          // buildThemeWidget(),
                           SizedBox(width: 15),
                         ],
                       );
@@ -265,20 +265,20 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
             }),
           ),
 
-          const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
+          const SizedBox(width: 10),
           Container(
             height: 80,
             width: 1,
             color: Colors.grey.shade200,
           ),
-          const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
+          const SizedBox(width: 10),
           Builder(builder: (context) {
             Widget widget = Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Phone & Telephone', style: defaultTextStyle),
-                Text('Trade Phone693693', style: defaultTextStyle),
+                Text('Contact us', style: defaultTextStyle),
+                Text('info@trademydevice.co.uk', style: defaultTextStyle),
               ],
             );
             if (constraints != null) {
@@ -290,7 +290,7 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
             }
             return widget;
           }),
-          const SizedBox(width: 10), // Updated horizontalSpace with SizedBox
+          const SizedBox(width: 10),
           !AuthService.instance.islogin
               ? GestureDetector(
                   onTap: () {

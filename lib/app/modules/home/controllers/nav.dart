@@ -123,29 +123,11 @@ class _NavigationBarWithDropdownState extends State<NavigationBarWithDropdown> {
               },
             ),
             NavItem(
-              title: 'Business Recycling',
-              isActive: activeDropdown == 'Business Recycling',
+              title: 'Support Centre',
+              isActive: activeDropdown == 'Support Centre',
               onHover: (hover) {
                 setState(() {
-                  activeDropdown = hover ? 'Business Recycling' : null;
-                });
-              },
-            ),
-            NavItem(
-              title: 'Students',
-              isActive: activeDropdown == 'Students',
-              onHover: (hover) {
-                setState(() {
-                  activeDropdown = hover ? 'Students' : null;
-                });
-              },
-            ),
-            NavItem(
-              title: 'Help Centre',
-              isActive: activeDropdown == 'Help Centre',
-              onHover: (hover) {
-                setState(() {
-                  activeDropdown = hover ? 'Help Centre' : null;
+                  activeDropdown = hover ? 'Support Centre' : null;
                 });
               },
             ),

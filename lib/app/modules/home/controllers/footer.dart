@@ -41,27 +41,22 @@ class MobileFooterPageView extends StatelessWidget {
                         children: [
                           Expanded(
                             child: InformationWidget(
-                              heading: 'About',
+                              heading: 'Comapny',
                               options: [
+                                'Home',
                                 'About Us',
-                                'Sell an Item',
-                                'Careers',
-                                'Franchising',
-                                'CeX Blog',
-                                'Press',
+                                'Contact Us',
+                                'How it Work',
                               ],
                             ),
                           ),
                           Expanded(
                             child: InformationWidget(
-                              heading: 'About',
+                              heading: 'Account',
                               options: [
-                                'About Us',
-                                'Sell an Item',
-                                'Careers',
-                                'Franchising',
-                                'CeX Blog',
-                                'Press',
+                                'Login',
+                                'My Account',
+                                'View Basket',
                               ],
                             ),
                           ),
@@ -73,14 +68,11 @@ class MobileFooterPageView extends StatelessWidget {
                         children: [
                           Expanded(
                             child: InformationWidget(
-                              heading: 'About',
+                              heading: 'Legal',
                               options: [
-                                'About Us',
-                                'Sell an Item',
-                                'Careers',
-                                'Franchising',
-                                'CeX Blog',
-                                'Press',
+                                'Terms and Conditions',
+                                'Privacy Policy',
+                                'GDPR Policy',
                               ],
                             ),
                           ),
@@ -95,42 +87,34 @@ class MobileFooterPageView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: InformationWidget(
-                        heading: 'About',
+                        heading: 'Comapny',
                         options: [
+                          'Home',
                           'About Us',
-                          'Sell an Item',
-                          'Careers',
-                          'Franchising',
-                          'CeX Blog',
-                          'Press',
+                          'Contact Us',
+                          'How it Work',
                         ],
                       ),
                     ),
                     SizedBox(width: 20),
                     Expanded(
                       child: InformationWidget(
-                        heading: 'About',
+                        heading: 'Account',
                         options: [
-                          'About Us',
-                          'Sell an Item',
-                          'Careers',
-                          'Franchising',
-                          'CeX Blog',
-                          'Press',
+                          'Login',
+                          'My Account',
+                          'View Basket',
                         ],
                       ),
                     ),
                     SizedBox(width: 20),
                     Expanded(
                       child: InformationWidget(
-                        heading: 'About',
+                        heading: 'Legal',
                         options: [
-                          'About Us',
-                          'Sell an Item',
-                          'Careers',
-                          'Franchising',
-                          'CeX Blog',
-                          'Press',
+                          'Terms and Conditions',
+                          'Privacy Policy',
+                          'GDPR Policy',
                         ],
                       ),
                     ),
