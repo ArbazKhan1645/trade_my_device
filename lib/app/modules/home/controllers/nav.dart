@@ -114,6 +114,7 @@ class _NavigationBarWithDropdownState extends State<NavigationBarWithDropdown> {
               title: 'How it works',
               isActive: activeDropdown == 'How it works',
               onHover: (hover) {
+                Get.toNamed(Routes.HOW_ITS_WORK);
                 setState(() {
                   activeDropdown = hover ? 'How it works' : null;
                   if (hover) {

@@ -10,6 +10,8 @@ abstract class Routes {
   static const CHECKOUT = _Paths.CHECKOUT;
   static const AUTHENTICATION = _Paths.AUTHENTICATION;
   static const PROFILE_SCREEN = _Paths.PROFILE_SCREEN;
+  static const HOW_ITS_WORK = _Paths.HOW_ITS_WORK;
+  static const SUPPORT_CENTER = _Paths.SUPPORT_CENTER;
 }
 
 abstract class _Paths {
@@ -21,4 +23,6 @@ abstract class _Paths {
   static const CHECKOUT = '/checkout';
   static const AUTHENTICATION = '/authentication';
   static const PROFILE_SCREEN = '/profile-screen';
+  static const HOW_ITS_WORK = '/how-its-work';
+  static const SUPPORT_CENTER = '/support-center';
 }

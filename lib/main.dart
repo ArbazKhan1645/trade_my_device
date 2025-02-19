@@ -10,7 +10,6 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
-import 'package:webuywesell/app/services/auth/auth_service.dart';
 import 'app/core/utils/helpers/logger.dart';
 import 'app/core/widgets/global_errorwidget.dart';
 import 'app/core/locators/service_locator.dart';
