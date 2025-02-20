@@ -41,6 +41,10 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
         : con.crack.value,
     con.condition.value,
   ];
+
+  // late List<Widget> answers2 = [
+  //   con.phonecurrent.questions!.map((el)=> el as Map<String, dynamic>).toList().first['options'] as list<Map<String>>;
+  // ];
   late List<Widget> answers = [
     Padding(
       padding: const EdgeInsets.only(top: 12),

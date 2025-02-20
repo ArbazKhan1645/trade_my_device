@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 class MobilePhonesModel {
   final int? id;
   final String? name;
@@ -12,6 +14,8 @@ class MobilePhonesModel {
   final bool? isCracked;
   final String? condition;
   final String? imei;
+  final num? base_price;
+  final List<dynamic>? questions;
 
   MobilePhonesModel({
     this.id,
@@ -19,10 +23,12 @@ class MobilePhonesModel {
     this.image,
     this.brands,
     this.brandName,
+    this.questions,
     this.type,
     this.imei,
     this.createdAt,
     this.isTurnOn,
+    this.base_price,
     this.networkIsUnlocked,
     this.storage,
     this.condition,
@@ -32,21 +38,22 @@ class MobilePhonesModel {
   // Factory constructor for creating a new instance from a map
   factory MobilePhonesModel.fromJson(Map<String, dynamic> json) {
     return MobilePhonesModel(
-      id: json['id'] as int?,
-      name: json['name'] as String?,
-      image: json['image'] as String?,
-      brands: json['brands'] as int?,
-      type: json['type'] as int?,
-      createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at'])
-          : null,
-      isTurnOn: json['isTurnOn'] as bool?,
-      networkIsUnlocked: json['networkIsUnlocked'] as bool?,
-      storage: json['storage'] as String?,
-      isCracked: json['isCracked'] as bool?,
-      condition: json['condition'] as String?,
-      imei: json['imei'] as String?,
-    );
+        id: json['id'] as int?,
+        name: json['name'] as String?,
+        image: json['image'] as String?,
+        brands: json['brands'] as int?,
+        type: json['type'] as int?,
+        createdAt: json['created_at'] != null
+            ? DateTime.parse(json['created_at'])
+            : null,
+        isTurnOn: json['isTurnOn'] as bool?,
+        networkIsUnlocked: json['networkIsUnlocked'] as bool?,
+        storage: json['storage'] as String?,
+        isCracked: json['isCracked'] as bool?,
+        condition: json['condition'] as String?,
+        imei: json['imei'] as String?,
+        questions: json['questions'] as List<dynamic>?,
+        base_price: json['base_price'] as num?);
   }
 
   // Method to convert an instance to a map
@@ -56,12 +63,14 @@ class MobilePhonesModel {
       'image': image,
       'brands': brands,
       'type': type,
+      'questions': questions,
       'storage': storage,
       'isCracked': isCracked,
       'isTurnOn': isTurnOn,
       'networkIsUnlocked': networkIsUnlocked,
       'condition': condition,
-      'imei': imei
+      'imei': imei,
+      'base_price': base_price
     };
   }
 
@@ -73,6 +82,8 @@ class MobilePhonesModel {
       int? brands,
       String? imei,
       int? type,
+      List<dynamic>? questions,
+      num? base_price,
       DateTime? createdAt,
       bool? isTurnOn,
       bool? networkIsUnlocked,
@@ -83,8 +94,10 @@ class MobilePhonesModel {
         id: id ?? this.id,
         name: name ?? this.name,
         image: image ?? this.image,
+        base_price: base_price ?? this.base_price,
         imei: imei ?? this.imei,
         brands: brands ?? this.brands,
+        questions: questions ?? this.questions,
         type: type ?? this.type,
         createdAt: createdAt ?? this.createdAt,
         isTurnOn: isTurnOn ?? this.isTurnOn,
@@ -106,6 +119,8 @@ class MobilePhonesModel {
         other.condition == condition &&
         other.name == name &&
         other.imei == imei &&
+        other.questions == questions &&
+        other.base_price == base_price &&
         other.image == image &&
         other.brands == brands &&
         other.type == type &&
@@ -123,6 +138,8 @@ class MobilePhonesModel {
       condition.hashCode ^
       imei.hashCode ^
       image.hashCode ^
+      base_price.hashCode ^
+      questions.hashCode ^
       brands.hashCode ^
       type.hashCode ^
       createdAt.hashCode ^
