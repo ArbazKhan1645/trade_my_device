@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
+import 'package:webuywesell/app/data/configs/api_configs.dart';
+import 'package:webuywesell/app/models/phones_model/imei_model.dart';
 import 'package:webuywesell/app/modules/sell_my_phone/models/mobile_phones_model.dart';
 import 'package:webuywesell/app/repo/network_repository.dart';
 
@@ -56,7 +58,48 @@ class _DeviceWorthScreenState extends State<DeviceWorthScreen> {
 
   Future<void> _searchByImei(String imei) async {
     try {
-      await callApiKing(imei);
+      final repository = NetworkRepository();
+
+      final basicImeiCheck = await repository.fetchData<ImeiCheckResponse>(
+        url:
+            'https://dash.imei.info/api/check/0/?API_KEY=${ApiConfig.api_key}&imei=$imei',
+        fromJson: (json) => ImeiCheckResponse.fromJson(json),
+      );
+
+      var fetchData = await SupabaseQueryBuilder.get<MobilePhonesModel>(
+        fromJson: MobilePhonesModel.fromJson,
+        tablename: 'phones_models',
+        context: Get.context!,
+      );
+
+      if (fetchData is! List<MobilePhonesModel>) {
+        throw Exception('Invalid data format received');
+      }
+
+      List<MobilePhonesModel> filteredData = fetchData
+          .where((model) => model.name
+              .toString()
+              .toLowerCase()
+              .contains(basicImeiCheck.result.model.toString().toLowerCase()))
+          .toList();
+
+      if (filteredData.isEmpty) {
+        Get.showSnackbar(GetSnackBar(
+            title: 'Error',
+            message:
+                'We dont offer this model "${basicImeiCheck.result.model.toString()}"'));
+        return;
+      }
+
+      // MobilePhonesModel phone = MobilePhonesModel(
+      //     brandName: basicImeiCheck.result.brandName,
+      //     name: basicImeiCheck.result.model.toString(),
+      //     image:
+      //         'https://hnyyuaeeasyhuytscoxk.supabase.co/storage/v1/object/public/mobiles/phones_images/1608026706.huawei-p30-prowebp.webp',
+      //     id: basicImeiCheck.id);
+      await AppService.instance.sharedPreferences
+          .setString('currentPhone', jsonEncode(filteredData.first.toJson()));
+      Get.offAllNamed(Routes.DEVICE_INFO);
     } catch (e) {
       Get.showSnackbar(GetSnackBar(
           title: 'Error', message: 'Failed to fetch IMEI data: $e'));
@@ -89,10 +132,10 @@ class _DeviceWorthScreenState extends State<DeviceWorthScreen> {
       if (filteredData.length == 1) {
         await AppService.instance.sharedPreferences
             .setString('currentPhone', jsonEncode(filteredData.first.toJson()));
-        Get.offNamed(Routes.DEVICE_INFO);
+        Get.offAllNamed(Routes.DEVICE_INFO);
       } else {
         print(filteredData.length);
-        Get.offNamed(Routes.SELL_MY_PHONE,
+        Get.offAllNamed(Routes.SELL_MY_PHONE,
             arguments: {'brandlist': filteredData});
       }
     } catch (e) {
@@ -165,13 +208,7 @@ class _DeviceWorthScreenState extends State<DeviceWorthScreen> {
                               onPressed: () {
                                 if (isLoading) return;
                                 _search();
-                                print(controller.text);
-                                //    callApiKing(imei);
-                                // AppService.instance.sharedPreferences.setString(
-                                //     'currentPhone', jsonEncode(phone.toJson()));
-                                // Get.offNamed(
-                                //   Routes.DEVICE_INFO,
-                                // );
+                           
                               },
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16),

@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
 showPopupWidget() {
   return InkWell(
     onTap: () {
-      Get.toNamed(Routes.PROFILE_SCREEN);
+      Get.offAllNamed(Routes.PROFILE_SCREEN);
     },
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,

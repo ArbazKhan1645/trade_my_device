@@ -18,6 +18,23 @@ class DeviceInfoScreen extends StatefulWidget {
 
 class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
   var con = Get.find<DeviceInfoController>();
+  bool containsAffirmative(String input) {
+    final affirmativeWords = [
+      'yes',
+      'sure',
+      'yeah',
+      'yead',
+      'yup',
+      'ok',
+      'okay',
+      'affirmative',
+      'certainly',
+      'of course'
+    ];
+    final normalizedInput = input.toLowerCase();
+
+    return affirmativeWords.any((word) => normalizedInput.contains(word));
+  }
 
   final List<String> questions = [
     'Does your device turn on?',
@@ -41,10 +58,99 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
         : con.crack.value,
     con.condition.value,
   ];
+  late List<Widget> answers2 =
+      (con.phonecurrent!.questions as List<dynamic>).map((question) {
+    final options = question['options'] as List<dynamic>;
+    return Wrap(
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children: options.map((option) {
+        return InkWell(
+          onTap: () {
+            if (question['question'] == 'Does your Phone turned on?') {
+              con.selectedQuestion = con.selectedQuestion! + 1;
+              con.phonecurrent = con.phonecurrent!.copyWith(
+                  isTurnOn: containsAffirmative(
+                      option['answer'].toString().toLowerCase()));
+              con.updateURL(
+                  newPower: option['answer'].toString().toLowerCase());
+            } else if (question['question'] == 'What storage capacity is it?') {
+              con.selectedQuestion = 2;
+              con.phonecurrent = con.phonecurrent!
+                  .copyWith(storage: option['answer'].toString().toLowerCase());
+              con.updateURL(
+                  newStorage: option['answer'].toString().toLowerCase());
+            } else if (question['question'] ==
+                'Is it network locked or unlocked') {
+              con.selectedQuestion = 3;
+              con.phonecurrent = con.phonecurrent!.copyWith(
+                  networkIsUnlocked: containsAffirmative(
+                      option['answer'].toString().toLowerCase()));
+              con.updateURL(
+                  newnetwork: option['answer'].toString().toLowerCase());
+            } else if (question['question'] == 'Is the font or back cracked?') {
+              con.selectedQuestion = 4;
+              con.phonecurrent = con.phonecurrent!.copyWith(
+                  isCracked: containsAffirmative(
+                      option['answer'].toString().toLowerCase()));
+              con.updateURL(
+                  newcrack: option['answer'].toString().toLowerCase());
+            } else if (question['question'] ==
+                'What condition best describe four device?') {
+              con.selectedQuestion = 5;
+              con.phonecurrent = con.phonecurrent!.copyWith(
+                  condition: option['answer'].toString().toLowerCase());
+              con.updateURL(
+                  newcondition: option['answer'].toString().toLowerCase());
+            } else {}
 
-  // late List<Widget> answers2 = [
-  //   con.phonecurrent.questions!.map((el)=> el as Map<String, dynamic>).toList().first['options'] as list<Map<String>>;
-  // ];
+            num priceAdjustment = option['price_adjustment'] as num;
+            num newPrice;
+
+            if (con.phonecurrent?.manage_price != null) {
+              newPrice = con.phonecurrent!.manage_price! + priceAdjustment;
+            } else {
+              newPrice = con.phonecurrent!.base_price! + priceAdjustment;
+            }
+            con.phonecurrent =
+                con.phonecurrent!.copyWith(manage_price: newPrice);
+            setState(() {
+              questions2 = [
+                con.power.value.isEmpty
+                    ? (con.phonecurrent?.isTurnOn.toString() ?? '')
+                    : con.power.value,
+                con.storage.value.isEmpty
+                    ? (con.phonecurrent?.storage.toString() ?? '')
+                    : con.storage.value,
+                con.network.value.isEmpty
+                    ? (con.phonecurrent?.networkIsUnlocked.toString() ?? '')
+                    : con.network.value,
+                con.crack.value.isEmpty
+                    ? (con.phonecurrent?.isCracked.toString() ?? '')
+                    : con.crack.value,
+                con.condition.value,
+              ];
+            });
+          },
+          child: Container(
+            height: 100,
+            width: 200,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Color(0xFFe5e7eb))),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.confirmation_number_outlined),
+                Text(option['answer'])
+              ],
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }).toList();
   late List<Widget> answers = [
     Padding(
       padding: const EdgeInsets.only(top: 12),
@@ -453,7 +559,7 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                           left: constraints.maxWidth >= 1600
                               ? constraints.maxWidth * 0.15
                               : constraints.maxWidth * 0.10,
-                          bottom: constraints.maxWidth >= 1600 ? -350 : -300,
+                          top: -0,
                           child: Image.network(image, height: 400),
                         );
                       })
@@ -540,7 +646,7 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(left: 16.0),
-                                          child: answers[index],
+                                          child: answers2[index],
                                         ),
                                     ],
                                   );

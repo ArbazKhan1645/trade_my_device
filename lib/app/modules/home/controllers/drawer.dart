@@ -51,20 +51,30 @@ class FullScreenDialog extends StatelessWidget {
                 children: [
                   ListTile(
                       onTap: () {
-                        Get.offNamed(Routes.SELL_MY_PHONE);
+                        Get.offAllNamed(Routes.HOME);
+                      },
+                      title: Text('Home'),
+                      trailing: Icon(Icons.arrow_forward)),
+                  Divider(thickness: 0.5, color: Colors.grey),
+                  ListTile(
+                      onTap: () {
+                        Get.offAllNamed(Routes.SELL_MY_PHONE);
                       },
                       title: Text('Sell my Phone'),
                       trailing: Icon(Icons.arrow_forward)),
                   Divider(thickness: 0.5, color: Colors.grey),
-                  ListTile(title: Text('How it works')),
+                  ListTile(
+                      onTap: () {
+                        Get.offAllNamed(Routes.HOW_ITS_WORK);
+                      },
+                      title: Text('How it works')),
                   Divider(thickness: 0.5, color: Colors.grey),
-                  ListTile(title: Text('Business Recycling')),
+                  ListTile(
+                      onTap: () {
+                        Get.offAllNamed(Routes.SUPPORT_CENTER);
+                      },
+                      title: Text('Support Center')),
                   Divider(thickness: 0.5, color: Colors.grey),
-                  ListTile(title: Text('Students')),
-                  Divider(thickness: 0.5, color: Colors.grey),
-                  ListTile(title: Text('Help Centre')),
-                  Divider(thickness: 0.5, color: Colors.grey),
-                  ListTile(title: Text('Account')),
                 ],
               ),
             ),

@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 
 import 'dart:convert';
 import 'dart:html' as html;
@@ -16,10 +16,26 @@ import '../../../../main.dart';
 
 class DeviceInfoController extends GetxController {
   // Constants
-  static const _validStorageOptions = {'64GB', '128GB', '256GB', '512GB'};
-  static const _validPowerStates = {'on', 'off'};
-  static const _validNetworkStates = {'locked', 'unlocked'};
-  static const _validCrackStates = {'yes', 'no'};
+  static const _validStorageOptions = {
+    '64gb',
+    '128gb',
+    '256gb',
+    '512gb',
+    '32gb',
+    '1tb',
+    '2tb',
+    '4tb'
+  };
+  static const _validPowerStates = {'on', 'off', 'yes', 'no'};
+  static const _validNetworkStates = {
+    'locked',
+    'unlocked',
+    'on',
+    'off',
+    'yes',
+    'no'
+  };
+  static const _validCrackStates = {'on', 'off', 'yes', 'no'};
   static const _validconditionsStates = {'new', 'good', 'fair', 'poor'};
 
   // State variables
@@ -185,7 +201,7 @@ class DeviceInfoController extends GetxController {
     try {
       if (isloginAuthService) {
         await _saveCurrentPhone();
-        Get.offNamed(Routes.Payment);
+        Get.offAllNamed(Routes.Payment);
         return;
       }
       // if (_validateAccountCreation()) return;
@@ -235,7 +251,7 @@ class DeviceInfoController extends GetxController {
 
     AuthService.instance.saveAuthState(userResponse);
     await _saveCurrentPhone();
-    Get.offNamed(Routes.Payment);
+    Get.offAllNamed(Routes.Payment);
   }
 
   Future<CustomerModel?> _createUserRecord() async {

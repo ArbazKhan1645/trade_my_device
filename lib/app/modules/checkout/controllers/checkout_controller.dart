@@ -140,9 +140,9 @@ class CheckoutController extends GetxController {
       if (response.isEmpty) {
         return;
       }
-      AppService.instance.sharedPreferences.remove('last_order_id');
-      AppService.instance.sharedPreferences.remove('currentPhoneList');
-      AppService.instance.sharedPreferences.remove('currentPhone');
+    await  AppService.instance.sharedPreferences.remove('last_order_id');
+    await  AppService.instance.sharedPreferences.remove('currentPhoneList');
+    await  AppService.instance.sharedPreferences.remove('currentPhone');
       Get.offAllNamed(Routes.PROFILE_SCREEN);
     }
   }

@@ -59,43 +59,43 @@ class HomePageHeaderWidget extends StatelessWidget {
           child: Stack(
             children: [
               // Foreground content (the Row with widgets)
-              Row(
-                children: [
-                  SizedBox(width: 15),
-                  buildheadertext(),
-                  SizedBox(width: 15),
-                  Expanded(
-                    child: Builder(builder: (context) {
-                      Widget widget = Row(
-                        children: [
-                          // buildwidget(
-                          //     Icons.email_outlined, 'info@trademydevice.co.uk'),
-                          SizedBox(width: 15),
-                          // buildVerticalDivider(),
-                          SizedBox(width: 15),
-                          // buildwidget(Icons.location_on_outlined,
-                          //     'London England, G53'),
-                          const Spacer(),
-                          buildCountryWidget(),
-                          // SizedBox(width: 15),
-                          // buildVerticalDivider(),
-                          // SizedBox(width: 15),
-                          // buildThemeWidget(),
-                          SizedBox(width: 15),
-                        ],
-                      );
-                      if (constraints != null) {
-                        if (constraints!.maxWidth >= 800) {
-                          return widget;
-                        } else {
-                          return RowWidget();
-                        }
-                      }
-                      return widget;
-                    }),
-                  )
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     SizedBox(width: 15),
+              //     buildheadertext(),
+              //     SizedBox(width: 15),
+              //     Expanded(
+              //       child: Builder(builder: (context) {
+              //         Widget widget = Row(
+              //           children: [
+              //             // buildwidget(
+              //             //     Icons.email_outlined, 'info@trademydevice.co.uk'),
+              //             SizedBox(width: 15),
+              //             // buildVerticalDivider(),
+              //             SizedBox(width: 15),
+              //             // buildwidget(Icons.location_on_outlined,
+              //             //     'London England, G53'),
+              //             const Spacer(),
+              //             buildCountryWidget(),
+              //             // SizedBox(width: 15),
+              //             // buildVerticalDivider(),
+              //             // SizedBox(width: 15),
+              //             // buildThemeWidget(),
+              //             SizedBox(width: 15),
+              //           ],
+              //         );
+              //         if (constraints != null) {
+              //           if (constraints!.maxWidth >= 800) {
+              //             return widget;
+              //           } else {
+              //             return RowWidget();
+              //           }
+              //         }
+              //         return widget;
+              //       }),
+              //     )
+              //   ],
+              // ),
             ],
           ),
         ));
@@ -207,7 +207,7 @@ Widget buildSubHeader(BuildContext context, {BoxConstraints? constraints}) {
   return Positioned(
       left: 0,
       right: 0,
-      bottom: -25,
+      bottom: -15,
       child: buildWidgetOFScrollHeader(context, constraints: constraints));
 }
 
@@ -248,7 +248,7 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
           SizedBox(width: padding), // Updated horizontalSpace with SizedBox
           GestureDetector(
               onTap: () {
-                Get.offNamed(Routes.HOME);
+                Get.offAllNamed(Routes.HOME);
               },
               child: Image.asset('assets/images/trade.jpeg')),
 
@@ -294,7 +294,7 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
           !AuthService.instance.islogin
               ? GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.AUTHENTICATION);
+                    Get.offAllNamed(Routes.AUTHENTICATION);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -314,7 +314,7 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
           const SizedBox(width: 20), // Updated horizontalSpace with SizedBox
           InkWell(
             onTap: () {
-              Get.toNamed(Routes.Payment);
+              Get.offAllNamed(Routes.Payment);
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -1,10 +1,10 @@
-import 'dart:convert';
+// ignore_for_file: depend_on_referenced_packages
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 import 'package:webuywesell/app/services/app/app_service.dart';
-
 import '../../../core/utils/thems/theme.dart';
 import '../../../core/widgets/base.dart';
 import '../../sell_my_phone/dialog.dart';
@@ -138,7 +138,7 @@ class _WebScreenState extends State<WebScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            '£${329 * phonesList.length}.00',
+            '£${phonesList.fold<num>(0, (sum, element) => sum + (element?.manage_price ?? 0))}.00',
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
@@ -146,7 +146,7 @@ class _WebScreenState extends State<WebScreen> {
           GestureDetector(
             onTap: () {
               if (phonesList.isEmpty) return;
-              Get.offNamed(Routes.CHECKOUT);
+              Get.offAllNamed(Routes.CHECKOUT);
             },
             child: Container(
               width: double.infinity,
@@ -306,7 +306,7 @@ class _WebScreenState extends State<WebScreen> {
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () {
-                      Get.offNamed(Routes.SELL_MY_PHONE);
+                      Get.offAllNamed(Routes.SELL_MY_PHONE);
                     },
                     child: const Text(
                       'Add another device',

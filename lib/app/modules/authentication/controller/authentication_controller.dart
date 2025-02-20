@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:webuywesell/app/routes/app_pages.dart';
 import '../../../../main.dart';
 import '../../../models/users_model.dart/customer_models.dart';
 import '../../../repo/fetch_supabase.dart';
@@ -61,6 +62,7 @@ class AuthenticationController extends GetxController {
       }
       currentPartnerUser.value = customers.first;
       AuthService.instance.saveAuthState(currentPartnerUser.value!);
+      Get.offAllNamed(Routes.HOME);
     } catch (e) {
       setErrorMessage('Error fetching user: ${e.toString()}');
     }

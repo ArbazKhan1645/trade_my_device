@@ -103,7 +103,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                     style: defaultTextStyle.copyWith(fontSize: 20)),
                 TextButton(
                     onPressed: () {
-                      Get.offNamed(Routes.SELL_MY_PHONE);
+                      Get.offAllNamed(Routes.SELL_MY_PHONE);
                     },
                     child: Text(
                       'View ALl',
@@ -117,7 +117,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          Get.offNamed(Routes.SELL_MY_PHONE, arguments: {
+                          Get.offAllNamed(Routes.SELL_MY_PHONE, arguments: {
                             'brand': 'Apple',
                           });
                         },
@@ -132,7 +132,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          Get.offNamed(Routes.SELL_MY_PHONE, arguments: {
+                          Get.offAllNamed(Routes.SELL_MY_PHONE, arguments: {
                             'brand': 'Samsung',
                           });
                         },
@@ -156,7 +156,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                Get.offNamed(Routes.SELL_MY_PHONE);
+                                Get.offAllNamed(Routes.SELL_MY_PHONE);
                               },
                               child: const CategoryCard(
                                 title: 'Sell my Apple iPhone',
@@ -167,7 +167,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                             const SizedBox(width: 16),
                             GestureDetector(
                               onTap: () {
-                                Get.offNamed(Routes.SELL_MY_PHONE);
+                                Get.offAllNamed(Routes.SELL_MY_PHONE);
                               },
                               child: const CategoryCard(
                                 title: 'Sell my Samsung Galaxy',

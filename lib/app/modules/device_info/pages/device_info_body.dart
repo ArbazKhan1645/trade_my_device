@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webuywesell/app/core/widgets/optimized_animated_container.dart';
 import 'package:flutter/foundation.dart';
-
 import '../../home/widgets/homepage_header.dart';
 import '../controllers/device_info_controller.dart';
 

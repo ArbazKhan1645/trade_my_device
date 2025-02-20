@@ -86,7 +86,7 @@ class LoginWidget extends StatelessWidget {
         TextButton(
           onPressed: () {
             Get.back();
-            Get.offNamed(Routes.SELL_MY_PHONE);
+            Get.offAllNamed(Routes.SELL_MY_PHONE);
           },
           child: Text('Trade your phone Now',
               style:

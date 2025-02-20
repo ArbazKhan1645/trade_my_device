@@ -91,33 +91,3 @@ class NetworkRepository {
   }
 }
 
-callApiKing(String imei) async {
-  final repository = NetworkRepository();
-
-  try {
-    final basicImeiCheck = await repository.fetchData<ImeiCheckResponse>(
-      url:
-          'https://dash.imei.info/api/check/0/?API_KEY=${ApiConfig.api_key}&imei=$imei',
-      fromJson: (json) => ImeiCheckResponse.fromJson(json),
-    );
-
-    MobilePhonesModel phone = MobilePhonesModel(
-        brandName: basicImeiCheck.result.brandName,
-        name: basicImeiCheck.result.model.toString(),
-        image:
-            'https://hnyyuaeeasyhuytscoxk.supabase.co/storage/v1/object/public/mobiles/phones_images/1608026706.huawei-p30-prowebp.webp',
-        id: basicImeiCheck.id);
-    AppService.instance.sharedPreferences
-        .setString('currentPhone', jsonEncode(phone.toJson()));
-    Get.offNamed(Routes.DEVICE_INFO);
-
-    print(
-        "Customer: ${basicImeiCheck.result.brandName}, Age: ${basicImeiCheck.result.model}");
-  } catch (e) {
-    Get.showSnackbar(GetSnackBar(
-      title: 'Error',
-      message: e.toString(),
-    ));
-    print("Error: $e");
-  }
-}

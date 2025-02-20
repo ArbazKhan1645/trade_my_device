@@ -26,20 +26,15 @@ class StepFlowScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     RichText(
                       text: TextSpan(
-                          text: '£329 guaranteed for the next',
+                          text:
+                              '£${controller.phonesList.fold<num>(0, (sum, element) => sum + (element?.manage_price ?? 0))}.00 guaranteed for the next 30 days',
                           style: defaultTextStyle.copyWith(
                               fontSize: 18, fontWeight: FontWeight.w600),
-                          children: [
-                            const TextSpan(
-                              text: '  1m 39s',
-                              style: TextStyle(
-                                color: Colors.amber,
-                              ),
-                            ),
-                          ]),
+                          children: []),
                     ),
                     Obx(() {
                       return Padding(

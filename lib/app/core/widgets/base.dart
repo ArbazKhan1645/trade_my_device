@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:webuywesell/app/core/widgets/optimized_animated_container.dart';
-
 import '../../modules/home/widgets/homepage_header.dart';
 
 class CommonBaseBodyScreen extends StatelessWidget {
@@ -14,6 +13,7 @@ class CommonBaseBodyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool enableAnimations = !kIsWeb || !kReleaseMode;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xfff9f9f9),
       body: LayoutBuilder(
         builder: (context, constraints) {

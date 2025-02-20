@@ -14,7 +14,8 @@ class MobilePhonesModel {
   final bool? isCracked;
   final String? condition;
   final String? imei;
-  final num? base_price;
+   num? base_price;
+  final num? manage_price;
   final List<dynamic>? questions;
 
   MobilePhonesModel({
@@ -23,6 +24,7 @@ class MobilePhonesModel {
     this.image,
     this.brands,
     this.brandName,
+    this.manage_price,
     this.questions,
     this.type,
     this.imei,
@@ -53,6 +55,7 @@ class MobilePhonesModel {
         condition: json['condition'] as String?,
         imei: json['imei'] as String?,
         questions: json['questions'] as List<dynamic>?,
+        manage_price: json['manage_price'] as num?,
         base_price: json['base_price'] as num?);
   }
 
@@ -67,6 +70,7 @@ class MobilePhonesModel {
       'storage': storage,
       'isCracked': isCracked,
       'isTurnOn': isTurnOn,
+      'manage_price': manage_price,
       'networkIsUnlocked': networkIsUnlocked,
       'condition': condition,
       'imei': imei,
@@ -81,6 +85,7 @@ class MobilePhonesModel {
       String? image,
       int? brands,
       String? imei,
+      num? manage_price,
       int? type,
       List<dynamic>? questions,
       num? base_price,
@@ -93,6 +98,7 @@ class MobilePhonesModel {
     return MobilePhonesModel(
         id: id ?? this.id,
         name: name ?? this.name,
+        manage_price: manage_price ?? this.manage_price,
         image: image ?? this.image,
         base_price: base_price ?? this.base_price,
         imei: imei ?? this.imei,
@@ -117,6 +123,7 @@ class MobilePhonesModel {
     return other is MobilePhonesModel &&
         other.id == id &&
         other.condition == condition &&
+        other.manage_price == manage_price &&
         other.name == name &&
         other.imei == imei &&
         other.questions == questions &&
@@ -142,6 +149,7 @@ class MobilePhonesModel {
       questions.hashCode ^
       brands.hashCode ^
       type.hashCode ^
+      manage_price.hashCode ^
       createdAt.hashCode ^
       isTurnOn.hashCode ^
       networkIsUnlocked.hashCode ^

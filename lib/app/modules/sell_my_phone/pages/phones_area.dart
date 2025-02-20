@@ -116,11 +116,11 @@ class SellMyIPhoneScreen extends StatelessWidget {
                                 MobilePhonesModel phone =
                                     controller.filterphoneModels[index];
                                 return GestureDetector(
-                                  onTap: () {
-                                    AppService.instance.sharedPreferences
+                                  onTap: () async {
+                                    await AppService.instance.sharedPreferences
                                         .setString('currentPhone',
                                             jsonEncode(phone.toJson()));
-                                    Get.offNamed(
+                                    Get.offAllNamed(
                                       Routes.DEVICE_INFO,
                                     );
                                   },
@@ -206,13 +206,12 @@ class SellMyIPhoneScreen extends StatelessWidget {
                             MobilePhonesModel phone =
                                 controller.filterphoneModels[index];
                             return GestureDetector(
-                              onTap: () {
-                                AppService.instance.sharedPreferences
-                                        .setString('currentPhone',
-                                            jsonEncode(phone.toJson()));
-                                    Get.offNamed(
-                                      Routes.DEVICE_INFO,
-                                    );
+                              onTap: ()async {
+                             await   AppService.instance.sharedPreferences.setString(
+                                    'currentPhone', jsonEncode(phone.toJson()));
+                                Get.offAllNamed(
+                                  Routes.DEVICE_INFO,
+                                );
                               },
                               child: Container(
                                 height: 200,

@@ -1,13 +1,11 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:webuywesell/app/modules/home/controllers/home.controller.dart';
 import 'package:webuywesell/app/modules/sell_my_phone/models/mobile_phones_model.dart';
-
 import '../../../routes/app_pages.dart';
 import '../../../services/app/app_service.dart';
 
@@ -110,27 +108,36 @@ class _NavigationBarWithDropdownState extends State<NavigationBarWithDropdown> {
                 });
               },
             ),
-            NavItem(
-              title: 'How it works',
-              isActive: activeDropdown == 'How it works',
-              onHover: (hover) {
-                Get.toNamed(Routes.HOW_ITS_WORK);
-                setState(() {
-                  activeDropdown = hover ? 'How it works' : null;
-                  if (hover) {
-                    _hideDropdown();
-                  }
-                });
+            GestureDetector(
+              onTap: () {
+                Get.offAllNamed(Routes.HOW_ITS_WORK);
               },
+              child: NavItem(
+                title: 'How it works',
+                isActive: activeDropdown == 'How it works',
+                onHover: (hover) {
+                  setState(() {
+                    activeDropdown = hover ? 'How it works' : null;
+                    if (hover) {
+                      _hideDropdown();
+                    }
+                  });
+                },
+              ),
             ),
-            NavItem(
-              title: 'Support Centre',
-              isActive: activeDropdown == 'Support Centre',
-              onHover: (hover) {
-                setState(() {
-                  activeDropdown = hover ? 'Support Centre' : null;
-                });
+            GestureDetector(
+              onTap: () {
+                Get.offAllNamed(Routes.SUPPORT_CENTER);
               },
+              child: NavItem(
+                title: 'Support Centre',
+                isActive: activeDropdown == 'Support Centre',
+                onHover: (hover) {
+                  setState(() {
+                    activeDropdown = hover ? 'Support Centre' : null;
+                  });
+                },
+              ),
             ),
           ],
         ),
@@ -219,10 +226,6 @@ class PhoneDropdownContent extends StatelessWidget {
   }
 }
 
-// PhoneSection widget remains the same
-
-// PhoneSection widget remains the same
-
 class PhoneSection extends StatelessWidget {
   final String title;
   final List<MobilePhonesModel> phones;
@@ -257,12 +260,12 @@ class PhoneSection extends StatelessWidget {
               ...phones.take(5).map((phone) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: TextButton(
-                    onPressed: () {
-                      AppService.instance.sharedPreferences.setString(
-                          'currentPhone', jsonEncode(phone.toJson()));
-                      Get.offNamed(
-                        Routes.DEVICE_INFO,
-                      );
+                    onPressed: () async {
+                      await AppService.instance.sharedPreferences
+                          .setString('currentPhone', jsonEncode(phone.toJson()))
+                          .then((val) {
+                        Get.offAllNamed(Routes.DEVICE_INFO);
+                      });
                     },
                     child: Text(phone.name.toString(),
                         style: const TextStyle(color: Colors.blue)),
@@ -273,7 +276,7 @@ class PhoneSection extends StatelessWidget {
                   children: [
                     TextButton(
                         onPressed: () {
-                          Get.offNamed(Routes.SELL_MY_PHONE, arguments: {
+                          Get.offAllNamed(Routes.SELL_MY_PHONE, arguments: {
                             'brand': title,
                           });
                         },
