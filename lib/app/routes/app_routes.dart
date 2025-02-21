@@ -12,6 +12,7 @@ abstract class Routes {
   static const PROFILE_SCREEN = _Paths.PROFILE_SCREEN;
   static const HOW_ITS_WORK = _Paths.HOW_ITS_WORK;
   static const SUPPORT_CENTER = _Paths.SUPPORT_CENTER;
+  static const ABOUT_US = _Paths.ABOUT_US;
 }
 
 abstract class _Paths {
@@ -25,4 +26,5 @@ abstract class _Paths {
   static const PROFILE_SCREEN = '/profile-screen';
   static const HOW_ITS_WORK = '/how-its-work';
   static const SUPPORT_CENTER = '/support-center';
+  static const ABOUT_US = '/about-us';
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:webuywesell/app/routes/app_pages.dart';
 
 import '../../../core/utils/thems/theme.dart';
 
@@ -129,7 +131,7 @@ class MobileFooterPageView extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Text(
-                '©2025 TradeMyDevice Limited. All rights reserved | Company No. 8321525 - VAT No. GB153510637',
+                'Copyright © 2025. TICOR ASSOCIATES LIMITED t/a TradeMyDevice is registered in the Northern Ireland under registration number NI643607.',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.cabin(
                   color: Color.fromARGB(255, 129, 140, 152),
@@ -147,15 +149,30 @@ class MobileFooterPageView extends StatelessWidget {
   }
 }
 
-class InformationWidget extends StatelessWidget {
+class InformationWidget extends StatefulWidget {
   const InformationWidget({
-    Key? key,
+    super.key,
     required this.heading,
     required this.options,
-  }) : super(key: key);
+  });
 
   final String heading;
   final List<String> options;
+
+  @override
+  _InformationWidgetState createState() => _InformationWidgetState();
+}
+
+class _InformationWidgetState extends State<InformationWidget> {
+  Map<String, bool> isHovered = {};
+
+  @override
+  void initState() {
+    super.initState();
+    for (var option in widget.options) {
+      isHovered[option] = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +180,7 @@ class InformationWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          heading,
+          widget.heading,
           style: GoogleFonts.cabin(
             color: Colors.white,
             fontWeight: FontWeight.w500,
@@ -174,21 +191,25 @@ class InformationWidget extends StatelessWidget {
         const SizedBox(height: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: options.map((option) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: GestureDetector(
-                onTap: () {
-                  // Handle onTap for each option here
-                  print('$option tapped');
-                },
-                child: Text(
-                  option,
-                  style: GoogleFonts.cabin(
-                    color: Color.fromARGB(255, 129, 140, 152),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    decoration: TextDecoration.underline,
+          children: widget.options.map((option) {
+            return MouseRegion(
+              onEnter: (_) => setState(() => isHovered[option] = true),
+              onExit: (_) => setState(() => isHovered[option] = false),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextButton(
+                  onPressed: () => navigateToPage(option),
+                  child: AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 200),
+                    style: GoogleFonts.cabin(
+                      color: isHovered[option]!
+                          ? Colors.white
+                          : const Color.fromARGB(255, 129, 140, 152),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      decoration: TextDecoration.underline,
+                    ),
+                    child: Text(option),
                   ),
                 ),
               ),
@@ -263,5 +284,48 @@ class NewsLetterWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+void navigateToPage(String option) {
+  switch (option) {
+    case 'Home':
+      Get.offAllNamed(Routes.HOME);
+      break;
+    case 'About Us':
+      Get.offAllNamed(Routes.ABOUT_US);
+      break;
+    case 'Contact Us':
+      Get.offAllNamed(Routes.HOME);
+      break;
+    case 'How it Work':
+      Get.offAllNamed(Routes.HOW_ITS_WORK);
+      break;
+    case 'Login':
+      Get.offAllNamed(Routes.AUTHENTICATION);
+      break;
+    case 'My Account':
+      Get.offAllNamed(Routes.PROFILE_SCREEN);
+      break;
+    case 'View Basket':
+      Get.offAllNamed(Routes.Payment);
+      break;
+    case 'Terms and Conditions':
+      Get.offAllNamed(Routes.SUPPORT_CENTER, arguments: {
+        'option': 'Conditions',
+      });
+      break;
+    case 'Privacy Policy':
+      Get.offAllNamed(Routes.SUPPORT_CENTER, arguments: {
+        'option': 'Other',
+      });
+      break;
+    case 'GDPR Policy':
+      Get.offAllNamed(Routes.SUPPORT_CENTER, arguments: {
+        'option': 'GDR Policy',
+      });
+      break;
+    default:
+      Get.offAllNamed(Routes.HOME);
   }
 }
