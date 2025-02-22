@@ -20,7 +20,8 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
       children: [
         _buildOrderInfo(),
         const SizedBox(height: 16),
-        if (controller.selectedOrder!.timeline!.isNotEmpty) _buildOrderStatus(),
+        if ((controller.selectedOrder?.timeline ?? []).isNotEmpty)
+          _buildOrderStatus(),
         const SizedBox(height: 16),
         _buildShipmentDetails(),
         const SizedBox(height: 16),
@@ -47,7 +48,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Order No: ${controller.selectedOrder!.orderNumber}',
+                        'Order No: ${controller.selectedOrder?.orderNumber ?? 'N/A'}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -62,7 +63,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                      'Placed On: ${formatOrderDate(controller.selectedOrder!.createdAt ?? DateTime.now())}',
+                      'Placed On: ${formatOrderDate(controller.selectedOrder?.createdAt ?? DateTime.now())}',
                       style: TextStyle(color: Colors.grey)),
                 ],
               ),
@@ -102,7 +103,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
 
   Widget _buildTimeline() {
     final List<Map<String, String>> timeline = [];
-    for (var status in controller.selectedOrder!.timeline!) {
+    for (var status in controller.selectedOrder?.timeline ?? []) {
       timeline.add({
         'date': status['date'] ?? '',
         'time': status['time'] ?? '',
@@ -150,7 +151,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(width: 8),
                   Text(
-                    entry['status']!,
+                    entry['status'] ?? '',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: isDelivered ? Colors.blue : Colors.black,
@@ -229,7 +230,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                 separatorBuilder: (context, index) => Divider(
                       color: Colors.grey.shade300,
                     ),
-                itemCount: controller.selectedOrder!.models!.length,
+                itemCount: controller.selectedOrder?.models?.length ?? 0,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   MobilePhonesModel model =
@@ -263,7 +264,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                             SizedBox(height: 8),
                             ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: model.questions!.length,
+                                itemCount: model.questions?.length ?? 0,
                                 itemBuilder: (context, indexx) {
                                   return Row(
                                     mainAxisAlignment:
@@ -271,15 +272,16 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          model.questions![indexx]['question']
-                                              .toString(),
+                                          model.questions?[indexx]
+                                                  ['question'] ??
+                                              'No Question'.toString(),
                                           style: TextStyle(color: Colors.grey),
                                         ),
                                       ),
                                       Text(
-                                        model.questions![indexx]
-                                                ['selected_answer']
-                                            .toString(),
+                                        model.questions?[indexx]
+                                                ['selected_answer'] ??
+                                            'No Answer Selected'.toString(),
                                         style: TextStyle(color: Colors.grey),
                                       ),
                                     ],
