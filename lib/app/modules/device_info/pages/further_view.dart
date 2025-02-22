@@ -262,64 +262,68 @@ class _WebScreenState extends State<WebScreen> {
                 ],
               );
             }),
-        Divider(height: 32, thickness: 1, color: Colors.grey.shade300),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                width: 22,
-                height: 22,
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 20,
+        if (phonesList.length != 2)
+          Divider(height: 32, thickness: 1, color: Colors.grey.shade300),
+        if (phonesList.length != 2)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 22,
+                  height: 22,
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Get £5 extra',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Add another device over £50 and we\'ll give you £5 extra!',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: const Text(
-                      'Terms & Conditions apply.',
-                      style: TextStyle(color: Colors.blue, fontSize: 14),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Get £5 extra',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () {
-                      Get.offAllNamed(Routes.SELL_MY_PHONE);
-                    },
-                    child: const Text(
-                      'Add another device',
-                      style: TextStyle(color: Colors.black, fontSize: 14),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Add another device over £50 and we\'ll give you £5 extra!',
+                      style: TextStyle(fontSize: 14),
                     ),
-                  ),
-                ],
+                    GestureDetector(
+                      onTap: () {},
+                      child: const Text(
+                        'Terms & Conditions apply.',
+                        style: TextStyle(color: Colors.blue, fontSize: 14),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () {
+                        Get.offAllNamed(Routes.SELL_MY_PHONE);
+                      },
+                      child: const Text(
+                        'Add another device',
+                        style: TextStyle(color: Colors.black, fontSize: 14),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
         const SizedBox(height: 10),
-        Divider(height: 32, thickness: 1, color: Colors.grey.shade300),
+        if (phonesList.length != 2)
+          Divider(height: 32, thickness: 1, color: Colors.grey.shade300),
       ],
     );
   }

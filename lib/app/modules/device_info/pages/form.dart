@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
+import 'package:webuywesell/app/modules/sell_my_phone/models/mobile_phones_model.dart';
+import 'package:webuywesell/app/services/app/app_service.dart';
 
 import '../controllers/device_info_controller.dart';
 
@@ -16,6 +20,30 @@ class _EmailFormWidgetState extends State<EmailFormWidget> {
   bool isChecked = false;
 
   @override
+  void initState() {
+    fetchPhone();
+    super.initState();
+  }
+
+  List<MobilePhonesModel> getPhoneList() {
+    final List<String> storedList = AppService.instance.sharedPreferences
+            .getStringList('currentPhoneList') ??
+        [];
+    return (storedList
+            .map((item) => jsonDecode(item) as Map<String, dynamic>)
+            .toList())
+        .map((w) => MobilePhonesModel.fromJson(w))
+        .toList();
+  }
+
+  MobilePhonesModel? phonecurrent;
+  List<MobilePhonesModel?> phonesList = [];
+  fetchPhone() {
+    phonesList = getPhoneList();
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GetBuilder<DeviceInfoController>(
         init: DeviceInfoController(),
@@ -24,6 +52,7 @@ class _EmailFormWidgetState extends State<EmailFormWidget> {
             padding: const EdgeInsets.all(16.0),
             child: Form(
               key: controller.formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -39,7 +68,7 @@ class _EmailFormWidgetState extends State<EmailFormWidget> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter an email';
                             }
-                            // Regex for email validation
+
                             String pattern =
                                 r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
                             RegExp regExp = RegExp(pattern);
@@ -89,7 +118,11 @@ class _EmailFormWidgetState extends State<EmailFormWidget> {
                   GestureDetector(
                     onTap: isChecked
                         ? () {
-                            print('object');
+                            if (phonesList.length == 2) {
+                              Get.snackbar('Alert Notification',
+                                  'You can only sell 2 devices at a time, View your basket to remove an item');
+                              return;
+                            }
                             controller.handleAccountCreation();
                           }
                         : null,

@@ -3,6 +3,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:webuywesell/app/modules/home/controllers/footer.dart';
+import 'package:webuywesell/app/modules/profile_screen/widgets/details.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/utils/thems/theme.dart';
 import '../../../core/widgets/base.dart';
@@ -22,6 +25,7 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     return CommonBaseBodyScreen(
       screens: [
+        SizedBox(height: 20),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -33,15 +37,34 @@ class _OrderScreenState extends State<OrderScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Order History',
-                      style: defaultTextStyle.copyWith(
-                          fontSize: 24, fontWeight: FontWeight.w600))
+                  if (controller.selectedOrder != null)
+                    IconButton(
+                        onPressed: () {
+                          controller.selectedOrder = null;
+                          setState(() {});
+                        },
+                        icon: Icon(Icons.arrow_back_ios, size: 40)),
+                  controller.selectedOrder != null
+                      ? Text('Order Details',
+                          style: defaultTextStyle.copyWith(
+                              fontSize: 24, fontWeight: FontWeight.w600))
+                      : Text('Order History',
+                          style: defaultTextStyle.copyWith(
+                              fontSize: 24, fontWeight: FontWeight.w600))
                 ],
               ),
             ),
           ),
         ),
-        _buildOrdersList(),
+        SizedBox(height: 20),
+        controller.selectedOrder == null
+            ? _buildOrdersList()
+            : Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: OrderTrackingPage(),
+              ),
+        SizedBox(height: 200),
+        MobileFooterPageView()
       ],
     );
   }
@@ -118,9 +141,10 @@ class _OrderScreenState extends State<OrderScreen> {
           final order = controller.orders[index];
           return Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Card(
-              elevation: 1,
-              margin: EdgeInsets.only(bottom: 16),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey.shade300)),
               child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Row(
@@ -151,22 +175,24 @@ class _OrderScreenState extends State<OrderScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text(
-                                '£${(order.models?.length ?? 0) * 329}',
-                                style: TextStyle(
-                                  color: Colors.green,
+                              TextButton(
+                                onPressed: () {
+                                  controller.selectedOrder = order;
+                                  setState(() {});
+                                },
+                                child: Text(
+                                  'View Order Status',
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                  ),
                                 ),
-                              ),
+                              )
                             ],
                           ),
                           SizedBox(height: 8),
                           Text(
-                            'Placed On: ${order.createdAt}',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          Text(order.models!.first.name.toString()),
-                          Text(order.models!.last.name.toString()),
-                          SizedBox(height: 4),
+                              'Placed On: ${formatOrderDate(order.createdAt ?? DateTime.now())}',
+                              style: TextStyle(color: Colors.grey)),
                         ],
                       ),
                     ),
@@ -179,4 +205,8 @@ class _OrderScreenState extends State<OrderScreen> {
       );
     });
   }
+}
+
+String formatOrderDate(DateTime date) {
+  return DateFormat('h:mm a dd MMMM yyyy').format(date);
 }

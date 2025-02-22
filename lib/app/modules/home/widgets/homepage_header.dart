@@ -294,7 +294,7 @@ buildWidgetOFScrollHeader(BuildContext context, {BoxConstraints? constraints}) {
           !AuthService.instance.islogin
               ? GestureDetector(
                   onTap: () {
-                    Get.offAllNamed(Routes.AUTHENTICATION);
+                    Get.toNamed(Routes.AUTHENTICATION);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

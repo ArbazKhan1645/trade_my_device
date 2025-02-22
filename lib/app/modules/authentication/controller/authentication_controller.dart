@@ -52,15 +52,26 @@ class AuthenticationController extends GetxController {
 
   Future<void> _fetchAndStoreCustomer(String email) async {
     try {
-      final customers = await FetchSupabaseRepository.fetch<CustomerModel>(
-          'users',
-          fromJson: CustomerModel.fromJson,
-          eq: {'email': email});
-      if (customers == null || customers.isEmpty) {
+      final userDetailsResponse = await supbaseClient
+          .from('users')
+          .select()
+          .eq('email', email)
+          .single();
+      CustomerModel? customerModel;
+
+      try {
+        customerModel = CustomerModel.fromJson(userDetailsResponse);
+      } catch (e) {
+        customerModel = null; // Assign null if parsing fails
+        debugPrint('Error parsing CustomerModel: $e');
+      }
+      if (customerModel == null) {
         _showErrorSnackbar('User not found');
         return;
       }
-      currentPartnerUser.value = customers.first;
+      currentPartnerUser.value = customerModel;
+      print(currentPartnerUser.value);
+      print(currentPartnerUser.value!.id);
       AuthService.instance.saveAuthState(currentPartnerUser.value!);
       Get.offAllNamed(Routes.HOME);
     } catch (e) {

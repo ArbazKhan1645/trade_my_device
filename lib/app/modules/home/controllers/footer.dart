@@ -302,7 +302,7 @@ void navigateToPage(String option) {
       Get.offAllNamed(Routes.HOW_ITS_WORK);
       break;
     case 'Login':
-      Get.offAllNamed(Routes.AUTHENTICATION);
+      Get.toNamed(Routes.AUTHENTICATION);
       break;
     case 'My Account':
       Get.offAllNamed(Routes.PROFILE_SCREEN);

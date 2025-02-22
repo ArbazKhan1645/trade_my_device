@@ -13,8 +13,16 @@ class ProfileScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    print(isloginAuthService!.id!.toString() + 'customer id');
     fetchOrders();
-    subscribeToOrders();
+    print(isloginAuthService!.id!.toString() + 'customer id2');
+    // subscribeToOrders();
+  }
+
+  OrderModel? selectedOrder;
+  setSelectedOrder(OrderModel? order) {
+    selectedOrder = order;
+    update();
   }
 
   void fetchOrders() async {
@@ -25,7 +33,8 @@ class ProfileScreenController extends GetxController {
           .select()
           .eq('customer_id', isloginAuthService!.id!);
 
-      orders.value = response.map((json) => OrderModel.fromJson(json)).toList();
+      orders.value = List<OrderModel>.from(
+          response.map((json) => OrderModel.fromJson(json)));
     } catch (e) {
       Get.snackbar('Error', 'Failed to fetch orders: $e');
     } finally {

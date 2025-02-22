@@ -16,6 +16,7 @@ class OrderModel {
   final String? accountName;
   final String? accountNumber;
   final String? sortCode;
+  final List<dynamic>? timeline;
 
   OrderModel({
     this.id,
@@ -26,6 +27,7 @@ class OrderModel {
     this.zipCode,
     this.street,
     this.customerId,
+    this.timeline,
     this.orderNumber,
     this.models,
     this.deliveryOption,
@@ -47,6 +49,11 @@ class OrderModel {
       zipCode: json['zip_code'] as String?,
       street: json['street'] as String?,
       customerId: json['customer_id'] as int?,
+      timeline: json['timeline'] != null
+          ? (json['timeline'] as List<dynamic>)
+              .map((ele) => ele as Map<String, dynamic>)
+              .toList()
+          : [],
       orderNumber: json['order_number'] as String?,
       models: (json['models'] as List<dynamic>)
           .map((phone) => MobilePhonesModel.fromJson(phone))
@@ -67,6 +74,7 @@ class OrderModel {
       'created_at': createdAt?.toIso8601String(),
       'first_name': firstName,
       'last_name': lastName,
+      'timeline': timeline,
       'phone': phone,
       'zip_code': zipCode,
       'street': street,

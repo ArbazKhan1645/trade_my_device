@@ -19,7 +19,6 @@ class DeviceInfoScreen extends StatefulWidget {
 class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
   var con = Get.find<DeviceInfoController>();
 
-
   Widget _buildAnswerOptions(Map<String, dynamic> question) {
     final options = question['options'] as List<dynamic>;
 
@@ -212,24 +211,6 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                         );
                       }),
                     ),
-                    if (constraints.maxWidth >= 1200)
-                      Builder(builder: (context) {
-                        String iphonename = 'N/A';
-                        String image = 'assets/images/mobile.png';
-                        final args = con.phonecurrent;
-                        if (args != null) {
-                          MobilePhonesModel phone = args;
-                          iphonename = phone.name.toString();
-                          image = phone.image.toString();
-                        }
-                        return Positioned(
-                          left: constraints.maxWidth >= 1600
-                              ? constraints.maxWidth * 0.15
-                              : constraints.maxWidth * 0.10,
-                          top: -0,
-                          child: Image.network(image, height: 400),
-                        );
-                      })
                   ],
                 ),
               ),
@@ -238,9 +219,24 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
             Padding(
               padding: EdgeInsets.only(left: padding, right: padding),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Top Image Area
-                  Expanded(flex: 5, child: Container()),
+                  if (constraints.maxWidth >= 1200)
+                    Expanded(
+                        flex: 5,
+                        child: Container(
+                          child: Builder(builder: (context) {
+                            String image = 'assets/images/mobile.png';
+                            final args = con.phonecurrent;
+                            if (args != null) {
+                              MobilePhonesModel phone = args;
+                              image = phone.image.toString();
+                            }
+                            return Image.network(image, height: 400);
+                          }),
+                        ))
+                  else
+                    Expanded(flex: 5, child: Container()),
                   SizedBox(
                     width: constraints.maxWidth <= 600
                         ? (constraints.maxWidth - 50)
@@ -258,73 +254,72 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                             con.phonecurrent?.questions == null
                                 ? const SizedBox()
                                 : ListView.separated(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(height: 10),
-                                      shrinkWrap: true,
-                                      itemCount:
-                                          con.phonecurrent!.questions!.length,
-                                      itemBuilder: (context, index) {
-                                        final question =
-                                            con.phonecurrent!.questions![index];
-                                        final questionId = con.getQuestionId(
-                                            question['question']);
-                                        final answer =
-                                            con.answers[questionId] ?? '';
+                                    physics: NeverScrollableScrollPhysics(),
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(height: 10),
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        con.phonecurrent!.questions!.length,
+                                    itemBuilder: (context, index) {
+                                      final question =
+                                          con.phonecurrent!.questions![index];
+                                      final questionId = con
+                                          .getQuestionId(question['question']);
+                                      final answer =
+                                          con.answers[questionId] ?? '';
 
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                if (index <=
-                                                    con.selectedQuestion
-                                                        .value) {
-                                                  con.selectedQuestion.value =
-                                                      index;
-                                                }
-                                              },
-                                              child: ListTile(
-                                                trailing: Text(answer),
-                                                leading: CircleAvatar(
-                                                  backgroundColor: index <=
-                                                          con.selectedQuestion
-                                                              .value
-                                                      ? const Color(0xffFFC000)
-                                                      : Colors.grey.shade300,
-                                                  child: Center(
-                                                    child: Text(
-                                                      (index + 1).toString(),
-                                                      style: defaultTextStyle
-                                                          .copyWith(
-                                                              color:
-                                                                  Colors.black),
-                                                    ),
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              if (index <=
+                                                  con.selectedQuestion.value) {
+                                                con.selectedQuestion.value =
+                                                    index;
+                                              }
+                                            },
+                                            child: ListTile(
+                                              trailing: Text(answer),
+                                              leading: CircleAvatar(
+                                                backgroundColor: index <=
+                                                        con.selectedQuestion
+                                                            .value
+                                                    ? const Color(0xffFFC000)
+                                                    : Colors.grey.shade300,
+                                                child: Center(
+                                                  child: Text(
+                                                    (index + 1).toString(),
+                                                    style: defaultTextStyle
+                                                        .copyWith(
+                                                            color:
+                                                                Colors.black),
                                                   ),
                                                 ),
-                                                title: Text(
-                                                  question['question'],
-                                                  style:
-                                                      defaultTextStyle.copyWith(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
+                                              ),
+                                              title: Text(
+                                                question['question'],
+                                                style:
+                                                    defaultTextStyle.copyWith(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
                                                 ),
                                               ),
                                             ),
-                                            if (con.selectedQuestion.value ==
-                                                index)
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 16.0),
-                                                child: _buildAnswerOptions(
-                                                    question),
-                                              ),
-                                          ],
-                                        );
-                                      },
-                                    ),
+                                          ),
+                                          if (con.selectedQuestion.value ==
+                                              index)
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 16.0),
+                                              child:
+                                                  _buildAnswerOptions(question),
+                                            ),
+                                        ],
+                                      );
+                                    },
+                                  ),
                             // SizedBox(
                             //   child: ListView.separated(
                             //     physics: NeverScrollableScrollPhysics(),
@@ -390,7 +385,9 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
                             //     },
                             //   ),
                             // ),
-                            // if (con.selectedQuestion == 5) EmailFormWidget(),
+                            if (con.selectedQuestion.value ==
+                                con.phonecurrent!.questions!.length)
+                              EmailFormWidget(),
                             WeBuyAnyPhoneWidget()
                           ],
                         ),

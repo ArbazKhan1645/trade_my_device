@@ -10,6 +10,7 @@ import '../../../../main.dart';
 import '../../../models/users_model.dart/customer_models.dart';
 import '../../../services/app/app_service.dart';
 import '../../../services/auth/auth_service.dart';
+import 'package:intl/intl.dart';
 import '../../sell_my_phone/models/mobile_phones_model.dart';
 
 class CheckoutController extends GetxController {
@@ -132,7 +133,8 @@ class CheckoutController extends GetxController {
             'account_name': accountController.text,
             'account_number': accountnumberController.text,
             'sort_code': sortcodeController.text,
-            'status': 'booked'
+            'status': 'booked',
+            'timeline': [getCurrentTimelineEntry()]
           })
           .eq('order_number', ordernumber)
           .select();
@@ -140,11 +142,24 @@ class CheckoutController extends GetxController {
       if (response.isEmpty) {
         return;
       }
-    await  AppService.instance.sharedPreferences.remove('last_order_id');
-    await  AppService.instance.sharedPreferences.remove('currentPhoneList');
-    await  AppService.instance.sharedPreferences.remove('currentPhone');
+      await AppService.instance.sharedPreferences.remove('last_order_id');
+      await AppService.instance.sharedPreferences.remove('currentPhoneList');
+      await AppService.instance.sharedPreferences.remove('currentPhone');
       Get.offAllNamed(Routes.PROFILE_SCREEN);
     }
+  }
+
+  Map<String, String> getCurrentTimelineEntry() {
+    final now = DateTime.now();
+    final date = DateFormat('d MMM').format(now);
+    final time = DateFormat('h:mm a').format(now);
+
+    return {
+      "date": date,
+      "time": time,
+      "status": "Delivered",
+      "description": "Your order has been delivered for submission",
+    };
   }
 
   @override

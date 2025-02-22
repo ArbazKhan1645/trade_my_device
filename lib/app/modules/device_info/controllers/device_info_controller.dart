@@ -274,7 +274,10 @@ class DeviceInfoController extends GetxController {
   void fetchPhone() async {
     final phoneJson =
         AppService.instance.sharedPreferences.getString('currentPhone');
-    if (phoneJson == null) return;
+    if (phoneJson == null) {
+      Get.offAllNamed(Routes.SELL_MY_PHONE);
+      return;
+    }
 
     phonecurrent = MobilePhonesModel.fromJson(jsonDecode(phoneJson));
 
@@ -357,6 +360,7 @@ class DeviceInfoController extends GetxController {
   void updateAnswer(
       Map<String, dynamic> question, Map<String, dynamic> option) {
     final questionId = getQuestionId(question['question']);
+    question['selected_answer'] = option['answer'].toString().toLowerCase();
     final answer = option['answer'].toString().toLowerCase();
 
     // Update the answer
@@ -427,12 +431,12 @@ class DeviceInfoController extends GetxController {
         Get.offAllNamed(Routes.Payment);
         return;
       }
-      // if (_validateAccountCreation()) return;
+
+      if (!_validateAccountCreation()) return;
 
       setisLoading(true);
 
       await _createNewAccount();
-      print('object khan');
     } catch (e) {
       setErrorMessage('Error: ${e.toString()}');
     } finally {
@@ -459,22 +463,40 @@ class DeviceInfoController extends GetxController {
   }
 
   Future<void> _createNewAccount() async {
-    final authResponse = await supbaseClient.auth.signUp(
-      email: email,
-      password: 'password',
-    );
+    try {
+      final userDetailsResponse =
+          await supbaseClient.from('users').select().eq('email', email);
 
-    if (authResponse.user == null) {
-      setErrorMessage('Something went wrong, please try again');
-      return;
+      if (userDetailsResponse.isNotEmpty) {
+        AuthService.instance
+            .saveAuthState(CustomerModel.fromJson(userDetailsResponse.first));
+        await _saveCurrentPhone();
+        Get.offAllNamed(Routes.Payment);
+      } else {
+        final signUpResponse = await supbaseClient.auth.signUp(
+          email: email,
+          password: 'password',
+        );
+
+        if (signUpResponse.user == null) {
+          setErrorMessage('Signup failed. Please try again.');
+          return;
+        }
+
+        // Create user record in the database
+        final userResponse = await _createUserRecord();
+        if (userResponse == null) {
+          setErrorMessage('Failed to create user record.');
+          return;
+        }
+
+        AuthService.instance.saveAuthState(userResponse);
+        await _saveCurrentPhone();
+        Get.offAllNamed(Routes.Payment);
+      }
+    } catch (e) {
+      setErrorMessage('An error occurred: $e');
     }
-
-    final userResponse = await _createUserRecord();
-    if (userResponse == null) return;
-
-    AuthService.instance.saveAuthState(userResponse);
-    await _saveCurrentPhone();
-    Get.offAllNamed(Routes.Payment);
   }
 
   Future<CustomerModel?> _createUserRecord() async {
@@ -489,7 +511,10 @@ class DeviceInfoController extends GetxController {
     return CustomerModel.fromJson(insertResponse[0]);
   }
 
-  void setErrorMessage(String message) => errorMessage.value = message;
+  void setErrorMessage(String message) {
+    errorMessage.value = message;
+    Get.snackbar('Error', message);
+  }
 
   List<Widget> get dashboardViewBodyScreen => [
         const SizedBox(height: 40),

@@ -208,7 +208,6 @@ class _DeviceWorthScreenState extends State<DeviceWorthScreen> {
                               onPressed: () {
                                 if (isLoading) return;
                                 _search();
-                           
                               },
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16),
@@ -320,9 +319,9 @@ class _DeviceWorthScreenState extends State<DeviceWorthScreen> {
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: Transform.rotate(
-                        angle: -0.2,
+                        angle: -0.0,
                         child: Image.asset(
-                          'assets/images/phones.png',
+                          'assets/images/ultrapixel.png',
                         ),
                       ),
                     ),
