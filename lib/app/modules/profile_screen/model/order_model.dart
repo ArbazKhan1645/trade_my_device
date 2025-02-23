@@ -1,5 +1,6 @@
 import '../../sell_my_phone/models/mobile_phones_model.dart';
 
+
 class OrderModel {
   final int? id;
   final DateTime? createdAt;
@@ -16,7 +17,8 @@ class OrderModel {
   final String? accountName;
   final String? accountNumber;
   final String? sortCode;
-  final List<dynamic>? timeline;
+  List<dynamic>? timeline;
+  List<dynamic>? counteroffer;
 
   OrderModel({
     this.id,
@@ -29,6 +31,7 @@ class OrderModel {
     this.customerId,
     this.timeline,
     this.orderNumber,
+    this.counteroffer,
     this.models,
     this.deliveryOption,
     this.status,
@@ -49,6 +52,11 @@ class OrderModel {
       zipCode: json['zip_code'] as String?,
       street: json['street'] as String?,
       customerId: json['customer_id'] as int?,
+      counteroffer: json['counter_offer'] != null
+          ? (json['counter_offer'] as List<dynamic>)
+              .map((ele) => ele as Map<String, dynamic>)
+              .toList()
+          : [],
       timeline: json['timeline'] != null
           ? (json['timeline'] as List<dynamic>)
               .map((ele) => ele as Map<String, dynamic>)
@@ -80,6 +88,7 @@ class OrderModel {
       'street': street,
       'customer_id': customerId,
       'order_number': orderNumber,
+      'counter_offer': counteroffer,
       'models': models,
       'delivery_option': deliveryOption,
       'status': status,
