@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:webuywesell/app/modules/checkout/api.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 import '../../../../main.dart';
 import '../../../models/users_model.dart/customer_models.dart';
@@ -145,6 +146,12 @@ class CheckoutController extends GetxController {
       await AppService.instance.sharedPreferences.remove('last_order_id');
       await AppService.instance.sharedPreferences.remove('currentPhoneList');
       await AppService.instance.sharedPreferences.remove('currentPhone');
+      final res = await sendOrderProcessingEmail(
+          isloginAuthService?.email ?? 'hammad164598@gmail.com'.toString(),
+          "${firstNameController.text} ${lastNameController.text}");
+      print(res);
+      print(isloginAuthService?.email ?? 'hammad164598@gmail.com'.toString());
+      print("${firstNameController.text} ${lastNameController.text}");
       Get.offAllNamed(Routes.PROFILE_SCREEN);
     }
   }

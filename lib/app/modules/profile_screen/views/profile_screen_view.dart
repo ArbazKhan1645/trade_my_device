@@ -9,6 +9,10 @@ class ProfileScreenView extends GetView<ProfileScreenController> {
   const ProfileScreenView({super.key});
   @override
   Widget build(BuildContext context) {
-    return OrderScreen();
+    return GetBuilder<ProfileScreenController>(
+        init: ProfileScreenController(),
+        builder: (controller) {
+          return OrderScreen();
+        });
   }
 }

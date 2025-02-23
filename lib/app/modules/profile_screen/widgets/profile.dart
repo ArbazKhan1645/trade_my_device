@@ -19,7 +19,7 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  final controller = Get.put(ProfileScreenController());
+  final controller = Get.find<ProfileScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +40,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   if (controller.selectedOrder != null)
                     IconButton(
                         onPressed: () {
+                          controller.resetBrowserURL();
                           controller.selectedOrder = null;
                           setState(() {});
                         },
@@ -178,6 +179,10 @@ class _OrderScreenState extends State<OrderScreen> {
                               TextButton(
                                 onPressed: () {
                                   controller.selectedOrder = order;
+                                  controller.updateBrowserURL(
+                                      controller.selectedOrder?.id.toString() ??
+                                          '-1');
+
                                   setState(() {});
                                 },
                                 child: Text(
