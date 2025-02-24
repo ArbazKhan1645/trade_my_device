@@ -267,19 +267,7 @@ class NewsLetterWidget extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(
-          height: 30,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Text(
-            'Sector F17 Street 46 , house 1137 , MPCHS , Islamabad , Pakistan ',
-            style: defaultTextStyle.copyWith(
-                fontSize: 14,
-                color: Color.fromARGB(255, 129, 140, 152),
-                fontWeight: FontWeight.w400),
-          ),
-        ),
+    
       ],
     );
   }

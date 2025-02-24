@@ -235,9 +235,9 @@ class _DeviceWorthScreenState extends State<DeviceWorthScreen> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Transform.rotate(
-                          angle: -0.2,
+                          angle: 0,
                           child: Image.asset(
-                            'assets/images/phones.png',
+                            'assets/images/ultrapixel.png',
                           ),
                         ),
                       ),

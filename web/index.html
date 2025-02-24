@@ -1,46 +1,123 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <base href="$FLUTTER_BASE_HREF">
+
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
 
   <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="responsive_flutter_web">
+  <meta name="apple-mobile-web-app-title" content="pookie_panel">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/png" href="favicon.png">
 
-  <title>Responsive Flutter Web</title>
+  <title>pookie_panel</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #FFFFFF;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+
+    .loader.fade {
+      opacity: 0;
+    }
+
+    .loading-text {
+      margin-top: 20px;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      color: #333;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #FFFFFF;
+    }
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
 </head>
+
 <body>
-  <div id="loading" style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #FFFFFF;">
-    <!-- Add your loading indicator here -->
-    Loading...
+  <div id="loader" class="loader">
+    <div id="lottie-container" style="width: 200px; height: 200px;"></div>
+    <div class="loading-text">Loading...</div>
   </div>
 
-  <script src="flutter_bootstrap.js" async></script>
   <script>
+    // Initialize Lottie animation
+    var animation = lottie.loadAnimation({
+      container: document.getElementById('lottie-container'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'assets/loading.json'
+    });
+
+    // Function to hide loader
+    function hideLoader() {
+      const loader = document.getElementById('loader');
+      if (loader) {
+        loader.classList.add('fade');
+        setTimeout(() => {
+          loader.remove();
+        }, 500);
+      }
+    }
+
     window.addEventListener('load', function () {
-      _flutter.loader.load({
+      //// Download main.dart.js
+      _flutter.loader.loadEntrypoint({
         serviceWorker: {
-          version: "{{flutter_service_worker_version}}",
+          serviceWorkerVersion: serviceWorkerVersion,
         },
-        onLoad: async (engineInitializer) => {
-          const appRunner = await engineInitializer.initializeEngine({
-            initialMemory: 128,
-            renderer: "html"
+        onEntrypointLoaded: async function (engineInitializer) {
+          let appRunner = await engineInitializer.initializeEngine({
+            useColorEmoji: true,
           });
-          document.getElementById('loading').remove();
           await appRunner.runApp();
         }
       });
     });
+
+    window.addEventListener('flutter-first-frame', function () {
+      console.log('Flutter app is ready!');
+      hideLoader();
+    });
+
+    // Fallback: Hide loader after maximum timeout
+    setTimeout(() => {
+      console.log('Fallback: Hiding loader after timeout');
+      hideLoader();
+    }, 10000);
   </script>
 </body>
+
 </html>
