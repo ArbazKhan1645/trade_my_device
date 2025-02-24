@@ -1,11 +1,11 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unnecessary_import, depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 import 'package:webuywesell/app/modules/profile_screen/controllers/profile_screen_controller.dart';
-import 'package:webuywesell/app/modules/profile_screen/model/order_model.dart';
+
 import 'package:webuywesell/app/modules/profile_screen/widgets/profile.dart';
 import 'package:webuywesell/app/modules/sell_my_phone/models/mobile_phones_model.dart';
 
@@ -166,6 +166,8 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
         'time': status['time'] ?? '',
         'description': status['description'] ?? '',
         'price': status['price'] ?? '',
+        'actioned':
+            status['actioned'] == null ? 'false' : status['actioned'].toString()
       });
     }
 
@@ -282,6 +284,41 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
               const SizedBox(height: 4),
               Text(entry['description']!),
               const SizedBox(height: 16),
+              if (entry['actioned'] == 'false')
+                Row(
+                  children: [
+                    MaterialButton(
+                      color: Colors.green,
+                      onPressed: () async {
+                        controller.fetchupdatedUrls(
+                            value: 'accept',
+                            ids: controller.selectedOrder!.id.toString());
+                      },
+                      child: const Text(
+                        'Accept',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    MaterialButton(
+                      color: Colors.red,
+                      onPressed: () => {
+                        controller.fetchupdatedUrls(
+                            value: 'reject',
+                            ids: controller.selectedOrder!.id.toString())
+                      },
+                      child: const Text(
+                        'Reject',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                )
+              else
+                Text(
+                  'Accepted',
+                  style: TextStyle(color: Colors.green),
+                )
             ],
           ),
         ),

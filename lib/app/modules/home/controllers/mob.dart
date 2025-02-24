@@ -42,7 +42,7 @@ class MyAppMobile extends StatelessWidget {
               ),
             ),
             Center(
-              child: Image.network(
+              child: Image.asset(
                 'assets/images/phones.png',
               ),
             ),
@@ -65,7 +65,7 @@ class MyAppMobile extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Center(
-              child: Image.network(
+              child: Image.asset(
                 'assets/images/ph1.png',
               ),
             ),
@@ -88,8 +88,8 @@ class MyAppMobile extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Center(
-              child: Image.network(
-                'assets/images/ph1.png',
+              child: Image.asset(
+                'assets/images/mobile2.png',
               ),
             ),
             const SizedBox(height: 20),
@@ -110,11 +110,6 @@ class MyAppMobile extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Center(
-              child: Image.network(
-                'assets/images/ph1.png',
-              ),
-            ),
             const SizedBox(height: 20),
             const SizedBox(height: 20),
             const Text(
@@ -135,8 +130,8 @@ class MyAppMobile extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Center(
-              child: Image.network(
-                'assets/images/ph1.png',
+              child: Image.asset(
+                'assets/images/mobile.png',
               ),
             ),
             const SizedBox(height: 20),

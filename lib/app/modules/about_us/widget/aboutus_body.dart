@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:webuywesell/app/routes/app_pages.dart';
 
 class AboutusBodyScreen extends StatelessWidget {
   const AboutusBodyScreen({super.key});
@@ -35,14 +33,15 @@ class AboutusBodyScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              "Selling your mobile phone or tech couldn't be easier with WeBuyAnyPhone. Just follow our three simple steps below to see how much you could get for your old device, even if it's broken or damaged.",
+              "At Trade My Device, we believe in making technology more accessible while promoting sustainability. Our mission is simple: to provide an easy, reliable, and eco-friendly way for you to trade in your old devices and get paid quickly.",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,
               ),
             ),
+            const SizedBox(height: 40),
             Center(
-              child: Image.network(
+              child: Image.asset(
                 'assets/images/person.png',
                 height: 600,
                 fit: BoxFit.fill,
@@ -51,7 +50,7 @@ class AboutusBodyScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              "Get a Quote",
+              "Who We Are",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -60,7 +59,7 @@ class AboutusBodyScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              "Start by selecting your device from our easy-to-use search tool. Whether it’s a phone, tablet, laptop, or any other electronic gadget, we’ve got you covered. Once you’ve selected your device, provide a few details about its condition, and we’ll give you an instant quote.",
+              "We’re a team of tech enthusiasts, environmental advocates, and customer-focused professionals who are passionate about helping you get the most value from your unused devices. Whether you have an old smartphone, laptop, tablet, or other electronics lying around, we make it effortless for you to trade them in and receive cash, store credit, or gift cards.",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,
@@ -68,13 +67,13 @@ class AboutusBodyScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Center(
-              child: Image.network(
+              child: Image.asset(
                 'assets/images/ph1.png',
               ),
             ),
             const SizedBox(height: 20),
             const Text(
-              "Ship Your Device ",
+              "Why Choose Us?",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -83,7 +82,12 @@ class AboutusBodyScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              "Once you are happy with the quote, we’ll provide you with a pre-paid shipping label. Just pack up your device securely and drop it off at your nearest shipping location. We’ll cover the shipping costs, so there’s no need to worry about additional fees.",
+              "Instant Quotes: We offer quick, fair, and accurate quotes for your devices, ensuring you get the best value."
+              "Hassle-Free Process: From the moment you submit your device to when you receive your payment, our process is designed to be as simple and seamless as possible."
+              "Fast Payments: Once your device is evaluated, we send your payment quickly through a variety of convenient methods—so you don’t have to wait."
+              "Sustainability Focus: We believe in reducing e-waste and promoting the reuse of electronics. If your device isn't in a resellable condition, we make sure it’s properly recycled to minimize environmental impact."
+              "Our Commitment to You"
+              "We understand that parting with your devices can feel like a big decision. That’s why we offer transparency and customer support every step of the way. Our team is here to answer any questions you have and ensure you feel confident throughout the process.",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,
@@ -91,104 +95,27 @@ class AboutusBodyScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Center(
-              child: Image.network(
-                'assets/images/ph1.png',
+              child: Image.asset(
+                'assets/images/phones.png',
               ),
             ),
-            const SizedBox(height: 20),
-            const Text(
-              "Device Evaluation",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
+            const SizedBox(height: 50),
             const SizedBox(height: 10),
             const Text(
-              "After receiving your device, our team will carefully inspect it to ensure it matches the condition you reported. If everything checks out, we’ll process your payment.",
+              "With Trade My Device, you’re not just getting rid of an old gadget; you’re making a smart, responsible choice for both your wallet and the planet.",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 20),
-            Center(
-              child: Image.network(
-                'assets/images/ph1.png',
-              ),
-            ),
-            const SizedBox(height: 20),
-            const SizedBox(height: 20),
             const Text(
-              "Get Paid Fast",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              "After the evaluation, you’ll receive your payment via your chosen method—whether it’s through PayPal, bank transfer, or store credit. It’s that simple! We aim to make sure you get paid quickly and fairly.",
+              "Thank you for choosing us—we’re excited to help you trade your device!",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 20),
-            Center(
-              child: Image.network(
-                'assets/images/ph1.png',
-              ),
-            ),
-            const SizedBox(height: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                const Text(
-                  "Why sell with Trademydevice.com?",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "WeBuyAnyPhone.com buys pre-owned smartphones, tablets and other tech, whatever condition it's in. Great quality devices are refurbished and resold onto other customer to provide a second lease of life. Those that can't be made as good as new are responsibly recycled.",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(height: 40),
-                const Text(
-                  "It’s as easy as that! You get cash or credit for your old devices while helping the environment. Ready to trade in your device?!",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.offAllNamed(Routes.HOME);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 15),
-                  ),
-                  child: const Text(
-                    "Get Started now",
-                    style: TextStyle(fontSize: 18, color: Colors.black),
-                  ),
-                ),
-                SizedBox(height: 50),
-              ],
-            ),
+            const SizedBox(height: 50),
           ],
         ),
       );

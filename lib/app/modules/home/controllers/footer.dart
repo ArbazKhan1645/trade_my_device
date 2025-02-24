@@ -47,7 +47,6 @@ class MobileFooterPageView extends StatelessWidget {
                               options: [
                                 'Home',
                                 'About Us',
-                                'Contact Us',
                                 'How it Work',
                               ],
                             ),
@@ -93,7 +92,6 @@ class MobileFooterPageView extends StatelessWidget {
                         options: [
                           'Home',
                           'About Us',
-                          'Contact Us',
                           'How it Work',
                         ],
                       ),

@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
+import 'package:webuywesell/app/services/auth/auth_service.dart';
 import 'app/core/utils/helpers/logger.dart';
 import 'app/core/widgets/global_errorwidget.dart';
 import 'app/core/locators/service_locator.dart';
@@ -86,113 +87,41 @@ class MyApp extends StatelessWidget {
 }
 
 showPopupWidget() {
-  return InkWell(
-    onTap: () {
-      Get.offAllNamed(Routes.PROFILE_SCREEN);
-    },
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const CircleAvatar(
-          radius: 20,
-          backgroundColor: Color(0xffFFF2E6),
-          child: Center(
-            child: Icon(Icons.person),
+  return QudsPopupButton(
+      // backgroundColor: Colors.red,
+      tooltip: 'T',
+      items: getMenuItems(),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const CircleAvatar(
+            radius: 20,
+            backgroundColor: Color(0xffFFF2E6),
+            child: Center(
+              child: Icon(Icons.person),
+            ),
           ),
-        ),
-        Text('Profile'),
-      ],
-    ),
-  );
+          Text('Profile'),
+        ],
+      ));
 }
 
 List<QudsPopupMenuBase> getMenuItems() {
   return [
-    QudsPopupMenuSection(
-        backgroundColor: Colors.yellow.shade200,
-        titleText: 'Visit',
-        subTitle: Text('See your profile'),
-        leading: Icon(
-          Icons.redeem,
-          size: 40,
-        ),
-        subItems: [
-          QudsPopupMenuSection(
-              titleText: 'Settings',
-              leading: Icon(Icons.settings),
-              subItems: [
-                QudsPopupMenuItem(
-                    leading: Icon(Icons.logout),
-                    title: Text('Logout'),
-                    onPressed: () {})
-              ]),
-        ]),
+    QudsPopupMenuItem(
+        leading: Icon(Icons.online_prediction_rounded),
+        title: Text('Orders'),
+        subTitle: Text('See your orders'),
+        onPressed: () {
+          Get.offAllNamed(Routes.PROFILE_SCREEN);
+        }),
     QudsPopupMenuDivider(),
     QudsPopupMenuItem(
-        leading: Icon(Icons.info_outline),
-        title: Text('Give Feedback'),
-        subTitle: Text('Help us improve our new app'),
-        onPressed: () {}),
-    QudsPopupMenuDivider(),
-    QudsPopupMenuSection(
-        leading: Icon(Icons.place),
-        titleText: 'Settings & Privacy',
-        subItems: [
-          QudsPopupMenuItem(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-              onPressed: () {}),
-          QudsPopupMenuItem(
-              leading: Icon(Icons.lock),
-              title: Text('Privacy Checkup'),
-              onPressed: () {}),
-          QudsPopupMenuItem(
-              leading: Icon(Icons.lock_clock),
-              title: Text('Privacy Shortcuts'),
-              onPressed: () {}),
-          QudsPopupMenuItem(
-              leading: Icon(Icons.list),
-              title: Text('Activity Log'),
-              onPressed: () {}),
-          QudsPopupMenuItem(
-              leading: Icon(Icons.card_membership),
-              title: Text('News Feed Preferences'),
-              onPressed: () {}),
-          QudsPopupMenuItem(
-              leading: Icon(Icons.language),
-              title: Text('Language'),
-              onPressed: () {}),
-        ]),
-    QudsPopupMenuDivider(),
-    QudsPopupMenuWidget(
-        builder: (c) => Container(
-            padding: EdgeInsets.all(10),
-            child: IntrinsicHeight(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                      )),
-                  VerticalDivider(),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.music_note,
-                        color: Colors.blue,
-                      )),
-                  VerticalDivider(),
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.umbrella,
-                        color: Colors.green,
-                      ))
-                ],
-              ),
-            )))
+        leading: Icon(Icons.logout),
+        title: Text('Log Out'),
+        onPressed: () {
+          AuthService.instance.cleanStorage();
+          Get.offAllNamed(Routes.HOME);
+        }),
   ];
 }
