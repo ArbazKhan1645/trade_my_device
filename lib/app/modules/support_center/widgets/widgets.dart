@@ -164,7 +164,7 @@ class FAQScreen extends StatelessWidget {
             Obx(() {
               if (controller.isLoading.value) {
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: LinearProgressIndicator(),
                 );
               } else if (controller.filteredItems.isEmpty) {
                 return Center(

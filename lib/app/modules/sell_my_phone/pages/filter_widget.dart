@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webuywesell/app/modules/sell_my_phone/controllers/sell_my_phone_controller.dart';

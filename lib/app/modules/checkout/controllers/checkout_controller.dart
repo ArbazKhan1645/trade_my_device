@@ -17,19 +17,15 @@ import '../../sell_my_phone/models/mobile_phones_model.dart';
 class CheckoutController extends GetxController {
   var currentStep = 0.obs;
   final totalSteps = 4;
-  CustomerModel? get isloginAuthService {
-    return AuthService.instance.authCustomer;
-  }
+  CustomerModel? get isloginAuthService => AuthService.instance.authCustomer;
 
-  List<MobilePhonesModel?> phonesList = [];
+  List<MobilePhonesModel> phonesList = [];
   List<MobilePhonesModel> getPhoneList() {
     final List<String> storedList = AppService.instance.sharedPreferences
             .getStringList('currentPhoneList') ??
         [];
-    return (storedList
-            .map((item) => jsonDecode(item) as Map<String, dynamic>)
-            .toList())
-        .map((w) => MobilePhonesModel.fromJson(w))
+    return storedList
+        .map((item) => MobilePhonesModel.fromJson(jsonDecode(item)))
         .toList();
   }
 
@@ -47,6 +43,16 @@ class CheckoutController extends GetxController {
   final GlobalKey<FormState> step2Key = GlobalKey<FormState>();
   final GlobalKey<FormState> step3Key = GlobalKey<FormState>();
 
+  String ordernumber = '';
+  String deliverOptions = 'Royal Mail Digital Label';
+
+  @override
+  void onInit() {
+    phonesList = getPhoneList();
+    fetchValues();
+    super.onInit();
+  }
+
   void nextStep() {
     if (currentStep.value < totalSteps - 1) {
       currentStep.value++;
@@ -59,13 +65,28 @@ class CheckoutController extends GetxController {
     }
   }
 
-  String ordernumber = '';
+  void setDeliveryOptions(String val) {
+    deliverOptions = val;
+    update();
+  }
 
   Future<void> submitDetails() async {
-    if (step0Key.currentState?.validate() ?? false) {
-      if (isloginAuthService == null) return;
+    if (!(step0Key.currentState?.validate() ?? false)) {
+      Get.snackbar('Error', 'Please fill all the required fields');
+      return;
+    }
+
+    if (isloginAuthService == null) {
+      Get.snackbar('Error', 'User not authenticated');
+      return;
+    }
+
+    Get.dialog(Center(child: CircularProgressIndicator()),
+        barrierDismissible: false);
+
+    try {
       phonesList = getPhoneList();
-      final jsonList = phonesList.map((phone) => phone?.toJson()).toList();
+      final jsonList = phonesList.map((phone) => phone.toJson()).toList();
       final res = OrderService.generateRandomOrderId();
       final response = await supbaseClient.from('orders').insert({
         'first_name': firstNameController.text,
@@ -73,27 +94,41 @@ class CheckoutController extends GetxController {
         'phone': phoneController.text,
         'customer_id': isloginAuthService!.id!,
         'order_number': res,
-        'models': jsonList
+        'models': jsonList,
       }).select();
 
       if (response.isEmpty) {
+        Get.back();
+        Get.snackbar('Error', 'Failed to submit details');
         return;
       }
 
       ordernumber = res;
-
       OrderService.saveLastOrderId(res);
-
-      // AuthService.instance
-      //     .saveAuthState(CustomerModel.fromJson(response.first));
-
       nextStep();
+    } catch (e) {
+      Get.back();
+      Get.snackbar('Error', 'An error occurred: $e');
+    } finally {
+      Get.back();
     }
   }
 
   Future<void> submitAddress() async {
-    if (step1Key.currentState?.validate() ?? false) {
-      if (isloginAuthService == null) return;
+    if (!(step1Key.currentState?.validate() ?? false)) {
+      Get.snackbar('Error', 'Please fill all the required fields');
+      return;
+    }
+
+    if (isloginAuthService == null) {
+      Get.snackbar('Error', 'User not authenticated');
+      return;
+    }
+
+    Get.dialog(Center(child: CircularProgressIndicator()),
+        barrierDismissible: false);
+
+    try {
       final response = await supbaseClient
           .from('orders')
           .update({
@@ -104,30 +139,61 @@ class CheckoutController extends GetxController {
           .select();
 
       if (response.isEmpty) {
+        Get.back();
+        Get.snackbar('Error', 'Failed to submit address');
         return;
       }
+
       nextStep();
+    } catch (e) {
+      Get.back();
+      Get.snackbar('Error', 'An error occurred: $e');
+    } finally {
+      Get.back();
     }
   }
 
-  String deliverOptions = 'Royal Mail Digital Label';
-  setdeliveryOptions(String val) {
-    deliverOptions = val;
-    update();
-  }
-
   Future<void> submitDelivery() async {
-    final response = await supbaseClient
-        .from('orders')
-        .update({'delivery_option': deliverOptions})
-        .eq('order_number', ordernumber)
-        .select();
-    nextStep();
+    Get.dialog(Center(child: CircularProgressIndicator()),
+        barrierDismissible: false);
+
+    try {
+      final response = await supbaseClient
+          .from('orders')
+          .update({'delivery_option': deliverOptions})
+          .eq('order_number', ordernumber)
+          .select();
+
+      if (response.isEmpty) {
+        Get.back();
+        Get.snackbar('Error', 'Failed to submit delivery options');
+        return;
+      }
+
+      nextStep();
+    } catch (e) {
+      Get.back();
+      Get.snackbar('Error', 'An error occurred: $e');
+    } finally {
+      Get.back();
+    }
   }
 
   Future<void> submitPayment() async {
-    if (step3Key.currentState?.validate() ?? false) {
-      if (isloginAuthService == null) return;
+    if (!(step3Key.currentState?.validate() ?? false)) {
+      Get.snackbar('Error', 'Please fill all the required fields');
+      return;
+    }
+
+    if (isloginAuthService == null) {
+      Get.snackbar('Error', 'User not authenticated');
+      return;
+    }
+
+    Get.dialog(Center(child: CircularProgressIndicator()),
+        barrierDismissible: false);
+
+    try {
       final response = await supbaseClient
           .from('orders')
           .update({
@@ -141,18 +207,26 @@ class CheckoutController extends GetxController {
           .select();
 
       if (response.isEmpty) {
+        Get.back();
+        Get.snackbar('Error', 'Failed to submit payment details');
         return;
       }
+
       await AppService.instance.sharedPreferences.remove('last_order_id');
       await AppService.instance.sharedPreferences.remove('currentPhoneList');
       await AppService.instance.sharedPreferences.remove('currentPhone');
-      final res = await sendOrderProcessingEmail(
-          isloginAuthService?.email ?? 'hammad164598@gmail.com'.toString(),
-          "${firstNameController.text} ${lastNameController.text}");
-      print(res);
-      print(isloginAuthService?.email ?? 'hammad164598@gmail.com'.toString());
-      print("${firstNameController.text} ${lastNameController.text}");
+
+      await sendOrderProcessingEmail(
+        isloginAuthService?.email ?? 'hammad164598@gmail.com',
+        "${firstNameController.text} ${lastNameController.text}",
+      );
+
       Get.offAllNamed(Routes.PROFILE_SCREEN);
+    } catch (e) {
+      Get.back();
+      Get.snackbar('Error', 'An error occurred: $e');
+    } finally {
+      Get.back();
     }
   }
 
@@ -169,24 +243,28 @@ class CheckoutController extends GetxController {
     };
   }
 
-  @override
-  void onInit() {
-    phonesList = getPhoneList();
-    fetchvalues();
-    super.onInit();
-  }
+  bool isChecked = false;
+  Future<void> fetchValues() async {
+    if (isloginAuthService == null) {
+      Get.offAllNamed(Routes.HOME);
+      return;
+    }
 
-  fetchvalues() async {
     emailController.text = isloginAuthService!.email.toString();
     ordernumber = await OrderService.getLastOrderId() ?? '';
+
     if (phonesList.isEmpty) {
       Get.offAllNamed(Routes.HOME);
+      return;
     }
+
     if (ordernumber.isEmpty) return;
+
     final response = await supbaseClient
         .from('orders')
         .select()
         .eq('order_number', ordernumber);
+
     if (response.isEmpty) {
       if (phonesList.isEmpty) {
         Get.offAllNamed(Routes.HOME);
@@ -197,6 +275,7 @@ class CheckoutController extends GetxController {
 
     if (response.first['status'] != null) {
       Get.offAllNamed(Routes.HOME);
+      return;
     }
 
     if (response.isNotEmpty) {

@@ -160,252 +160,163 @@ class _DeviceInfoScreenState extends State<DeviceInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DeviceInfoController>(builder: (controller) {
-      return LayoutBuilder(builder: (context, constraints) {
-        double getPadding(double width) {
-          if (width >= 1200) {
-            return 150.0;
-          } else if (width >= 800) {
-            return 50.0;
-          } else {
-            return 20.0;
-          }
-        }
+    return GetBuilder<DeviceInfoController>(
+      builder: (controller) {
+        return LayoutBuilder(builder: (context, constraints) {
+          double padding = constraints.maxWidth >= 1200
+              ? 150.0
+              : constraints.maxWidth >= 800
+                  ? 50.0
+                  : 20.0;
 
-        double padding = getPadding(constraints.maxWidth);
+          final phone = controller.phonecurrent;
+          final String image = phone?.image ?? 'assets/images/mobile.png';
+          final String phoneName = phone?.name ?? 'N/A';
+          final List<dynamic> questions = phone?.questions ?? [];
 
-        return Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-              height: 100,
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: padding,
-                    right: MediaQuery.of(context).size.width * 0.20),
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Center(
-                      child: Builder(builder: (context) {
-                        String iphonename = 'N/A';
-                        String image = 'assets/images/mobile.png';
-                        final args = con.phonecurrent;
-                        if (args != null) {
-                          MobilePhonesModel phone = args;
-                          iphonename = phone.name.toString();
-                          image = phone.image.toString();
-                        }
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            if (constraints.maxWidth <= 1200)
-                              Image.network(image, height: 50),
-                            SizedBox(width: 20),
-                            Text(iphonename,
-                                style: defaultTextStyle.copyWith(
-                                    fontSize: 24, fontWeight: FontWeight.w600)),
-                          ],
-                        );
-                      }),
-                    ),
-                  ],
+          return Column(
+            children: [
+              // Top Header
+              Container(
+                height: 100,
+                decoration: const BoxDecoration(color: Colors.white),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      left: padding,
+                      right: MediaQuery.of(context).size.width * 0.20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      if (constraints.maxWidth <= 1200)
+                        Image.network(image, height: 50),
+                      const SizedBox(width: 20),
+                      Text(
+                        phoneName,
+                        style: defaultTextStyle.copyWith(
+                            fontSize: 24, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            Padding(
-              padding: EdgeInsets.only(left: padding, right: padding),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (constraints.maxWidth >= 1200)
-                    Expanded(
+
+              const SizedBox(height: 20),
+
+              // Main Content
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: padding),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Left Image (Desktop View)
+                    if (constraints.maxWidth >= 1200)
+                      Expanded(
                         flex: 5,
-                        child: Container(
-                          child: Builder(builder: (context) {
-                            String image = 'assets/images/mobile.png';
-                            final args = con.phonecurrent;
-                            if (args != null) {
-                              MobilePhonesModel phone = args;
-                              image = phone.image.toString();
-                            }
-                            return Image.network(image, height: 400);
-                          }),
-                        ))
-                  else
-                    Expanded(flex: 5, child: Container()),
-                  SizedBox(
-                    width: constraints.maxWidth <= 600
-                        ? (constraints.maxWidth - 50)
-                        : 560,
-                    child: Container(
-                      decoration: BoxDecoration(
+                        child: Image.network(image,
+                            height: 400, fit: BoxFit.contain),
+                      ),
+
+                    // Right Content
+                    SizedBox(
+                      width: constraints.maxWidth <= 600
+                          ? constraints.maxWidth - 50
+                          : 560,
+                      child: Container(
+                        decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Color(0xFFe5e7eb))),
-                      child: Padding(
+                          border: Border.all(color: const Color(0xFFe5e7eb)),
+                        ),
                         padding: const EdgeInsets.all(14.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            con.phonecurrent?.questions == null
-                                ? const SizedBox()
-                                : ListView.separated(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    separatorBuilder: (context, index) =>
-                                        const SizedBox(height: 10),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        con.phonecurrent!.questions!.length,
-                                    itemBuilder: (context, index) {
-                                      final question =
-                                          con.phonecurrent!.questions![index];
-                                      final questionId = con
-                                          .getQuestionId(question['question']);
-                                      final answer =
-                                          con.answers[questionId] ?? '';
+                            // Questions List
+                            if (questions.isNotEmpty)
+                              ListView.separated(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                separatorBuilder: (_, __) =>
+                                    const SizedBox(height: 10),
+                                itemCount: questions.length,
+                                itemBuilder: (context, index) {
+                                  final question = questions[index];
+                                  final questionId = controller
+                                      .getQuestionId(question['question']);
+                                  final String answer =
+                                      controller.answers[questionId] ?? '';
 
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              if (index <=
-                                                  con.selectedQuestion.value) {
-                                                con.selectedQuestion.value =
-                                                    index;
-                                              }
-                                            },
-                                            child: ListTile(
-                                              trailing: Text(answer),
-                                              leading: CircleAvatar(
-                                                backgroundColor: index <=
-                                                        con.selectedQuestion
-                                                            .value
-                                                    ? const Color(0xffFFC000)
-                                                    : Colors.grey.shade300,
-                                                child: Center(
-                                                  child: Text(
-                                                    (index + 1).toString(),
-                                                    style: defaultTextStyle
-                                                        .copyWith(
-                                                            color:
-                                                                Colors.black),
-                                                  ),
-                                                ),
-                                              ),
-                                              title: Text(
-                                                question['question'],
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          if (index <=
+                                              controller
+                                                  .selectedQuestion.value) {
+                                            controller.selectedQuestion.value =
+                                                index;
+                                          }
+                                        },
+                                        child: ListTile(
+                                          trailing: Text(answer),
+                                          leading: CircleAvatar(
+                                            backgroundColor: index <=
+                                                    controller
+                                                        .selectedQuestion.value
+                                                ? const Color(0xffFFC000)
+                                                : Colors.grey.shade300,
+                                            child: Center(
+                                              child: Text(
+                                                (index + 1).toString(),
                                                 style:
                                                     defaultTextStyle.copyWith(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
+                                                        color: Colors.black),
                                               ),
                                             ),
                                           ),
-                                          if (con.selectedQuestion.value ==
-                                              index)
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0),
-                                              child:
-                                                  _buildAnswerOptions(question),
-                                            ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                            // SizedBox(
-                            //   child: ListView.separated(
-                            //     physics: NeverScrollableScrollPhysics(),
-                            //     separatorBuilder: (context, index) {
-                            //       return Container(height: 10);
-                            //     },
-                            //     shrinkWrap: true,
-                            //     itemCount: questions.length,
-                            //     itemBuilder: (context, index) {
-                            //       return Column(
-                            //         crossAxisAlignment:
-                            //             CrossAxisAlignment.start,
-                            //         children: [
-                            //           GestureDetector(
-                            //             onTap: () {
-                            //               if (index == con.selectedQuestion ||
-                            //                   index < con.selectedQuestion!) {
-                            //                 setState(() {
-                            //                   con.selectedQuestion =
-                            //                       con.selectedQuestion == index
-                            //                           ? null
-                            //                           : index;
-                            //                 });
-                            //               } else {
-                            //                 return;
-                            //               }
-                            //             },
-                            //             child: ListTile(
-                            //               trailing: Text(
-                            //                   questions2[index] == 'null'
-                            //                       ? ''
-                            //                       : questions2[index]),
-                            //               leading: CircleAvatar(
-                            //                   backgroundColor: index ==
-                            //                               con
-                            //                                   .selectedQuestion ||
-                            //                           index <
-                            //                               con.selectedQuestion!
-                            //                       ? Color(0xffFFC000)
-                            //                       : Colors.grey.shade300,
-                            //                   child: Center(
-                            //                     child: Text(
-                            //                         (index + 1).toString(),
-                            //                         style: defaultTextStyle
-                            //                             .copyWith(
-                            //                                 color:
-                            //                                     Colors.black)),
-                            //                   )),
-                            //               title: Text(questions[index],
-                            //                   style: defaultTextStyle.copyWith(
-                            //                       fontSize: 14,
-                            //                       fontWeight: FontWeight.w400)),
-                            //             ),
-                            //           ),
-                            //           if (con.selectedQuestion == index)
-                            //             Padding(
-                            //               padding:
-                            //                   const EdgeInsets.only(left: 16.0),
-                            //               child: answers2[index],
-                            //             ),
-                            //         ],
-                            //       );
-                            //     },
-                            //   ),
-                            // ),
-                            if (con.selectedQuestion.value ==
-                                con.phonecurrent!.questions!.length)
+                                          title: Text(
+                                            question['question'],
+                                            style: defaultTextStyle.copyWith(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                      ),
+                                      if (controller.selectedQuestion.value ==
+                                          index)
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 16.0),
+                                          child: _buildAnswerOptions(question),
+                                        ),
+                                    ],
+                                  );
+                                },
+                              ),
+
+                            // Email Form (Only when all questions are answered)
+                            if (controller.selectedQuestion.value ==
+                                questions.length)
                               EmailFormWidget(),
-                            WeBuyAnyPhoneWidget()
+
+                            // "We Buy Any Phone" Widget
+                            WeBuyAnyPhoneWidget(),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                  constraints.maxWidth <= 700
-                      ? Container()
-                      : SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.05)
 
-                  // Bottom Section
-                ],
+                    if (constraints.maxWidth > 700)
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                  ],
+                ),
               ),
-            ),
-          ],
-        );
-      });
-    });
+            ],
+          );
+        });
+      },
+    );
   }
 }

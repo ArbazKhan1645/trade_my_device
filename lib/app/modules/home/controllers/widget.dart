@@ -229,8 +229,14 @@ class _DeviceWorthScreenState extends State<DeviceWorthScreen> {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Text('How to find your IMEI number?',
-                        style: defaultTextStyle.copyWith(color: Colors.white)),
+                    InkWell(
+                      onTap: () {
+                        Get.offAllNamed(Routes.SUPPORT_CENTER);
+                      },
+                      child: Text('How to find your IMEI number?',
+                          style:
+                              defaultTextStyle.copyWith(color: Colors.white)),
+                    ),
                     Expanded(
                       child: Align(
                         alignment: Alignment.center,
@@ -309,9 +315,14 @@ class _DeviceWorthScreenState extends State<DeviceWorthScreen> {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        Text('How to find your IMEI number?',
-                            style:
-                                defaultTextStyle.copyWith(color: Colors.white)),
+                        InkWell(
+                          onTap: () {
+                            Get.offAllNamed(Routes.SUPPORT_CENTER);
+                          },
+                          child: Text('How to find your IMEI number?',
+                              style: defaultTextStyle.copyWith(
+                                  color: Colors.white)),
+                        ),
                       ],
                     ),
                   ),

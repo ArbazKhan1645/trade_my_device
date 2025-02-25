@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, deprecated_member_use
+
 import 'package:get/get.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 
@@ -16,10 +18,7 @@ class ProfileScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     fetchOrders();
-
-    // subscribeToOrders();
   }
 
   OrderModel? selectedOrder;
@@ -121,8 +120,6 @@ class ProfileScreenController extends GetxController {
     try {
       final String? id = ids ?? params['id'];
       final String? offerRequest = value ?? params['offerrequest'];
-      print(id);
-
       // Early return if no ID provided
       if (id == null || id.isEmpty) {
         resetBrowserURL();
@@ -144,8 +141,7 @@ class ProfileScreenController extends GetxController {
         return;
       }
 
-      print(offerRequest);
-
+   
       // Check if counteroffer is already actioned
       final firstCounter = counteroffer.first;
       if (firstCounter['actioned'].toString() != 'false') {
@@ -209,7 +205,7 @@ class ProfileScreenController extends GetxController {
       });
 
       timeline.add(_createTimelineEntry(
-        'You accepted the counter offer of ${counter.first['price']}',
+        'You accepted the counter offer of £${counter.first['price']}',
         counter.first['description'],
       ));
       selectedOrder!.counteroffer = counter;
@@ -228,7 +224,7 @@ class ProfileScreenController extends GetxController {
   ) {
     try {
       timeline.add(_createTimelineEntry(
-        'You rejected the counter offer of ${counter.first['price']}',
+        'You rejected the counter offer of £${counter.first['price']}',
         counter.first['description'],
       ));
 

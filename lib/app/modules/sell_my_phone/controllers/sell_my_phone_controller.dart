@@ -26,7 +26,7 @@ class SellMyPhoneController extends GetxController {
   List<TypesModel> typesList = [];
 
   void fetchArgyements() {
-    if (Get.arguments == null) return; // Safely return if arguments are null
+    if (Get.arguments == null) return;
 
     String? brand = Get.arguments?['brand'] as String?;
     if (brand == null) return;
@@ -35,7 +35,7 @@ class SellMyPhoneController extends GetxController {
   }
 
   void fetchListArgyements() {
-    if (Get.arguments == null) return; // Safely return if arguments are null
+    if (Get.arguments == null) return;
 
     String? brand = Get.arguments?['brand'] as String?;
     if (brand == null) return;
@@ -43,18 +43,34 @@ class SellMyPhoneController extends GetxController {
     toggleSelection('Brand', brand);
   }
 
-  fetchTypesData() async {
+  Future<void> fetchTypesData() async {
     try {
       setIsloading(true);
-      await fetchAllBrands(Get.context!);
-      await fetchAllTypes(Get.context!);
-      await fetchModels();
+      final context = Get.context;
+      if (context == null) {
+        setIsloading(false);
+        return;
+      }
+
+      if (context.mounted) {
+        await fetchAllBrands(context);
+      }
+      if (context.mounted) {
+        await fetchAllTypes(context);
+      }
+      if (context.mounted) {
+        await fetchModels();
+      }
+
       filterphoneModels = List.from(phoneModels);
+
       fetchArgyements();
       fetchListArguements();
+
       setIsloading(false);
-    } on Exception {
+    } catch (e, stacktrace) {
       setIsloading(false);
+      debugPrint('Error in fetchTypesData: $e\n$stacktrace');
     }
   }
 
@@ -105,16 +121,26 @@ class SellMyPhoneController extends GetxController {
     update();
   }
 
-  fetchListArguements() {
-    if (Get.arguments == null) return;
-    List<MobilePhonesModel>? phones =
-        Get.arguments?['brandlist'] as List<MobilePhonesModel>?;
+  void fetchListArguements() {
+    final args = Get.arguments;
+    if (args == null || args['brandlist'] == null) return;
 
-    if (phones == null) return;
+    List<MobilePhonesModel> phones =
+        (args['brandlist'] as List<dynamic>?)?.cast<MobilePhonesModel>() ?? [];
+
+    if (phones.isEmpty) return;
+
     for (var phone in phones) {
-      var newbrand = brandsList.where((e) => e.id == phone.brands).firstOrNull;
-      brandOptions[newbrand!.name.toString()] = true;
+      var newBrand = brandsList.firstWhere(
+        (e) => e.id == phone.brands,
+        orElse: () => BrandsModel(id: -0, name: ''),
+      );
+
+      if (newBrand.id != -0) {
+        brandOptions[newBrand.name.toString()] = true;
+      }
     }
+
     filterPhoneModelsFunctio();
   }
 

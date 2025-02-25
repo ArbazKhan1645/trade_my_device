@@ -236,7 +236,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                 ],
               ),
               const SizedBox(height: 4),
-              Text(entry['description']!),
+              Text(entry['description'].toString()),
               const SizedBox(height: 16),
             ],
           ),
@@ -282,7 +282,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                 ],
               ),
               const SizedBox(height: 4),
-              Text(entry['description']!),
+              Text(entry['description'].toString()),
               const SizedBox(height: 16),
               if (entry['actioned'] == 'false')
                 Row(
@@ -396,7 +396,7 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   MobilePhonesModel model =
-                      controller.selectedOrder!.models![index];
+                      controller.selectedOrder!.models?[index] ?? [][index];
                   return Row(
                     children: [
                       Image.network(model.image ?? '', height: 100, width: 100),

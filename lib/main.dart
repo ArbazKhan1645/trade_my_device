@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 import 'package:webuywesell/app/core/utils/thems/theme.dart';
+import 'package:webuywesell/app/services/app/app_service.dart';
 import 'package:webuywesell/app/services/auth/auth_service.dart';
 import 'app/core/utils/helpers/logger.dart';
 import 'app/core/widgets/global_errorwidget.dart';
@@ -112,14 +113,20 @@ List<QudsPopupMenuBase> getMenuItems() {
         leading: Icon(Icons.online_prediction_rounded),
         title: Text('Orders'),
         subTitle: Text('See your orders'),
-        onPressed: () {
+        onPressed: () async {
+          await AppService.instance.sharedPreferences.remove('last_order_id');
           Get.offAllNamed(Routes.PROFILE_SCREEN);
         }),
     QudsPopupMenuDivider(),
     QudsPopupMenuItem(
         leading: Icon(Icons.logout),
         title: Text('Log Out'),
-        onPressed: () {
+        onPressed: () async {
+          await AppService.instance.sharedPreferences.remove('last_order_id');
+          await AppService.instance.sharedPreferences
+              .remove('currentPhoneList');
+          await AppService.instance.sharedPreferences.remove('currentPhone');
+          await AppService.instance.sharedPreferences.clear();
           AuthService.instance.cleanStorage();
           Get.offAllNamed(Routes.HOME);
         }),

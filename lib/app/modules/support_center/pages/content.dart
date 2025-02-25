@@ -22,12 +22,22 @@ class _SupportSectionState extends State<SupportSection> {
   }
 
   fetchListArguements() {
-    if (Get.arguments == null) return;
+    if (Get.arguments == null) {
+      selectedCategory = '';
+      print(selectedCategory);
+      return;
+    }
     String? phones = Get.arguments?['option'] as String?;
-    if (phones == null) return;
+    if (phones == null) {
+      selectedCategory = '';
+      print(selectedCategory);
+      return;
+    }
+
     setState(() {
       selectedCategory = phones;
     });
+    print(selectedCategory);
   }
 
   @override
@@ -58,8 +68,10 @@ class _SupportSectionState extends State<SupportSection> {
                   children: [
                     RichText(
                       text: TextSpan(
-                          text: categories[selectedCategory]?[0]['title'] ??
-                              'Others',
+                          text: selectedCategory == ''
+                              ? 'Others'
+                              : categories[selectedCategory]?[0]['title'] ??
+                                  'Others',
                           style: defaultTextStyle.copyWith(
                               fontSize: 22, fontWeight: FontWeight.w600)),
                     ),
@@ -78,24 +90,52 @@ class _SupportSectionState extends State<SupportSection> {
                   return Container(height: 2, color: Colors.grey.shade300);
                 },
                 shrinkWrap: true,
-                itemCount: categories[selectedCategory]?.length ?? 0,
+                itemCount: selectedCategory == ''
+                    ? getCategories().length
+                    : categories[selectedCategory]?.length ?? 0,
                 itemBuilder: (context, index) {
-                  final item = categories[selectedCategory]![index];
-                  return InkWell(
-                    child: Card(
-                      elevation: 0,
-                      margin: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item['content'].toString().replaceAll('*', ''),
-                            style: TextStyle(color: Colors.black87),
+                  final item = selectedCategory == ''
+                      ? getCategories()[index]
+                      : categories[selectedCategory]![index];
+                  return selectedCategory == ''
+                      ? InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedCategory = item;
+                            });
+                          },
+                          child: Card(
+                            elevation: 0,
+                            margin: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  item.toString(),
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                Icon(Icons.arrow_forward_ios)
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  );
+                        )
+                      : InkWell(
+                          child: Card(
+                            elevation: 0,
+                            margin: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item['content']
+                                      .toString()
+                                      .replaceAll('*', ''),
+                                  style: TextStyle(color: Colors.black87),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
                 },
               ),
             ),
@@ -106,9 +146,13 @@ class _SupportSectionState extends State<SupportSection> {
   }
 }
 
+List getCategories() {
+  return categories.keys.toList();
+}
+
 // Demo data structure
 final Map<String, List<Map<String, String>>> categories = {
-  'GDR Policy': [
+  'GDPR Policy': [
     {
       'title': 'GDPR Policy',
       'content': '''GDPR Policy Page
@@ -186,7 +230,7 @@ Email: info@trademydevice.co.uk
   ''',
     },
   ],
-  'Conditions': [
+  'Terms & Conditions': [
     {
       'title': 'Terms & Conditions',
       'content': '''Last Updated: 17th Feb 2025
@@ -254,7 +298,7 @@ Email: info@trademydevice.co.uk
   ''',
     },
   ],
-  'Other': [
+  'Privacy Policy': [
     {
       'title': 'Privacy Policy',
       'content': "Last Updated: 17th Feb 2025\n\n"

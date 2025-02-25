@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:webuywesell/app/core/utils/thems/theme.dart';
+
 import 'package:webuywesell/app/core/widgets/base.dart';
 import 'package:webuywesell/app/modules/home/controllers/footer.dart';
 import 'package:webuywesell/app/modules/support_center/pages/content.dart';

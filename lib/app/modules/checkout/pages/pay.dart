@@ -16,7 +16,7 @@ class _DeliveryOptionWidgetState extends State<DeliveryOptionWidget> {
   String _selectedOption = 'Royal Mail Digital Label';
 
   void _onOptionSelected(String option) {
-    Get.find<CheckoutController>().setdeliveryOptions(option);
+    Get.find<CheckoutController>().setDeliveryOptions(option);
     setState(() {
       _selectedOption = option;
     });

@@ -140,7 +140,7 @@ class MobileFooterPageView extends StatelessWidget {
                   decoration: TextDecoration.underline,
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 50),
             ],
           ),
         );
@@ -299,17 +299,17 @@ void navigateToPage(String option) {
       break;
     case 'Terms and Conditions':
       Get.offAllNamed(Routes.OTHERS, arguments: {
-        'option': 'Conditions',
+        'option': 'Terms and Conditions',
       });
       break;
     case 'Privacy Policy':
       Get.offAllNamed(Routes.OTHERS, arguments: {
-        'option': 'Other',
+        'option': 'Privacy Policy',
       });
       break;
     case 'GDPR Policy':
       Get.offAllNamed(Routes.OTHERS, arguments: {
-        'option': 'GDR Policy',
+        'option': 'GDPR Policy',
       });
     case 'Cookies Policy':
       Get.offAllNamed(Routes.OTHERS, arguments: {

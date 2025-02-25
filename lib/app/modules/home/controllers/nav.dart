@@ -210,14 +210,15 @@ class PhoneDropdownContent extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...controller.brandsList.take(4).map(
-                    (e) => PhoneSection(
-                      title: e.name.toString(),
-                      phones: controller.phoneModels
-                          .where((p) => p.brands == e.id)
-                          .toList(),
+              if (controller.brandsList.isNotEmpty)
+                ...controller.brandsList.take(4).map(
+                      (e) => PhoneSection(
+                        title: e.name.toString(),
+                        phones: controller.phoneModels
+                            .where((p) => p.brands == e.id)
+                            .toList(),
+                      ),
                     ),
-                  ),
             ],
           ),
         ),
@@ -238,14 +239,26 @@ class PhoneSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Check if the list is empty
+    if (phones.isEmpty) {
+      return const SizedBox(); // Return an empty widget if no phones are available
+    }
+
     return Expanded(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Use a default placeholder image if no phones are found or image is null
           Image.network(
-            phones.first.image.toString(),
+            phones.first.image ??
+                'https://via.placeholder.com/80x60?text=No+Image',
             height: 60,
             width: 80,
+            errorBuilder: (context, error, stackTrace) => Image.asset(
+              'assets/images/mobile.png', // Local fallback image
+              height: 60,
+              width: 80,
+            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,33 +270,40 @@ class PhoneSection extends StatelessWidget {
                   fontSize: 16,
                 ),
               ),
-              ...phones.take(5).map((phone) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: TextButton(
-                    onPressed: () async {
-                      await AppService.instance.sharedPreferences
-                          .setString('currentPhone', jsonEncode(phone.toJson()))
-                          .then((val) {
-                        Get.offAllNamed(Routes.DEVICE_INFO);
-                      });
-                    },
-                    child: Text(phone.name.toString(),
-                        style: const TextStyle(color: Colors.blue)),
-                  ))),
+              // Ensure we do not iterate over an empty list
+              if (phones.isNotEmpty)
+                ...phones.take(5).map((phone) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: TextButton(
+                        onPressed: () async {
+                          await AppService.instance.sharedPreferences
+                              .setString(
+                                  'currentPhone', jsonEncode(phone.toJson()))
+                              .then((val) {
+                            Get.offAllNamed(Routes.DEVICE_INFO);
+                          });
+                        },
+                        child: Text(
+                          phone.name ?? 'Unknown Phone', // Avoid null issues
+                          style: const TextStyle(color: Colors.blue),
+                        ),
+                      ),
+                    )),
               Padding(
                 padding: const EdgeInsets.only(top: 8, left: 0, bottom: 40),
                 child: Row(
                   children: [
                     TextButton(
-                        onPressed: () {
-                          Get.offAllNamed(Routes.SELL_MY_PHONE, arguments: {
-                            'brand': title,
-                          });
-                        },
-                        child: Text(
-                          'See all ${title}s',
-                          style: const TextStyle(color: Colors.black),
-                        )),
+                      onPressed: () {
+                        Get.offAllNamed(Routes.SELL_MY_PHONE, arguments: {
+                          'brand': title,
+                        });
+                      },
+                      child: Text(
+                        'See all ${title}s',
+                        style: const TextStyle(color: Colors.black),
+                      ),
+                    ),
                     const Icon(Icons.chevron_right,
                         size: 16, color: Colors.black),
                   ],

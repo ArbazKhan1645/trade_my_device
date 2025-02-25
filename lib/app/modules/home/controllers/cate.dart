@@ -86,7 +86,7 @@ class _SellPhoneScreenState extends State<SellPhoneScreen> {
                       ),
                       SizedBox(width: 4),
                       InfoStep(
-                        icon: Icons.attach_money,
+                        icon: Icons.euro_symbol_outlined,
                         title: 'Get paid',
                         description: 'Fast payments',
                       ),

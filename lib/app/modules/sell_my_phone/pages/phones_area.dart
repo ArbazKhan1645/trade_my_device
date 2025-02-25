@@ -1,7 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'dart:convert';
-
 import 'package:auto_height_grid_view/auto_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +8,6 @@ import 'package:webuywesell/app/core/utils/thems/theme.dart';
 import 'package:webuywesell/app/modules/sell_my_phone/controllers/sell_my_phone_controller.dart';
 import 'package:webuywesell/app/routes/app_pages.dart';
 import 'package:webuywesell/app/services/app/app_service.dart';
-
 import '../models/mobile_phones_model.dart';
 import 'filter_widget.dart';
 
@@ -92,9 +90,10 @@ class SellMyIPhoneScreen extends StatelessWidget {
                     children: [
                       if (controller.isloading.value)
                         Opacity(
-                          opacity: 0.2,
+                          opacity: 0.1,
                           child: Container(
-                            decoration: BoxDecoration(color: Colors.grey),
+                            decoration:
+                                BoxDecoration(color: Colors.grey.shade200),
                             child: SizedBox(
                               height: 400,
                               child: Center(
@@ -102,6 +101,11 @@ class SellMyIPhoneScreen extends StatelessWidget {
                               ),
                             ),
                           ),
+                        )
+                      else if (controller.filterphoneModels.isEmpty)
+                        Center(
+                          child: Text(
+                              'No Phones Found of filter , Refresh filter to get new Phones'),
                         ),
                       Builder(builder: (context) {
                         if (constraints.maxWidth <= 600) {
@@ -206,9 +210,10 @@ class SellMyIPhoneScreen extends StatelessWidget {
                             MobilePhonesModel phone =
                                 controller.filterphoneModels[index];
                             return GestureDetector(
-                              onTap: ()async {
-                             await   AppService.instance.sharedPreferences.setString(
-                                    'currentPhone', jsonEncode(phone.toJson()));
+                              onTap: () async {
+                                await AppService.instance.sharedPreferences
+                                    .setString('currentPhone',
+                                        jsonEncode(phone.toJson()));
                                 Get.offAllNamed(
                                   Routes.DEVICE_INFO,
                                 );
@@ -277,46 +282,3 @@ class SellMyIPhoneScreen extends StatelessWidget {
     });
   }
 }
-
-final List<Map<String, String>> iPhones = [
-  {'name': 'iPhone 13', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 11', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 12', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13 Pro Max', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13 Pro', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14 Pro Max', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14 Pro', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 11', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 12', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13 Pro Max', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13 Pro', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14 Pro Max', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14 Pro', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 11', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 12', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13 Pro Max', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13 Pro', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14 Pro Max', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14 Pro', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 11', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 12', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13 Pro Max', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13 Pro', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14 Pro Max', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14 Pro', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 11', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 12', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13 Pro Max', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 13 Pro', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14 Pro Max', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14', 'image': 'assets/images/mobile.png'},
-  {'name': 'iPhone 14 Pro', 'image': 'assets/images/mobile.png'},
-];

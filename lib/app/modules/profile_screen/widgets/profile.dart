@@ -150,13 +150,13 @@ class _OrderScreenState extends State<OrderScreen> {
                 padding: EdgeInsets.all(16),
                 child: Row(
                   children: [
-                    if (order.models != null)
+                    if (order.models != null && order.models!.isNotEmpty)
                       Container(
                         width: 80,
                         height: 80,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage(order.models!.first.image!),
+                            image: NetworkImage(order.models!.first.image.toString()),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.circular(8),
@@ -171,7 +171,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Order No: ${order.orderNumber}',
+                                'Order No: ${order.orderNumber} - ${order.id}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
