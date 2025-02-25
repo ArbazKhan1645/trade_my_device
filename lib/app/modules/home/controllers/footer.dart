@@ -74,6 +74,7 @@ class MobileFooterPageView extends StatelessWidget {
                                 'Terms and Conditions',
                                 'Privacy Policy',
                                 'GDPR Policy',
+                                'Cookies Policy'
                               ],
                             ),
                           ),
@@ -115,6 +116,7 @@ class MobileFooterPageView extends StatelessWidget {
                           'Terms and Conditions',
                           'Privacy Policy',
                           'GDPR Policy',
+                          'Cookies Policy'
                         ],
                       ),
                     ),
@@ -267,7 +269,6 @@ class NewsLetterWidget extends StatelessWidget {
             ),
           ],
         ),
-    
       ],
     );
   }
@@ -297,20 +298,25 @@ void navigateToPage(String option) {
       Get.offAllNamed(Routes.Payment);
       break;
     case 'Terms and Conditions':
-      Get.offAllNamed(Routes.SUPPORT_CENTER, arguments: {
+      Get.offAllNamed(Routes.OTHERS, arguments: {
         'option': 'Conditions',
       });
       break;
     case 'Privacy Policy':
-      Get.offAllNamed(Routes.SUPPORT_CENTER, arguments: {
+      Get.offAllNamed(Routes.OTHERS, arguments: {
         'option': 'Other',
       });
       break;
     case 'GDPR Policy':
-      Get.offAllNamed(Routes.SUPPORT_CENTER, arguments: {
+      Get.offAllNamed(Routes.OTHERS, arguments: {
         'option': 'GDR Policy',
       });
+    case 'Cookies Policy':
+      Get.offAllNamed(Routes.OTHERS, arguments: {
+        'option': 'Cookies Policy',
+      });
       break;
+
     default:
       Get.offAllNamed(Routes.HOME);
   }

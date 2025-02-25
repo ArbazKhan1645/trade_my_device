@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:webuywesell/app/core/utils/thems/theme.dart';
 
 class SupportSection extends StatefulWidget {
   const SupportSection({super.key});
@@ -43,120 +44,63 @@ class _SupportSectionState extends State<SupportSection> {
       }
 
       double padding = getPadding(constraints.maxWidth);
-      return Padding(
-        padding: EdgeInsets.only(left: padding, right: padding),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Left sidebar
-            Container(
-              width: 250,
-              decoration: BoxDecoration(
-                color: Colors.grey[50],
-                border: Border(
-                  right: BorderSide(color: Colors.grey[300]!),
-                ),
-              ),
+      return Column(
+        children: [
+          SizedBox(height: 40),
+          Container(
+            decoration: BoxDecoration(color: Colors.white),
+            height: 90,
+            child: Center(
               child: Padding(
-                padding: const EdgeInsets.only(right: 8),
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Search bar
-
-                    const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Categories',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: categories.keys.length,
-                      itemBuilder: (context, index) {
-                        final category = categories.keys.elementAt(index);
-                        return ListTile(
-                          selected: selectedCategory == category,
-                          selectedTileColor: Colors.pink[50],
-                          selectedColor: Colors.pink,
-                          title: Text(category),
-                          onTap: () {
-                            setState(() {
-                              selectedCategory = category;
-                              selectedSubOption =
-                                  categories[category]![0]['title']!;
-                            });
-                          },
-                        );
-                      },
+                    RichText(
+                      text: TextSpan(
+                          text: categories[selectedCategory]?[0]['title'] ??
+                              'Others',
+                          style: defaultTextStyle.copyWith(
+                              fontSize: 22, fontWeight: FontWeight.w600)),
                     ),
                   ],
                 ),
               ),
             ),
-            SizedBox(width: 20),
-            Expanded(
-              child: Container(
-                color: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        'Support Home > $selectedCategory > $selectedSubOption',
-                        style: TextStyle(color: Colors.grey[600]),
+          ),
+          SizedBox(height: 30),
+          Padding(
+            padding: EdgeInsets.only(left: padding, right: padding),
+            child: Container(
+              color: Colors.white,
+              child: ListView.separated(
+                separatorBuilder: (con, index) {
+                  return Container(height: 2, color: Colors.grey.shade300);
+                },
+                shrinkWrap: true,
+                itemCount: categories[selectedCategory]?.length ?? 0,
+                itemBuilder: (context, index) {
+                  final item = categories[selectedCategory]![index];
+                  return InkWell(
+                    child: Card(
+                      elevation: 0,
+                      margin: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item['content'].toString().replaceAll('*', ''),
+                            style: TextStyle(color: Colors.black87),
+                          ),
+                        ],
                       ),
                     ),
-                    ListView.separated(
-                      separatorBuilder: (con, index) {
-                        return Container(
-                            height: 2, color: Colors.grey.shade300);
-                      },
-                      shrinkWrap: true,
-                      itemCount: categories[selectedCategory]?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        final item = categories[selectedCategory]![index];
-                        return InkWell(
-                          child: Card(
-                            elevation: 0,
-                            margin: const EdgeInsets.all(16.0),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item['title']!,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    item['content']!,
-                                    style: TextStyle(color: Colors.black87),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
     });
   }
@@ -166,7 +110,7 @@ class _SupportSectionState extends State<SupportSection> {
 final Map<String, List<Map<String, String>>> categories = {
   'GDR Policy': [
     {
-      'title': 'GDR Policy',
+      'title': 'GDPR Policy',
       'content': '''GDPR Policy Page
 
 Last Updated: 17th Feb 2025
@@ -244,7 +188,7 @@ Email: info@trademydevice.co.uk
   ],
   'Conditions': [
     {
-      'title': 'Terms of Service',
+      'title': 'Terms & Conditions',
       'content': '''Last Updated: 17th Feb 2025
 
 Welcome to Trade My Device! By using our website and services, you agree to the following terms and conditions. Please read them carefully before proceeding.
@@ -309,18 +253,6 @@ If you have any questions regarding these Terms and Conditions, please contact u
 Email: info@trademydevice.co.uk
   ''',
     },
-    {
-      "title": "Usage Policy",
-      "content":
-          "Our Usage Policy outlines the acceptable use of our services to ensure a safe and fair experience for all users. By using our platform, you agree not to engage in any fraudulent, abusive, or illegal activities. Unauthorized access, data scraping, or attempts to disrupt our services are strictly prohibited. We reserve the right to suspend or terminate accounts that violate these terms. For more details, please refer to our full Terms and Conditions."
-    }
-  ],
-  'Device': [
-    {
-      "title": "Supported Devices",
-      "content":
-          "We support all major smartphone brands and models, Our platform is optimized to work with the latest devices as well as older models, ensuring a seamless experience for all users. If you are unsure whether your device is supported, please check our compatibility list or contact our support team for assistance."
-    }
   ],
   'Other': [
     {
@@ -365,16 +297,70 @@ Email: info@trademydevice.co.uk
           "10. Contact Us\n"
           "If you have any questions, concerns, or requests regarding this Privacy Policy, please contact us at:\n\n"
           "Trade My Device\nEmail: info@trademydevice.co.uk"
-    },
+    }
+  ],
+  'Cookies Policy': [
     {
-      "title": "Cookie Policy",
-      "content":
-          "Our cookie policy explains how we use cookies and similar technologies to enhance your browsing experience, analyze site traffic, and personalize content. Cookies help us remember your preferences, improve website functionality, and deliver relevant advertisements. You can manage or disable cookies through your browser settings, but some features may not function properly without them. For more details, please review our Privacy Policy."
-    },
-    {
-      "title": "Complaints",
-      "content":
-          "If you wish to raise a complaint, please follow these instructions: First, contact our support team at info@trademydevice.co.uk with details of your concern. We will acknowledge your complaint within 48 hours and conduct a thorough investigation. A response will be provided within 7-14 business days. If you are not satisfied with the resolution, you may escalate your complaint to an independent regulatory body. We are committed to addressing concerns and improving our services."
+      'title': 'Cookies Policy',
+      'content': '''
+Cookies Policy
+
+Last Updated: 17th Feb 2025
+
+At Trade My Device, we respect your privacy and are committed to providing transparency about how we use cookies and other tracking technologies to enhance your experience while using our services. This Cookies Policy explains what cookies are, how we use them, and your rights regarding them.
+
+1. What Are Cookies?
+
+Cookies are small text files placed on your device (such as a computer, smartphone, or tablet) when you visit a website or use an app. These cookies allow us to recognize your device and collect information about your interactions with our website or app, enabling us to improve your user experience.
+
+2. Types of Cookies We Use
+
+We use both **first-party** and **third-party** cookies. Here's a breakdown of the different types of cookies we use:
+
+- **Essential Cookies**: These cookies are necessary for the operation of our website or app and enable basic features like navigation, user authentication, and transaction processing. Without these cookies, the services you request cannot be provided.
+
+- **Performance Cookies**: These cookies collect information about how users interact with our website or app. They help us improve the performance and functionality of our services by understanding how users engage with the content.
+
+- **Functional Cookies**: These cookies allow us to remember your preferences, such as language settings or login credentials, to provide a personalized experience during subsequent visits.
+
+- **Advertising and Targeting Cookies**: These cookies are used to deliver ads that are relevant to you and your interests. They help track your online activity and can limit the number of times you see an ad. They also help measure the effectiveness of ad campaigns.
+
+- **Analytics Cookies**: These cookies collect anonymized data about website usage, such as the number of visitors and the pages they visit. We use analytics cookies to help us analyze trends, track user activity, and improve our services.
+
+3. How We Use Cookies
+
+We use cookies to improve your experience by:
+
+- Personalizing content and ads based on your preferences.
+- Analyzing how you interact with our website or app to enhance its performance.
+- Enabling secure logins and maintaining your session on our platform.
+- Providing you with relevant advertising and promotional content.
+- Enhancing the functionality and usability of our website or app.
+
+4. Third-Party Cookies
+
+In some cases, we may allow third-party service providers (such as advertising networks, analytics services, or payment processors) to place cookies on our website or app. These third parties may collect information about your online activity across different websites and services. We do not control the use of these cookies, and their privacy practices are governed by the respective third parties’ privacy policies.
+
+5. Managing Cookies
+
+You have the right to control and manage cookies. You can disable or delete cookies through your browser settings. Most web browsers allow you to accept or reject cookies and delete cookies that have been placed on your device. However, please note that disabling cookies may affect your experience on our website or app and may prevent certain functionalities from working properly.
+
+
+6. Your Consent
+
+By continuing to use our website or app, you consent to our use of cookies as outlined in this policy. You can withdraw your consent or adjust your cookie preferences at any time by modifying your browser settings or using the options provided by our cookie consent banner (if applicable).
+
+7. Changes to This Cookies Policy
+
+We may update this Cookies Policy from time to time to reflect changes in our practices, legal requirements, or other operational needs. Any updates will be posted on this page with a revised "Last Updated" date. Please check this page regularly to stay informed about how we use cookies.
+
+8. Contact Us
+
+If you have any questions or concerns about our use of cookies or this policy, please contact us at:
+
+Trade My Device
+Email: info@trademydevice.co.uk
+'''
     }
   ],
 };

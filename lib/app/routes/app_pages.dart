@@ -11,6 +11,8 @@ import '../modules/device_info/views/device_info_view.dart';
 import '../modules/home/home.screen.dart';
 import '../modules/how_its_work/bindings/how_its_work_binding.dart';
 import '../modules/how_its_work/views/how_its_work_view.dart';
+import '../modules/others/bindings/others_binding.dart';
+import '../modules/others/views/others_view.dart';
 import '../modules/profile_screen/bindings/profile_screen_binding.dart';
 import '../modules/profile_screen/views/profile_screen_view.dart';
 import '../modules/sell_my_phone/bindings/sell_my_phone_binding.dart';
@@ -77,6 +79,11 @@ class AppPages {
       name: _Paths.ABOUT_US,
       page: () => const AboutUsView(),
       binding: AboutUsBinding(),
+    ),
+    GetPage(
+      name: _Paths.OTHERS,
+      page: () => const OthersView(),
+      binding: OthersBinding(),
     ),
   ];
 }
