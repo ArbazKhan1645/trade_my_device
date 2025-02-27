@@ -1,12 +1,12 @@
 // ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 
 import 'package:get/get.dart';
-import 'package:webuywesell/app/routes/app_pages.dart';
+import 'package:trademydevice/app/routes/app_pages.dart';
 
 import '../../../../main.dart';
 import '../../../models/users_model.dart/customer_models.dart';
 import '../../../services/auth/auth_service.dart';
-import '../model/order_model.dart';
+import '../../../models/order_model/order_model.dart';
 import 'package:intl/intl.dart';
 import 'dart:html' as html;
 
@@ -30,12 +30,48 @@ class ProfileScreenController extends GetxController {
   void fetchOrders() async {
     try {
       if (isloginAuthService == null) {
-        Get.offAllNamed(Routes.HOME);
-        return;
+        final uri = Uri.parse(Get.currentRoute);
+        var params = uri.queryParameters;
+        final String? id = params['id'];
+        final String? offerRequest = params['offerrequest'];
+
+        if (id != null && offerRequest != null) {
+          var res = await supbaseClient.from('orders').select().eq('id', id);
+          if (res.isEmpty) {
+            Get.offAllNamed(Routes.HOME);
+            return;
+          }
+
+          OrderModel order = OrderModel.fromJson(res.first);
+          parseQueryParameters(params, value: offerRequest, order: order);
+          Get.offAllNamed(Routes.HOME);
+          return;
+        } else {
+          Get.offAllNamed(Routes.HOME);
+          return;
+        }
       }
       if (isloginAuthService!.id == null) {
-        Get.offAllNamed(Routes.HOME);
-        return;
+        final uri = Uri.parse(Get.currentRoute);
+        var params = uri.queryParameters;
+        final String? id = params['id'];
+        final String? offerRequest = params['offerrequest'];
+
+        if (id != null && offerRequest != null) {
+          var res = await supbaseClient.from('orders').select().eq('id', id);
+          if (res.isEmpty) {
+            Get.offAllNamed(Routes.HOME);
+            return;
+          }
+
+          OrderModel order = OrderModel.fromJson(res.first);
+          parseQueryParameters(params, value: offerRequest, order: order);
+          Get.offAllNamed(Routes.HOME);
+          return;
+        } else {
+          Get.offAllNamed(Routes.HOME);
+          return;
+        }
       }
       isLoading.value = true;
       final response = await supbaseClient
@@ -116,7 +152,7 @@ class ProfileScreenController extends GetxController {
   }
 
   void parseQueryParameters(Map<String, String> params,
-      {String? value, String? ids}) {
+      {String? value, String? ids, OrderModel? order}) {
     try {
       final String? id = ids ?? params['id'];
       final String? offerRequest = value ?? params['offerrequest'];
@@ -127,7 +163,8 @@ class ProfileScreenController extends GetxController {
       }
 
       // Find order and handle if not found
-      selectedOrder = orders.firstWhereOrNull((ele) => ele.id.toString() == id);
+      selectedOrder =
+          order ?? orders.firstWhereOrNull((ele) => ele.id.toString() == id);
       update();
       if (selectedOrder == null) {
         Get.snackbar('Error', 'Order not found');
@@ -141,7 +178,6 @@ class ProfileScreenController extends GetxController {
         return;
       }
 
-   
       // Check if counteroffer is already actioned
       final firstCounter = counteroffer.first;
       if (firstCounter['actioned'].toString() != 'false') {

@@ -5,14 +5,14 @@ import 'dart:math';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:webuywesell/app/modules/checkout/api.dart';
-import 'package:webuywesell/app/routes/app_pages.dart';
+import 'package:trademydevice/app/data/configs/mailer_api.dart';
+import 'package:trademydevice/app/routes/app_pages.dart';
 import '../../../../main.dart';
 import '../../../models/users_model.dart/customer_models.dart';
 import '../../../services/app/app_service.dart';
 import '../../../services/auth/auth_service.dart';
 import 'package:intl/intl.dart';
-import '../../sell_my_phone/models/mobile_phones_model.dart';
+import '../../../models/sell_my_phones_model/mobile_phones_model.dart';
 
 class CheckoutController extends GetxController {
   var currentStep = 0.obs;
@@ -299,11 +299,10 @@ class OrderService {
 
   static String generateRandomOrderId() {
     final random = Random();
-    final number = random.nextInt(900000000) + 100000000; // 9-digit number
+    final number = random.nextInt(900000000) + 100000000;
     return '#ORD$number';
   }
 
-  /// Fetches the last order ID from SharedPreferences
   static Future<String?> getLastOrderId() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_lastOrderIdKey);

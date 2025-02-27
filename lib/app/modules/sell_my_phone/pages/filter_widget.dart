@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:webuywesell/app/modules/sell_my_phone/controllers/sell_my_phone_controller.dart';
+import 'package:trademydevice/app/modules/sell_my_phone/controllers/sell_my_phone_controller.dart';
 
 class FilterWidget extends StatefulWidget {
   const FilterWidget({super.key});

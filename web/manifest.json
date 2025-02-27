@@ -1,11 +1,11 @@
 {
-    "name": "webuywesell",
-    "short_name": "webuywesell",
+    "name": "TradeMyDevice",
+    "short_name": "TradeMyDevice",
     "start_url": ".",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "TradeMyDevice is your trusted platform for buying and selling devices. Get the best value for your gadgets with our secure and user-friendly service.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

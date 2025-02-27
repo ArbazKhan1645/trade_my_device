@@ -1,10 +1,12 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:webuywesell/app/core/widgets/base.dart';
-import 'package:webuywesell/app/modules/home/controllers/footer.dart';
-import 'package:webuywesell/app/modules/support_center/pages/content.dart';
+import 'package:trademydevice/app/core/widgets/base.dart';
+import 'package:trademydevice/app/modules/home/widgets/footer_widget.dart';
+import 'package:trademydevice/app/modules/others/pages/others_content_body.dart';
 
 import '../controllers/others_controller.dart';
 
@@ -13,9 +15,9 @@ class OthersView extends GetView<OthersController> {
   @override
   Widget build(BuildContext context) {
     return CommonBaseBodyScreen(screens: [
-      SupportSection(),
+      OtherSectionBody(),
       SizedBox(height: 50),
-      MobileFooterPageView(),
+      FooterPageViewWidget(),
     ]);
   }
 }

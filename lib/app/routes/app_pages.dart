@@ -1,14 +1,16 @@
-import 'package:get/get.dart';
+// ignore_for_file: constant_identifier_names
 
+import 'package:get/get.dart';
 import '../modules/about_us/bindings/about_us_binding.dart';
 import '../modules/about_us/views/about_us_view.dart';
-import '../modules/authentication/authentication_view.dart';
+import '../modules/authentication/bindings/authentication_binding.dart';
+import '../modules/authentication/view/authentication_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
 import '../modules/checkout/views/checkout_view.dart';
 import '../modules/device_info/bindings/device_info_binding.dart';
-import '../modules/device_info/pages/further_view.dart';
+import '../modules/device_info/widgets/basket_view.dart';
 import '../modules/device_info/views/device_info_view.dart';
-import '../modules/home/home.screen.dart';
+import '../modules/home/view/home_screen_view.dart';
 import '../modules/how_its_work/bindings/how_its_work_binding.dart';
 import '../modules/how_its_work/views/how_its_work_view.dart';
 import '../modules/others/bindings/others_binding.dart';
@@ -16,12 +18,10 @@ import '../modules/others/views/others_view.dart';
 import '../modules/profile_screen/bindings/profile_screen_binding.dart';
 import '../modules/profile_screen/views/profile_screen_view.dart';
 import '../modules/sell_my_phone/bindings/sell_my_phone_binding.dart';
-import '../modules/sell_my_phone/models/mobile_phones_model.dart';
+import '../models/sell_my_phones_model/mobile_phones_model.dart';
 import '../modules/sell_my_phone/views/sell_my_phone_view.dart';
 import '../modules/support_center/bindings/support_center_binding.dart';
 import '../modules/support_center/views/support_center_view.dart';
-
-// ignore_for_file: constant_identifier_names
 
 part 'app_routes.dart';
 
@@ -49,7 +49,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.Payment,
-      page: () => const WebScreen(),
+      page: () => const BasketScreen(),
     ),
     GetPage(
       name: _Paths.CHECKOUT,
@@ -59,6 +59,7 @@ class AppPages {
     GetPage(
       name: _Paths.AUTHENTICATION,
       page: () => const AuthenticatedAnimatedDialog(),
+      binding: AuthenticationBinding(),
     ),
     GetPage(
       name: _Paths.PROFILE_SCREEN,

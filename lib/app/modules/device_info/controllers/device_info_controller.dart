@@ -4,13 +4,13 @@ import 'dart:convert';
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:webuywesell/app/models/users_model.dart/customer_models.dart';
-import 'package:webuywesell/app/routes/app_pages.dart';
-import 'package:webuywesell/app/services/app/app_service.dart';
-import 'package:webuywesell/app/services/auth/auth_service.dart';
-import '../../home/controllers/footer.dart';
-import '../../sell_my_phone/models/mobile_phones_model.dart';
-import '../pages/section.dart';
+import 'package:trademydevice/app/models/users_model.dart/customer_models.dart';
+import 'package:trademydevice/app/routes/app_pages.dart';
+import 'package:trademydevice/app/services/app/app_service.dart';
+import 'package:trademydevice/app/services/auth/auth_service.dart';
+import '../../home/widgets/footer_widget.dart';
+import '../../../models/sell_my_phones_model/mobile_phones_model.dart';
+import '../widgets/question_section.dart';
 import '../../../../main.dart';
 
 // class DeviceInfoController extends GetxController {
@@ -520,6 +520,6 @@ class DeviceInfoController extends GetxController {
         const SizedBox(height: 40),
         DeviceInfoScreen(),
         const SizedBox(height: 40),
-        MobileFooterPageView(),
+        FooterPageViewWidget(),
       ];
 }

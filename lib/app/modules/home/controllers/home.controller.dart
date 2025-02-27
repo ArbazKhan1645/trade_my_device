@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:webuywesell/app/core/utils/thems/theme.dart';
+import 'package:trademydevice/app/core/utils/thems/theme.dart';
 
 import '../../../core/utils/constants/appcolors.dart';
-import '../../sell_my_phone/controllers/supabase_fetch.dart';
-import '../../sell_my_phone/models/brands_model.dart';
-import '../../sell_my_phone/models/mobile_phones_model.dart';
-import '../../sell_my_phone/models/types_model.dart';
-import 'cate.dart';
-import 'footer.dart';
-import 'widget.dart';
+import '../../../data/supabase/supabase_fetch.dart';
+import '../../../models/sell_my_phones_model/brands_model.dart';
+import '../../../models/sell_my_phones_model/mobile_phones_model.dart';
+import '../../../models/sell_my_phones_model/types_model.dart';
+import '../widgets/phone_categories_sell.dart';
+import '../widgets/footer_widget.dart';
+import '../widgets/main_banner_header_widget.dart';
 
 class HomeController extends GetxController {
   List<Widget> getDashboardViewBodyScreen = [
@@ -81,10 +81,10 @@ class HomeController extends GetxController {
                 );
               })),
         ),
-        const DeviceWorthScreen(),
+        const MainHeaderwidgetSection(),
         // PopularBrandsWidget(),
-        const SellPhoneScreen(),
-        MobileFooterPageView(),
+        const SellPhoneByCategoryScreen(),
+        FooterPageViewWidget(),
         // const SellSmartDevicesScreen(),
         // const SizedBox(height: 50),
         // Row(

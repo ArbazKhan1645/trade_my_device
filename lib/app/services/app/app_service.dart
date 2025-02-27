@@ -3,10 +3,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../main.dart';
-import '../../core/utils/helpers/logger.dart';
 
 class AppService extends GetxService {
   late final SupabaseClient _supabaseClient;
@@ -48,28 +46,6 @@ class AppService extends GetxService {
         _currentConnectivity.value = ConnectivityResult.none;
       }
     });
-  }
-
-  Future<FilePickerResult?> pickFile({
-    FileType type = FileType.any,
-    bool allowMultiple = false,
-    List<String>? allowedExtensions,
-  }) async {
-    try {
-      final result = await FilePicker.platform.pickFiles(
-          type: type,
-          allowMultiple: allowMultiple,
-          allowedExtensions: allowedExtensions);
-      if (result != null) {
-        AppLogger.info("File(s) picked: ${result.paths}");
-      } else {
-        AppLogger.warning("File picking cancelled by user.");
-      }
-      return result;
-    } catch (e) {
-      AppLogger.error("Error picking file: $e");
-      return null;
-    }
   }
 
   SupabaseClient get supabaseClient {

@@ -11,6 +11,6 @@ class SellMyPhoneView extends GetView<SellMyPhoneController> {
   const SellMyPhoneView({super.key});
   @override
   Widget build(BuildContext context) {
-    return SellMyPhoneBodyScreen(storeId: '');
+    return SellMyPhoneBodyScreen();
   }
 }

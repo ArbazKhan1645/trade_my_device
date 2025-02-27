@@ -3,10 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:webuywesell/app/core/utils/thems/theme.dart';
-import 'package:webuywesell/app/routes/app_pages.dart';
+import 'package:trademydevice/app/core/utils/thems/theme.dart';
+import 'package:trademydevice/app/routes/app_pages.dart';
 import '../controller/authentication_controller.dart';
-import 'textfield_widget.dart';
 
 class LoginWidget extends StatelessWidget {
   LoginWidget({super.key});
@@ -93,6 +92,40 @@ class LoginWidget extends StatelessWidget {
                   defaultTextStyle.copyWith(color: Colors.black, fontSize: 16)),
         ),
       ],
+    );
+  }
+}
+
+class TextFieldWidget extends StatelessWidget {
+  const TextFieldWidget(
+      {super.key,
+      this.iconbutton,
+      required this.hintText,
+      this.controller,
+      this.observe = false});
+  final String hintText;
+  final bool observe;
+  final IconButton? iconbutton;
+  final TextEditingController? controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 55,
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade300),
+          color: Colors.grey.shade50,
+          borderRadius: BorderRadius.circular(12)),
+      child: TextField(
+        obscureText: observe,
+        controller: controller,
+        decoration: InputDecoration(
+            hintStyle: TextStyle(color: Colors.grey),
+            suffixIcon: iconbutton,
+            contentPadding: const EdgeInsets.all(12),
+            border: InputBorder.none,
+            hintText: hintText),
+      ),
     );
   }
 }

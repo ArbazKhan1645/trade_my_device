@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:webuywesell/app/core/widgets/base.dart';
+import 'package:trademydevice/app/core/widgets/base.dart';
 
 import '../../../core/utils/thems/theme.dart';
-import '../../home/controllers/footer.dart';
+import '../../home/widgets/footer_widget.dart';
 import '../../home/controllers/home.controller.dart';
 
-import '../../home/controllers/mob.dart';
+import '../widgets/mob.dart';
 import '../controllers/how_its_work_controller.dart';
 
 class HowItsWorkView extends GetView<HowItsWorkController> {
@@ -38,7 +38,7 @@ class HowItsWorkView extends GetView<HowItsWorkController> {
           ),
         ),
       ),
-      MyAppMobile(),
+      HowItsWorkBody(),
       SizedBox(
         child: SizedBox(
             height: 80,
@@ -101,7 +101,7 @@ class HowItsWorkView extends GetView<HowItsWorkController> {
               );
             })),
       ),
-      MobileFooterPageView(),
+      FooterPageViewWidget(),
     ]);
   }
 }

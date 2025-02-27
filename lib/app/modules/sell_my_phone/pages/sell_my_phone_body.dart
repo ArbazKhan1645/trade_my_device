@@ -2,15 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:webuywesell/app/core/widgets/optimized_animated_container.dart';
+import 'package:trademydevice/app/core/widgets/optimized_animated_container.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../home/widgets/homepage_header.dart';
 import '../controllers/sell_my_phone_controller.dart';
 
 class SellMyPhoneBodyScreen extends StatelessWidget {
-  const SellMyPhoneBodyScreen({super.key, required this.storeId});
-  final String storeId;
+  const SellMyPhoneBodyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class SellMyPhoneBodyScreen extends StatelessWidget {
 
 class DashBoardViewBodyScreen extends StatefulWidget {
   const DashBoardViewBodyScreen({super.key, required this.constraints});
-    final BoxConstraints constraints;
+  final BoxConstraints constraints;
 
   @override
   State<DashBoardViewBodyScreen> createState() =>

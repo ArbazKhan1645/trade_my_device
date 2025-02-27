@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:webuywesell/app/core/widgets/optimized_animated_container.dart';
+import 'package:trademydevice/app/core/widgets/optimized_animated_container.dart';
 import '../../modules/home/widgets/homepage_header.dart';
 
 class CommonBaseBodyScreen extends StatelessWidget {

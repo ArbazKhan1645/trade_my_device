@@ -8,8 +8,7 @@ import '../../core/utils/helpers/api_exceptions.dart';
 
 class ApiConfig {
   static const String baseUrl = 'https://dash.imei.info/api/check/';
-  static const String upcoming = '/upcoming';
-  static const String basixServiceImeiId = '/upcoming';
+
   
   static const String api_key = '0611ecea-3a98-490d-a4ad-522fe86c29a7';
   

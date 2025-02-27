@@ -1,11 +1,9 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class IMEITextField extends StatefulWidget {
-  final Function(String imei)
-      onIMEIComplete; // Callback for when IMEI is complete
+  final Function(String imei) onIMEIComplete;
 
   const IMEITextField({
     super.key,
@@ -17,7 +15,6 @@ class IMEITextField extends StatefulWidget {
 }
 
 class _IMEITextFieldState extends State<IMEITextField> {
-  // Validate IMEI - Should be 15 digits
   String? validateIMEI(String? imei) {
     if (imei == null || imei.isEmpty) {
       return 'IMEI is required';
@@ -29,7 +26,6 @@ class _IMEITextFieldState extends State<IMEITextField> {
     return null;
   }
 
-  // Called when IMEI field changes
   void onIMEIChanged(String imei) {
     widget.onIMEIComplete(imei);
   }
@@ -48,8 +44,6 @@ class _IMEITextFieldState extends State<IMEITextField> {
           vertical: 14,
         ),
       ),
-      keyboardType: TextInputType.number,
-      inputFormatters: [],
       onChanged: (value) {
         onIMEIChanged(value);
       },

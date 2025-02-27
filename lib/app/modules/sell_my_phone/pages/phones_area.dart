@@ -4,11 +4,11 @@ import 'dart:convert';
 import 'package:auto_height_grid_view/auto_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:webuywesell/app/core/utils/thems/theme.dart';
-import 'package:webuywesell/app/modules/sell_my_phone/controllers/sell_my_phone_controller.dart';
-import 'package:webuywesell/app/routes/app_pages.dart';
-import 'package:webuywesell/app/services/app/app_service.dart';
-import '../models/mobile_phones_model.dart';
+import 'package:trademydevice/app/core/utils/thems/theme.dart';
+import 'package:trademydevice/app/modules/sell_my_phone/controllers/sell_my_phone_controller.dart';
+import 'package:trademydevice/app/routes/app_pages.dart';
+import 'package:trademydevice/app/services/app/app_service.dart';
+import '../../../models/sell_my_phones_model/mobile_phones_model.dart';
 import 'filter_widget.dart';
 
 class SellMyIPhoneScreen extends StatelessWidget {

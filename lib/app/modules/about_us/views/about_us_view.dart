@@ -1,12 +1,12 @@
+// ignore_for_file: depend_on_referenced_packages, deprecated_member_use
+
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:webuywesell/app/core/utils/thems/theme.dart';
-import 'package:webuywesell/app/core/widgets/base.dart';
-import 'package:webuywesell/app/modules/about_us/widget/aboutus_body.dart';
-import 'package:webuywesell/app/modules/home/controllers/footer.dart';
-import 'package:webuywesell/app/modules/home/controllers/home.controller.dart';
-
+import 'package:trademydevice/app/core/utils/thems/theme.dart';
+import 'package:trademydevice/app/core/widgets/base.dart';
+import 'package:trademydevice/app/modules/about_us/widget/aboutus_body.dart';
+import 'package:trademydevice/app/modules/home/widgets/footer_widget.dart';
+import 'package:trademydevice/app/modules/home/controllers/home.controller.dart';
 import '../controllers/about_us_controller.dart';
 
 class AboutUsView extends GetView<AboutUsController> {
@@ -98,7 +98,7 @@ class AboutUsView extends GetView<AboutUsController> {
               );
             })),
       ),
-      MobileFooterPageView(),
+      FooterPageViewWidget(),
     ]);
   }
 }

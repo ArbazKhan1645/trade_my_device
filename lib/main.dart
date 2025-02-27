@@ -8,10 +8,10 @@ import 'package:quds_popup_menu/quds_popup_menu.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:webuywesell/app/routes/app_pages.dart';
-import 'package:webuywesell/app/core/utils/thems/theme.dart';
-import 'package:webuywesell/app/services/app/app_service.dart';
-import 'package:webuywesell/app/services/auth/auth_service.dart';
+import 'package:trademydevice/app/routes/app_pages.dart';
+import 'package:trademydevice/app/core/utils/thems/theme.dart';
+import 'package:trademydevice/app/services/app/app_service.dart';
+import 'package:trademydevice/app/services/auth/auth_service.dart';
 import 'app/core/utils/helpers/logger.dart';
 import 'app/core/widgets/global_errorwidget.dart';
 import 'app/core/locators/service_locator.dart';
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Trade my device',
+      title: 'TradeMyDevice',
       builder: (context, widget) {
         return MediaQuery(
             data: MediaQuery.of(context)

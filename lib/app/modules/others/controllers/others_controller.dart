@@ -1,23 +1,3 @@
 import 'package:get/get.dart';
 
-class OthersController extends GetxController {
-  //TODO: Implement OthersController
-
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
-}
+class OthersController extends GetxController {}

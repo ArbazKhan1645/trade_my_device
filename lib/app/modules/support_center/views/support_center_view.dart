@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:webuywesell/app/modules/support_center/widgets/widgets.dart';
+import 'package:trademydevice/app/modules/support_center/widgets/support_center_body.dart';
 
 import '../../../core/utils/thems/theme.dart';
 import '../../../core/widgets/base.dart';
-import '../../home/controllers/footer.dart';
+import '../../home/widgets/footer_widget.dart';
 import '../controllers/support_center_controller.dart';
 
 class SupportCenterView extends GetView<SupportCenterController> {
@@ -35,9 +35,9 @@ class SupportCenterView extends GetView<SupportCenterController> {
         ),
       ),
       SizedBox(height: 20),
-      FAQScreen(),
+      SupportCenterBodyWidget(),
       SizedBox(height: 100),
-      MobileFooterPageView(),
+      FooterPageViewWidget(),
     ]);
   }
 }

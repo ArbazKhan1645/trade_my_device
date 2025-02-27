@@ -2,19 +2,19 @@
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:webuywesell/app/modules/sell_my_phone/controllers/supabase_fetch.dart';
+import 'package:trademydevice/app/data/supabase/supabase_fetch.dart';
 
-import '../../home/controllers/footer.dart';
-import '../models/brands_model.dart';
-import '../models/mobile_phones_model.dart';
-import '../models/types_model.dart';
+import '../../home/widgets/footer_widget.dart';
+import '../../../models/sell_my_phones_model/brands_model.dart';
+import '../../../models/sell_my_phones_model/mobile_phones_model.dart';
+import '../../../models/sell_my_phones_model/types_model.dart';
 import '../pages/phones_area.dart';
 
 class SellMyPhoneController extends GetxController {
   List<Widget> getDashboardViewBodyScreen = [
     const SizedBox(height: 40),
     SellMyIPhoneScreen(),
-    MobileFooterPageView(),
+    FooterPageViewWidget(),
   ];
 
   RxBool isloading = false.obs;

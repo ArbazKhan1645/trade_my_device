@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:webuywesell/app/models/users_model.dart/customer_models.dart';
+import 'package:trademydevice/app/models/users_model.dart/customer_models.dart';
 import '../app/app_service.dart';
 
 class AuthService extends GetxService {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/profile_screen_controller.dart';
-import '../widgets/profile.dart';
+import '../widgets/orders_history_profile.dart';
 
 class ProfileScreenView extends GetView<ProfileScreenController> {
   const ProfileScreenView({super.key});
@@ -12,7 +12,7 @@ class ProfileScreenView extends GetView<ProfileScreenController> {
     return GetBuilder<ProfileScreenController>(
         init: ProfileScreenController(),
         builder: (controller) {
-          return OrderScreen();
+          return OrderHistoryScreenProfile();
         });
   }
 }
