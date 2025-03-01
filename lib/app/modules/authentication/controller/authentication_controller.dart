@@ -61,7 +61,7 @@ class AuthenticationController extends GetxController {
       try {
         customerModel = CustomerModel.fromJson(userDetailsResponse);
       } catch (e) {
-        customerModel = null; // Assign null if parsing fails
+        customerModel = null;
         debugPrint('Error parsing CustomerModel: $e');
       }
       if (customerModel == null) {
@@ -69,8 +69,7 @@ class AuthenticationController extends GetxController {
         return;
       }
       currentPartnerUser.value = customerModel;
-      print(currentPartnerUser.value);
-      print(currentPartnerUser.value!.id);
+
       AuthService.instance.saveAuthState(currentPartnerUser.value!);
       Get.offAllNamed(Routes.HOME);
     } catch (e) {

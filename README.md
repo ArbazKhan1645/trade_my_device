@@ -1,6 +1,6 @@
 # trademydevice
 
-A new Flutter project.
+TradeMyDevice is your trusted platform for buying and selling devices. Get the best value for your gadgets with our secure and user-friendly service.
 
 ## Getting Started
 
